@@ -20,7 +20,6 @@
     <definition name="game.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/games/menu.jsp"/>
     </definition>
-
     <definition name="gamesList" extends="game.definition">
         <put-attribute name="body" value="/WEB-INF/jsp/games/list.jsp"/>
     </definition>
@@ -34,7 +33,6 @@
     <definition name="program.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/programs/menu.jsp"/>
     </definition>
-
     <definition name="programsList" extends="program.definition">
         <put-attribute name="body" value="/WEB-INF/jsp/programs/list.jsp"/>
     </definition>
@@ -43,6 +41,19 @@
     </definition>
     <definition name="programsEdit" extends="program.definition">
         <put-attribute name="body" value="/WEB-INF/jsp/programs/edit.jsp"/>
+    </definition>
+
+    <definition name="genre.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/genres/menu.jsp"/>
+    </definition>
+    <definition name="genresList" extends="genre.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/genres/list.jsp"/>
+    </definition>
+    <definition name="genresAdd" extends="genre.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/genres/add.jsp"/>
+    </definition>
+    <definition name="genresEdit" extends="genre.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/genres/edit.jsp"/>
     </definition>
 
 </tiles-definitions>

@@ -10,6 +10,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ GameTOToGameFOConverterTest.class, GameFOToGameTOConverterTest.class, ProgramTOToProgramFOConverterTest.class,
-        ProgramFOToProgramTOConverterTest.class })
+        ProgramFOToProgramTOConverterTest.class, GenreTOToGenreFOConverterTest.class, GenreFOToGenreTOConverterTest.class })
 public class ConvertersSuite {
 }

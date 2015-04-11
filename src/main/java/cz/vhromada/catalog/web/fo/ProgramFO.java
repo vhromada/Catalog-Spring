@@ -251,7 +251,6 @@ public class ProgramFO implements Serializable {
         this.position = position;
     }
 
-
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
