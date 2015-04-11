@@ -30,6 +30,19 @@
         <put-attribute name="body" value="/WEB-INF/jsp/games/edit.jsp"/>
     </definition>
 
+    <definition name="music.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/music/menu.jsp"/>
+    </definition>
+    <definition name="musicList" extends="music.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/music/list.jsp"/>
+    </definition>
+    <definition name="musicAdd" extends="music.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/music/add.jsp"/>
+    </definition>
+    <definition name="musicEdit" extends="music.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/music/edit.jsp"/>
+    </definition>
+
     <definition name="program.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/programs/menu.jsp"/>
     </definition>

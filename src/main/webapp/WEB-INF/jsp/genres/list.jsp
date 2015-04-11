@@ -1,6 +1,5 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="cat" uri="/WEB-INF/catalog.tld" %>
 <jsp:useBean id="genres" type="java.util.List<cz.vhromada.catalog.facade.to.GenreTO>" scope="request"/>
 <c:choose>
     <c:when test="${not empty genres}">
