@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <import resource="classpath:daoContext.xml"/>
+
+    <import resource="classpath:cacheContext.xml"/>
+
+    <import resource="classpath:serviceContext.xml"/>
+
+    <import resource="classpath:facadeContext.xml"/>
+
+    <import resource="classpath:webDozerMappingContext.xml"/>
+
+    <context:component-scan base-package="cz.vhromada.catalog.web.controller"/>
+
+    <mvc:annotation-driven/>
+
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/catalog" expected-type="javax.sql.DataSource"/>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="Messages"/>
+    </bean>
+
+</beans>

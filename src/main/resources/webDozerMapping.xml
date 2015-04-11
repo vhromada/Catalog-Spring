@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://dozer.sourceforge.net"
+          xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping>
+        <class-a>cz.vhromada.catalog.web.fo.GameFO</class-a>
+        <class-b>cz.vhromada.catalog.facade.to.GameTO</class-b>
+        <field>
+            <a is-accessible="true">crack</a>
+            <b is-accessible="true">crack</b>
+        </field>
+        <field>
+            <a is-accessible="true">serialKey</a>
+            <b is-accessible="true">serialKey</b>
+        </field>
+        <field>
+            <a is-accessible="true">patch</a>
+            <b is-accessible="true">patch</b>
+        </field>
+        <field>
+            <a is-accessible="true">trainer</a>
+            <b is-accessible="true">trainer</b>
+        </field>
+        <field>
+            <a is-accessible="true">trainerData</a>
+            <b is-accessible="true">trainerData</b>
+        </field>
+        <field>
+            <a is-accessible="true">editor</a>
+            <b is-accessible="true">editor</b>
+        </field>
+        <field>
+            <a is-accessible="true">saves</a>
+            <b is-accessible="true">saves</b>
+        </field>
+    </mapping>
+
+</mappings>

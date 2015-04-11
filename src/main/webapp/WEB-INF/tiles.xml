@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+    <definition name="base.definition" template="/WEB-INF/jsp/layout.jsp">
+        <put-attribute name="head" value="/WEB-INF/jsp/includes/head.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/jsp/includes/menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="innerMenu" value=""/>
+    </definition>
+
+    <definition name="index" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/index.jsp"/>
+    </definition>
+
+    <definition name="error" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/errorPage.jsp"/>
+    </definition>
+
+    <definition name="game.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/games/menu.jsp"/>
+    </definition>
+
+    <definition name="gamesList" extends="game.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/games/list.jsp"/>
+    </definition>
+    <definition name="gamesAdd" extends="game.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/games/add.jsp"/>
+    </definition>
+    <definition name="gamesEdit" extends="game.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/games/edit.jsp"/>
+    </definition>
+
+</tiles-definitions>
