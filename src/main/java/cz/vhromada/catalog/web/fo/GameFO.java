@@ -42,7 +42,7 @@ public class GameFO implements Serializable {
      * Count of media
      */
     @Range(min = 1, max = 100)
-    private int mediaCount = 1;
+    private String mediaCount;
 
     /**
      * True if there is crack
@@ -172,7 +172,7 @@ public class GameFO implements Serializable {
      *
      * @return count of media
      */
-    public int getMediaCount() {
+    public String getMediaCount() {
         return mediaCount;
     }
 
@@ -180,9 +180,8 @@ public class GameFO implements Serializable {
      * Sets a new value to count of media.
      *
      * @param mediaCount new value
-     * @throws IllegalArgumentException if new value isn't positive number
      */
-    public void setMediaCount(final int mediaCount) {
+    public void setMediaCount(final String mediaCount) {
         this.mediaCount = mediaCount;
     }
 
@@ -385,7 +384,7 @@ public class GameFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("GameFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%d, crack=%b, serialKey=%b, patch=%b, trainer=%b, trainerData=%b, "
+        return String.format("GameFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%s, crack=%b, serialKey=%b, patch=%b, trainer=%b, trainerData=%b, "
                         + "editor=%b, saves=%b, otherData=%s, note=%s, position=%d]", id, name, wikiEn, wikiCz, mediaCount, crack, serialKey, patch, trainer,
                 trainerData, editor, saves, otherData, note, position);
     }

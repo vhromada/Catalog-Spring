@@ -6,11 +6,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 /**
- * A class represents FO for music.
+ * A class represents FO for song.
  *
  * @author Vladimir Hromada
  */
-public class MusicFO implements Serializable {
+public class SongFO implements Serializable {
 
     /**
      * SerialVersionUID
@@ -29,20 +29,22 @@ public class MusicFO implements Serializable {
     private String name;
 
     /**
-     * URL to english Wikipedia page about music
+     * Hours
      */
-    private String wikiEn;
+    @Range(min = 0, max = 23)
+    private String hours;
 
     /**
-     * URL to czech Wikipedia page about music
+     * Minutes
      */
-    private String wikiCz;
+    @Range(min = 0, max = 59)
+    private String minutes;
 
     /**
-     * Count of media
+     * Seconds
      */
-    @Range(min = 1, max = 100)
-    private String mediaCount;
+    @Range(min = 0, max = 59)
+    private String seconds;
 
     /**
      * Note
@@ -77,7 +79,6 @@ public class MusicFO implements Serializable {
      *
      * @return name
      */
-
     public String getName() {
         return name;
     }
@@ -92,57 +93,57 @@ public class MusicFO implements Serializable {
     }
 
     /**
-     * Returns URL to english Wikipedia page about music.
+     * Returns hours.
      *
-     * @return URL to english Wikipedia page about music
+     * @return hours
      */
-    public String getWikiEn() {
-        return wikiEn;
+    public String getHours() {
+        return hours;
     }
 
     /**
-     * Sets a new value to URL to english Wikipedia page about music.
+     * Sets a new value to hours.
      *
-     * @param wikiEn new value
+     * @param hours new value
      */
-    public void setWikiEn(final String wikiEn) {
-        this.wikiEn = wikiEn;
+    public void setHours(final String hours) {
+        this.hours = hours;
     }
 
     /**
-     * Returns URL to czech Wikipedia page about music.
+     * Returns minutes.
      *
-     * @return URL to czech Wikipedia page about music
+     * @return minutes
      */
-    public String getWikiCz() {
-        return wikiCz;
+    public String getMinutes() {
+        return minutes;
     }
 
     /**
-     * Sets a new value to URL to czech Wikipedia page about music.
+     * Sets a new value to minutes.
      *
-     * @param wikiCz new value
+     * @param minutes new value
      */
-    public void setWikiCz(final String wikiCz) {
-        this.wikiCz = wikiCz;
+    public void setMinutes(final String minutes) {
+        this.minutes = minutes;
     }
 
     /**
-     * Returns count of media.
+     * Returns seconds.
      *
-     * @return count of media
+     * @return seconds
      */
-    public String getMediaCount() {
-        return mediaCount;
+    public String getSeconds() {
+        return seconds;
     }
 
     /**
-     * Sets a new value to count of media.
+     * Sets a new value to seconds.
      *
-     * @param mediaCount new value
+     * @param seconds new value
      */
-    public void setMediaCount(final String mediaCount) {
-        this.mediaCount = mediaCount;
+    public void setSeconds(final String seconds) {
+        this.seconds = seconds;
     }
 
     /**
@@ -186,11 +187,11 @@ public class MusicFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof MusicFO) || id == null) {
+        if (obj == null || !(obj instanceof SongFO) || id == null) {
             return false;
         }
-        final MusicFO music = (MusicFO) obj;
-        return id.equals(music.id);
+        final SongFO song = (SongFO) obj;
+        return id.equals(song.id);
     }
 
     @Override
@@ -200,8 +201,9 @@ public class MusicFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("MusicFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%s, note=%s, position=%d]", id, name, wikiEn, wikiCz, mediaCount, note,
+        return String.format("SongFO [id=%d, name=%s, hours=%s, minutes=%s, seconds=%s, note=%s, position=%d]", id, name, hours, minutes, seconds, note,
                 position);
     }
 
 }
+

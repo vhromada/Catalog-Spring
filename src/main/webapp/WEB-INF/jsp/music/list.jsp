@@ -21,6 +21,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -41,6 +42,7 @@
                             <a href="http://en.wikipedia.org/wiki/${musicItem.wikiEn}">English Wikipedia</a>
                         </c:if>
                     </td>
+                    <td><a href="${pageContext.request.contextPath}/music/${musicItem.id}/songs/list">Songs</a></td>
                     <td>
                         <c:if test="${music.indexOf(musicItem) > 0}">
                             <a href="${pageContext.request.contextPath}/games/moveUp/${musicItem.id}">Move up</a>

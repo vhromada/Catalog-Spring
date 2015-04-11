@@ -44,9 +44,11 @@ public class GameFOToGameTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final GameFO gameFO = objectGenerator.generate(GameFO.class);
+        gameFO.setMediaCount("1");
         final GameTO gameTO = converter.convert(gameFO, GameTO.class);
         DeepAsserts.assertNotNull(gameTO);
-        DeepAsserts.assertEquals(gameFO, gameTO);
+        DeepAsserts.assertEquals(gameFO, gameTO, "mediaCount");
+        DeepAsserts.assertEquals(gameFO.getMediaCount(), String.valueOf(gameTO.getMediaCount()));
     }
 
     /**

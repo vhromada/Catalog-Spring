@@ -43,7 +43,20 @@
         <put-attribute name="body" value="/WEB-INF/jsp/music/edit.jsp"/>
     </definition>
 
-    <definition name="program.definition" extends="base.definition">
+    <definition name="song.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/songs/menu.jsp"/>
+    </definition>
+    <definition name="songsList" extends="song.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/songs/list.jsp"/>
+    </definition>
+    <definition name="songsAdd" extends="song.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/songs/add.jsp"/>
+    </definition>
+    <definition name="songsEdit" extends="song.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/songs/edit.jsp"/>
+    </definition>
+
+     <definition name="program.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/programs/menu.jsp"/>
     </definition>
     <definition name="programsList" extends="program.definition">

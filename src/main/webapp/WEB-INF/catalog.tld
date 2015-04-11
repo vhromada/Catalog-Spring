@@ -15,6 +15,7 @@
             <name>game</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>cz.vhromada.catalog.facade.to.GameTO</type>
         </attribute>
     </tag>
 
@@ -26,6 +27,19 @@
             <name>program</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>cz.vhromada.catalog.facade.to.ProgramTO</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>time</name>
+        <tag-class>cz.vhromada.catalog.web.tags.TimeTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>time</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
 
