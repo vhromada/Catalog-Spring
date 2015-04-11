@@ -1,7 +1,9 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="music" type="java.util.List<cz.vhromada.catalog.facade.to.MusicTO>" scope="request"/>
+<jsp:useBean id="music" type="java.util.List<cz.vhromada.catalog.web.domain.Music>" scope="request"/>
 <jsp:useBean id="mediaCount" type="java.lang.Integer" scope="request"/>
+<jsp:useBean id="songsCount" type="java.lang.Integer" scope="request"/>
+<jsp:useBean id="totalLength" type="cz.vhromada.catalog.commons.Time" scope="request"/>
 <c:choose>
     <c:when test="${not empty music}">
         <table class="table table-hover">
@@ -9,6 +11,8 @@
             <tr>
                 <th>Name</th>
                 <th>Count of media</th>
+                <th>Count of songs</th>
+                <th>Total length</th>
                 <th>Note</th>
                 <th></th>
                 <th></th>
@@ -24,6 +28,8 @@
                 <tr>
                     <td><c:out value="${musicItem.name}"/></td>
                     <td><c:out value="${musicItem.mediaCount}"/></td>
+                    <td><c:out value="${musicItem.songsCount}"/></td>
+                    <td><c:out value="${musicItem.totalLength}"/></td>
                     <td><c:out value="${musicItem.note}"/></td>
                     <td>
                         <c:if test="${!empty(musicItem.wikiCz)}">
@@ -62,12 +68,16 @@
     <tr>
         <th>Count of music</th>
         <th>Count of media</th>
+        <th>Count of songs</th>
+        <th>Total length</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td><c:out value="${music.size()}"/></td>
         <td><c:out value="${mediaCount}"/></td>
+        <td><c:out value="${songsCount}"/></td>
+        <td><c:out value="${totalLength}"/></td>
     </tr>
     </tbody>
 </table>

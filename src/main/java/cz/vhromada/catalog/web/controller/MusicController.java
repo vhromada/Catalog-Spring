@@ -1,11 +1,16 @@
 package cz.vhromada.catalog.web.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.catalog.facade.MusicFacade;
+import cz.vhromada.catalog.facade.SongFacade;
 import cz.vhromada.catalog.facade.to.MusicTO;
+import cz.vhromada.catalog.facade.to.SongTO;
+import cz.vhromada.catalog.web.domain.Music;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MusicFO;
 import cz.vhromada.converters.Converter;
@@ -38,6 +43,11 @@ public class MusicController {
     private MusicFacade musicFacade;
 
     /**
+     * Facade for songs
+     */
+    private SongFacade songsFacade;
+
+    /**
      * Converter
      */
     private Converter converter;
@@ -46,17 +56,22 @@ public class MusicController {
      * Creates a new instance of MusicController.
      *
      * @param musicFacade facade for music
+     * @param songsFacade facade for songs
      * @param converter   converter
      * @throws IllegalArgumentException if facade for music is null
+     *                                  or facade for songs is null
      *                                  or converter is null
      */
     @Autowired
     public MusicController(final MusicFacade musicFacade,
+            final SongFacade songsFacade,
             @Qualifier("webDozerConverter") final Converter converter) {
         Validators.validateArgumentNotNull(musicFacade, "Facade for music");
+        Validators.validateArgumentNotNull(songsFacade, "Facade for songs");
         Validators.validateArgumentNotNull(converter, "converter");
 
         this.musicFacade = musicFacade;
+        this.songsFacade = songsFacade;
         this.converter = converter;
     }
 
@@ -83,8 +98,25 @@ public class MusicController {
     public String showList(final Model model) {
         Validators.validateArgumentNotNull(model, "Model");
 
-        model.addAttribute("music", new ArrayList<>(musicFacade.getMusic()));
+        final List<Music> musicList = new ArrayList<>();
+        for (final MusicTO musicTO : musicFacade.getMusic()) {
+            final Music music = converter.convert(musicTO, Music.class);
+            int count = 0;
+            int length = 0;
+            for (final SongTO song : songsFacade.findSongsByMusic(musicTO)) {
+                count++;
+                length += song.getLength();
+            }
+            music.setSongsCount(count);
+            music.setTotalLength(new Time(length));
+
+            musicList.add(music);
+        }
+
+        model.addAttribute("music", musicList);
         model.addAttribute("mediaCount", musicFacade.getTotalMediaCount());
+        model.addAttribute("songsCount", musicFacade.getSongsCount());
+        model.addAttribute("totalLength", musicFacade.getTotalLength());
         model.addAttribute("title", "Music");
 
         return "musicList";
