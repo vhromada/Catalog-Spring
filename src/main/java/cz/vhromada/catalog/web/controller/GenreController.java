@@ -10,7 +10,6 @@ import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.GenreFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.validators.Validators;
-import cz.vhromada.validators.exceptions.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -111,10 +110,10 @@ public class GenreController {
      * @param genre        FO for genre
      * @param errors       errors
      * @return view for redirect to page with list of genres (no errors) or view for page for adding genre (errors)
-     * @throws IllegalArgumentException if model is null
-     *                                  or FO for genre is null
-     *                                  or errors are null
-     * @throws ValidationException      if ID isn't null
+     * @throws IllegalArgumentException                              if model is null
+     *                                                               or FO for genre is null
+     *                                                               or errors are null
+     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -154,7 +153,7 @@ public class GenreController {
         if (genre != null) {
             return createFormView(model, converter.convert(genre, GenreFO.class), "Edit genre", "genresEdit");
         } else {
-            throw new IllegalRequestException("TO for genre must exist.");
+            throw new IllegalRequestException("TO for genre doesn't exist.");
         }
     }
 
@@ -166,11 +165,11 @@ public class GenreController {
      * @param genre        FO for genre
      * @param errors       errors
      * @return view for redirect to page with list of genres (no errors) or view for page for editing genre (errors)
-     * @throws IllegalArgumentException if model is null
-     *                                  or FO for genre is null
-     *                                  or errors are null
-     * @throws ValidationException      if ID is null
-     * @throws IllegalRequestException  if TO for genre doesn't exist
+     * @throws IllegalArgumentException                              if model is null
+     *                                                               or FO for genre is null
+     *                                                               or errors are null
+     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
+     * @throws IllegalRequestException                               if TO for genre doesn't exist
      */
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -189,7 +188,7 @@ public class GenreController {
             if (genreFacade.exists(genreTO)) {
                 genreFacade.update(genreTO);
             } else {
-                throw new IllegalRequestException("TO for genre must exist.");
+                throw new IllegalRequestException("TO for genre doesn't exist.");
             }
         }
 
@@ -213,7 +212,7 @@ public class GenreController {
         if (genreFacade.exists(genre)) {
             genreFacade.duplicate(genre);
         } else {
-            throw new IllegalRequestException("TO for genre must exist.");
+            throw new IllegalRequestException("TO for genre doesn't exist.");
         }
 
         return "redirect:/genres/list";
@@ -236,7 +235,7 @@ public class GenreController {
         if (genreFacade.exists(genre)) {
             genreFacade.remove(genre);
         } else {
-            throw new IllegalRequestException("TO for genre must exist.");
+            throw new IllegalRequestException("TO for genre doesn't exist.");
         }
 
         return "redirect:/genres/list";

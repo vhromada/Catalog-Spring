@@ -10,7 +10,6 @@ import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.GameFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.validators.Validators;
-import cz.vhromada.validators.exceptions.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -112,10 +111,10 @@ public class GameController {
      * @param game         FO for game
      * @param errors       errors
      * @return view for redirect to page with list of games (no errors) or view for page for adding game (errors)
-     * @throws IllegalArgumentException if model is null
-     *                                  or FO for game is null
-     *                                  or errors are null
-     * @throws ValidationException      if ID isn't null
+     * @throws IllegalArgumentException                              if model is null
+     *                                                               or FO for game is null
+     *                                                               or errors are null
+     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -155,7 +154,7 @@ public class GameController {
         if (game != null) {
             return createFormView(model, converter.convert(game, GameFO.class), "Edit game", "gamesEdit");
         } else {
-            throw new IllegalRequestException("TO for game must exist.");
+            throw new IllegalRequestException("TO for game doesn't exist.");
         }
     }
 
@@ -167,11 +166,11 @@ public class GameController {
      * @param game         FO for game
      * @param errors       errors
      * @return view for redirect to page with list of games (no errors) or view for page for editing game (errors)
-     * @throws IllegalArgumentException if model is null
-     *                                  or FO for game is null
-     *                                  or errors are null
-     * @throws ValidationException      if ID is null
-     * @throws IllegalRequestException  if TO for game doesn't exist
+     * @throws IllegalArgumentException                              if model is null
+     *                                                               or FO for game is null
+     *                                                               or errors are null
+     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
+     * @throws IllegalRequestException                               if TO for game doesn't exist
      */
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -190,7 +189,7 @@ public class GameController {
             if (gameFacade.exists(gameTO)) {
                 gameFacade.update(gameTO);
             } else {
-                throw new IllegalRequestException("TO for game must exist.");
+                throw new IllegalRequestException("TO for game doesn't exist.");
             }
         }
 
@@ -214,7 +213,7 @@ public class GameController {
         if (gameFacade.exists(game)) {
             gameFacade.duplicate(game);
         } else {
-            throw new IllegalRequestException("TO for game must exist.");
+            throw new IllegalRequestException("TO for game doesn't exist.");
         }
 
         return "redirect:/games/list";
@@ -237,7 +236,7 @@ public class GameController {
         if (gameFacade.exists(game)) {
             gameFacade.remove(game);
         } else {
-            throw new IllegalRequestException("TO for game must exist.");
+            throw new IllegalRequestException("TO for game doesn't exist.");
         }
 
         return "redirect:/games/list";
@@ -260,7 +259,7 @@ public class GameController {
         if (gameFacade.exists(game)) {
             gameFacade.moveUp(game);
         } else {
-            throw new IllegalRequestException("TO for game must exist.");
+            throw new IllegalRequestException("TO for game doesn't exist.");
         }
 
         return "redirect:/games/list";
@@ -283,7 +282,7 @@ public class GameController {
         if (gameFacade.exists(game)) {
             gameFacade.moveDown(game);
         } else {
-            throw new IllegalRequestException("TO for game must exist.");
+            throw new IllegalRequestException("TO for game doesn't exist.");
         }
 
         return "redirect:/games/list";

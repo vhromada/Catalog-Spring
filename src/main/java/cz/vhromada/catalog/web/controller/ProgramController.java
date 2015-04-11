@@ -10,7 +10,6 @@ import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ProgramFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.validators.Validators;
-import cz.vhromada.validators.exceptions.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -112,10 +111,10 @@ public class ProgramController {
      * @param program      FO for program
      * @param errors       errors
      * @return view for redirect to page with list of programs (no errors) or view for page for adding program (errors)
-     * @throws IllegalArgumentException if model is null
-     *                                  or FO for program is null
-     *                                  or errors are null
-     * @throws ValidationException      if ID isn't null
+     * @throws IllegalArgumentException                              if model is null
+     *                                                               or FO for program is null
+     *                                                               or errors are null
+     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -155,7 +154,7 @@ public class ProgramController {
         if (program != null) {
             return createFormView(model, converter.convert(program, ProgramFO.class), "Edit program", "programsEdit");
         } else {
-            throw new IllegalRequestException("TO for program must exist.");
+            throw new IllegalRequestException("TO for program doesn't exist.");
         }
     }
 
@@ -167,11 +166,11 @@ public class ProgramController {
      * @param program      FO for program
      * @param errors       errors
      * @return view for redirect to page with list of programs (no errors) or view for page for editing program (errors)
-     * @throws IllegalArgumentException if model is null
-     *                                  or FO for program is null
-     *                                  or errors are null
-     * @throws ValidationException      if ID is null
-     * @throws IllegalRequestException  if TO for program doesn't exist
+     * @throws IllegalArgumentException                              if model is null
+     *                                                               or FO for program is null
+     *                                                               or errors are null
+     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
+     * @throws IllegalRequestException                               if TO for program doesn't exist
      */
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -190,7 +189,7 @@ public class ProgramController {
             if (programFacade.exists(programTO)) {
                 programFacade.update(programTO);
             } else {
-                throw new IllegalRequestException("TO for program must exist.");
+                throw new IllegalRequestException("TO for program doesn't exist.");
             }
         }
 
@@ -214,7 +213,7 @@ public class ProgramController {
         if (programFacade.exists(program)) {
             programFacade.duplicate(program);
         } else {
-            throw new IllegalRequestException("TO for program must exist.");
+            throw new IllegalRequestException("TO for program doesn't exist.");
         }
 
         return "redirect:/programs/list";
@@ -237,7 +236,7 @@ public class ProgramController {
         if (programFacade.exists(program)) {
             programFacade.remove(program);
         } else {
-            throw new IllegalRequestException("TO for program must exist.");
+            throw new IllegalRequestException("TO for program doesn't exist.");
         }
 
         return "redirect:/programs/list";
@@ -260,7 +259,7 @@ public class ProgramController {
         if (programFacade.exists(program)) {
             programFacade.moveUp(program);
         } else {
-            throw new IllegalRequestException("TO for program must exist.");
+            throw new IllegalRequestException("TO for program doesn't exist.");
         }
 
         return "redirect:/programs/list";
@@ -283,7 +282,7 @@ public class ProgramController {
         if (programFacade.exists(program)) {
             programFacade.moveDown(program);
         } else {
-            throw new IllegalRequestException("TO for program must exist.");
+            throw new IllegalRequestException("TO for program doesn't exist.");
         }
 
         return "redirect:/programs/list";

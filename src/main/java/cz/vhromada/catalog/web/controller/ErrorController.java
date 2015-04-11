@@ -31,7 +31,7 @@ public class ErrorController {
      */
     @RequestMapping("/known")
     public String processKnownException(final Model model, final HttpServletRequest request) {
-        return processException(model, request, "There was error in working with database.");
+        return processException(model, request, "There was error in working with data.");
     }
 
     /**
