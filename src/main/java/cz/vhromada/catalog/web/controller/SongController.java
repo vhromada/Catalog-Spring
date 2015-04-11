@@ -358,14 +358,14 @@ public class SongController {
      * Returns page's view with form.
      *
      * @param model   model
-     * @param songFO  FO for song
+     * @param song    FO for song
      * @param musicId music ID
      * @param title   page's title
      * @param view    returning view
      * @return page's view  with form
      */
-    private static String createFormView(final Model model, final SongFO songFO, final Integer musicId, final String title, final String view) {
-        model.addAttribute("song", songFO);
+    private static String createFormView(final Model model, final SongFO song, final Integer musicId, final String title, final String view) {
+        model.addAttribute("song", song);
         model.addAttribute("music", musicId);
         model.addAttribute("title", title);
 
