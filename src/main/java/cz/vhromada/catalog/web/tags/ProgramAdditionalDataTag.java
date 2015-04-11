@@ -5,27 +5,27 @@ import java.io.IOException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.facade.to.GameTO;
+import cz.vhromada.catalog.facade.to.ProgramTO;
 
 /**
- * A class represents tag for game's additional data.
+ * A class represents tag for program's additional data.
  *
  * @author Vladimir Hromada
  */
-public class GameAdditionalDataTag extends SimpleTagSupport {
+public class ProgramAdditionalDataTag extends SimpleTagSupport {
 
     /**
-     * TO for game
+     * TO for program
      */
-    private GameTO game;
+    private ProgramTO program;
 
     /**
-     * Sets a new value to TO for game
+     * Sets a new value to TO for program
      *
-     * @param game new value
+     * @param program new value
      */
-    public void setGame(final GameTO game) {
-        this.game = game;
+    public void setProgram(final ProgramTO program) {
+        this.program = program;
     }
 
     @Override
@@ -42,20 +42,15 @@ public class GameAdditionalDataTag extends SimpleTagSupport {
      */
     private String getAdditionalData() {
         final StringBuilder result = new StringBuilder();
-        if (game.hasCrack()) {
+        if (program.hasCrack()) {
             result.append("Crack");
         }
-        addToResult(result, game.hasSerialKey(), "serial key");
-        addToResult(result, game.hasPatch(), "patch");
-        addToResult(result, game.hasTrainer(), "trainer");
-        addToResult(result, game.hasTrainerData(), "data for trainer");
-        addToResult(result, game.hasEditor(), "editor");
-        addToResult(result, game.haveSaves(), "saves");
-        if (game.getOtherData() != null && !game.getOtherData().isEmpty()) {
+        addToResult(result, program.hasSerialKey(), "serial key");
+        if (program.getOtherData() != null && !program.getOtherData().isEmpty()) {
             if (result.length() != 0) {
                 result.append(", ");
             }
-            result.append(game.getOtherData());
+            result.append(program.getOtherData());
         }
 
         return result.toString();

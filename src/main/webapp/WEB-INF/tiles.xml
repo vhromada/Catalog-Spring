@@ -31,4 +31,18 @@
         <put-attribute name="body" value="/WEB-INF/jsp/games/edit.jsp"/>
     </definition>
 
+    <definition name="program.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/programs/menu.jsp"/>
+    </definition>
+
+    <definition name="programsList" extends="program.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/programs/list.jsp"/>
+    </definition>
+    <definition name="programsAdd" extends="program.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/programs/add.jsp"/>
+    </definition>
+    <definition name="programsEdit" extends="program.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/programs/edit.jsp"/>
+    </definition>
+
 </tiles-definitions>

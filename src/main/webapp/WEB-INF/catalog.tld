@@ -18,4 +18,15 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>programAdditionalData</name>
+        <tag-class>cz.vhromada.catalog.web.tags.ProgramAdditionalDataTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>program</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
 </taglib>
