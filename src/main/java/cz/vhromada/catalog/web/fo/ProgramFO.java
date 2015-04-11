@@ -55,31 +55,6 @@ public class ProgramFO implements Serializable {
     private boolean serialKey;
 
     /**
-     * True if there is patch
-     */
-    private boolean patch;
-
-    /**
-     * True if there is trainer
-     */
-    private boolean trainer;
-
-    /**
-     * True if there is data for trainer
-     */
-    private boolean trainerData;
-
-    /**
-     * True if there is editor
-     */
-    private boolean editor;
-
-    /**
-     * True if there are saves
-     */
-    private boolean saves;
-
-    /**
      * Other data
      */
     private String otherData;
@@ -223,96 +198,6 @@ public class ProgramFO implements Serializable {
     }
 
     /**
-     * Returns true if there is patch.
-     *
-     * @return true if there is patch
-     */
-    public boolean getPatch() {
-        return patch;
-    }
-
-    /**
-     * Sets a new value to if there is patch.
-     *
-     * @param patch new value
-     */
-    public void setPatch(final boolean patch) {
-        this.patch = patch;
-    }
-
-    /**
-     * Returns true if there is trainer.
-     *
-     * @return true if there is trainer
-     */
-    public boolean getTrainer() {
-        return trainer;
-    }
-
-    /**
-     * Sets a new value to if there is trainer.
-     *
-     * @param trainer new value
-     */
-    public void setTrainer(final boolean trainer) {
-        this.trainer = trainer;
-    }
-
-    /**
-     * Returns true if there is data for trainer.
-     *
-     * @return true if there is data for trainer
-     */
-    public boolean getTrainerData() {
-        return trainerData;
-    }
-
-    /**
-     * Sets a new value to if there is data for trainer.
-     *
-     * @param trainerData new value
-     */
-    public void setTrainerData(final boolean trainerData) {
-        this.trainerData = trainerData;
-    }
-
-    /**
-     * Returns true if there is editor.
-     *
-     * @return true if there is editor
-     */
-    public boolean getEditor() {
-        return editor;
-    }
-
-    /**
-     * Sets a new value to if there is editor.
-     *
-     * @param editor new value
-     */
-    public void setEditor(final boolean editor) {
-        this.editor = editor;
-    }
-
-    /**
-     * Returns true if there are saves.
-     *
-     * @return true if there are saves
-     */
-    public boolean getSaves() {
-        return saves;
-    }
-
-    /**
-     * Sets a new value to if there are saves.
-     *
-     * @param saves new value
-     */
-    public void setSaves(final boolean saves) {
-        this.saves = saves;
-    }
-
-    /**
      * Returns other data.
      *
      * @return other data
@@ -386,9 +271,8 @@ public class ProgramFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("ProgramFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%d, crack=%b, serialKey=%b, patch=%b, trainer=%b, trainerData=%b, "
-                        + "editor=%b, saves=%b, otherData=%s, note=%s, position=%d]", id, name, wikiEn, wikiCz, mediaCount, crack, serialKey, patch, trainer,
-                trainerData, editor, saves, otherData, note, position);
+        return String.format("ProgramFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%d, crack=%b, serialKey=%b, otherData=%s, note=%s, position=%d]", id,
+                name, wikiEn, wikiCz, mediaCount, crack, serialKey, otherData, note, position);
     }
 
 }
