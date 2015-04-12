@@ -8,8 +8,9 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Length</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Language</th>
                 <th>Note</th>
                 <th></th>
                 <th></th>
@@ -21,22 +22,23 @@
             <tbody>
             <c:forEach items="${books}" var="book">
                 <tr>
-                    <td><c:out value="${book.name}"/></td>
-                    <td><cat:time time="${book.length}"/></td>
+                    <td><c:out value="${book.author}"/></td>
+                    <td><c:out value="${book.title}"/></td>
+                    <td><cat:languages languages="${book.languages}"/></td>
                     <td><c:out value="${book.note}"/></td>
                     <td>
                         <c:if test="${books.indexOf(book) > 0}">
-                            <a href="${pageContext.request.contextPath}/bookCategories/${bookCategory}/books/moveUp/${book.id}">Move up</a>
+                            <a href="${pageContext.request.contextPath}/categories/${bookCategory}/books/moveUp/${book.id}">Move up</a>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${books.indexOf(book) < books.size() - 1}">
-                            <a href="${pageContext.request.contextPath}/bookCategories/${bookCategory}/books/moveDown/${book.id}">Move down</a>
+                            <a href="${pageContext.request.contextPath}/categories/${bookCategory}/books/moveDown/${book.id}">Move down</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/${bookCategory}/books/duplicate/${book.id}">Duplicate</a></td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/${bookCategory}/books/edit/${book.id}">Edit</a></td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/${bookCategory}/books/remove/${book.id}">Remove</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/${bookCategory}/books/duplicate/${book.id}">Duplicate</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/${bookCategory}/books/edit/${book.id}">Edit</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/${bookCategory}/books/remove/${book.id}">Remove</a></td>
                 </tr>
             </c:forEach>
             </tbody>

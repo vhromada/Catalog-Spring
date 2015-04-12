@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:useBean id="book" type="cz.vhromada.catalog.web.fo.BookFO" scope="request"/>
 <jsp:useBean id="bookCategory" type="java.lang.Integer" scope="request"/>
-<form:form commandName="book" method="POST" action="${pageContext.request.contextPath}/bookCategories/${bookCategory}/books/edit" cssClass="form-horizontal">
+<form:form commandName="book" method="POST" action="${pageContext.request.contextPath}/categories/${bookCategory}/books/edit" cssClass="form-horizontal">
     <fieldset>
         <form:input type="hidden" name="id" path="id" value="${book.id}"/>
         <form:input type="hidden" name="position" path="position" value="${book.position}"/>

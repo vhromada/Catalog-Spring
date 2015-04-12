@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Vladimir Hromada
  */
 @Controller("bookController")
-@RequestMapping("/bookCategories/{bookCategoryId}/books")
+@RequestMapping("/categories/{bookCategoryId}/books")
 public class BookController {
 
     /**
@@ -153,7 +153,7 @@ public class BookController {
             bookFacade.add(bookTO);
         }
 
-        return "redirect:/bookCategories/" + bookCategoryId + "/books/list";
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
     /**
@@ -225,7 +225,7 @@ public class BookController {
             }
         }
 
-        return "redirect:/bookCategories/" + bookCategoryId + "/books/list";
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
     /**
@@ -253,7 +253,7 @@ public class BookController {
             throw new IllegalRequestException("TO for book doesn't exist.");
         }
 
-        return "redirect:/bookCategories/" + bookCategoryId + "/books/list";
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
     /**
@@ -281,7 +281,7 @@ public class BookController {
             throw new IllegalRequestException("TO for book doesn't exist.");
         }
 
-        return "redirect:/bookCategories/" + bookCategoryId + "/books/list";
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
     /**
@@ -309,7 +309,7 @@ public class BookController {
             throw new IllegalRequestException("TO for book doesn't exist.");
         }
 
-        return "redirect:/bookCategories/" + bookCategoryId + "/books/list";
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
     /**
@@ -337,7 +337,7 @@ public class BookController {
             throw new IllegalRequestException("TO for book doesn't exist.");
         }
 
-        return "redirect:/bookCategories/" + bookCategoryId + "/books/list";
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
     /**

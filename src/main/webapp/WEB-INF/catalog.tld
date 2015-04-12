@@ -43,4 +43,16 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>languages</name>
+        <tag-class>cz.vhromada.catalog.web.tags.LanguagesTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>languages</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+    </tag>
+
 </taglib>

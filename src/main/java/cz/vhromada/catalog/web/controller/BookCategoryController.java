@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Vladimir Hromada
  */
 @Controller("bookCategoryController")
-@RequestMapping("/bookCategories")
+@RequestMapping("/categories")
 public class BookCategoryController {
 
     /**
@@ -81,7 +81,7 @@ public class BookCategoryController {
     public String processNew() {
         bookCategoryFacade.newData();
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -151,7 +151,7 @@ public class BookCategoryController {
             bookCategoryFacade.add(converter.convert(bookCategory, BookCategoryTO.class));
         }
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -213,7 +213,7 @@ public class BookCategoryController {
             }
         }
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -236,7 +236,7 @@ public class BookCategoryController {
             throw new IllegalRequestException("TO for book category doesn't exist.");
         }
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -259,7 +259,7 @@ public class BookCategoryController {
             throw new IllegalRequestException("TO for book category doesn't exist.");
         }
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -282,7 +282,7 @@ public class BookCategoryController {
             throw new IllegalRequestException("TO for book category doesn't exist.");
         }
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -305,7 +305,7 @@ public class BookCategoryController {
             throw new IllegalRequestException("TO for book category doesn't exist.");
         }
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**
@@ -317,7 +317,7 @@ public class BookCategoryController {
     public String processUpdatePositions() {
         bookCategoryFacade.updatePositions();
 
-        return "redirect:/bookCategories/list";
+        return "redirect:/categories/list";
     }
 
     /**

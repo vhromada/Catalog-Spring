@@ -70,16 +70,16 @@
     </definition>
 
     <definition name="bookCategory.definition" extends="base.definition">
-        <put-attribute name="innerMenu" value="/WEB-INF/jsp/bookCategories/menu.jsp"/>
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/categories/menu.jsp"/>
     </definition>
     <definition name="bookCategoriesList" extends="bookCategory.definition">
-        <put-attribute name="body" value="/WEB-INF/jsp/bookCategories/list.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/categories/list.jsp"/>
     </definition>
     <definition name="bookCategoriesAdd" extends="bookCategory.definition">
-        <put-attribute name="body" value="/WEB-INF/jsp/bookCategories/add.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/categories/add.jsp"/>
     </definition>
     <definition name="bookCategoriesEdit" extends="bookCategory.definition">
-        <put-attribute name="body" value="/WEB-INF/jsp/bookCategories/edit.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/categories/edit.jsp"/>
     </definition>
 
     <definition name="book.definition" extends="base.definition">

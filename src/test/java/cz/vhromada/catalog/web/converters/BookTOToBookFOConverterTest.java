@@ -1,7 +1,11 @@
 package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
+import cz.vhromada.catalog.commons.Language;
 import cz.vhromada.catalog.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.facade.to.BookTO;
 import cz.vhromada.catalog.web.fo.BookFO;
@@ -44,9 +48,22 @@ public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final BookTO bookTO = objectGenerator.generate(BookTO.class);
+        bookTO.setLanguages(Arrays.asList(Language.CZ, Language.EN));
         final BookFO bookFO = converter.convert(bookTO, BookFO.class);
         DeepAsserts.assertNotNull(bookFO);
-        DeepAsserts.assertEquals(bookTO, bookFO, "bookCategory");
+        DeepAsserts.assertEquals(bookTO, bookFO, "czech", "english", "languages", "bookCategory");
+        for (final Language language : bookTO.getLanguages()) {
+            switch (language) {
+                case CZ:
+                    assertTrue(bookFO.isCzech());
+                    break;
+                case EN:
+                    assertTrue(bookFO.isEnglish());
+                    break;
+                default:
+                    throw new IllegalArgumentException("Bad language");
+            }
+        }
     }
 
     /**

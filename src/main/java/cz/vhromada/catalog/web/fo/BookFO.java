@@ -1,9 +1,8 @@
 package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
-import java.util.List;
 
-import cz.vhromada.catalog.commons.Language;
+import cz.vhromada.catalog.web.validator.constraints.Languages;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -12,6 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Vladimir Hromada
  */
+@Languages
 public class BookFO implements Serializable {
 
     /**
@@ -37,9 +37,14 @@ public class BookFO implements Serializable {
     private String title;
 
     /**
-     * Languages
+     * True if language is czech
      */
-    private List<Language> languages;
+    private boolean czech;
+
+    /**
+     * True if language is Eenglish
+     */
+    private boolean english;
 
     /**
      * Note
@@ -106,21 +111,39 @@ public class BookFO implements Serializable {
     }
 
     /**
-     * Returns languages.
+     * Returns true if language is czech.
      *
-     * @return languages
+     * @return true if language is czech
      */
-    public List<Language> getLanguages() {
-        return languages;
+    public boolean isCzech() {
+        return czech;
     }
 
     /**
-     * Sets a new value to languages.
+     * Sets a new value to if language is czech.
      *
-     * @param languages new value
+     * @param czech new value
      */
-    public void setLanguages(final List<Language> languages) {
-        this.languages = languages;
+    public void setCzech(final boolean czech) {
+        this.czech = czech;
+    }
+
+    /**
+     * Returns true if language is english.
+     *
+     * @return true if language is english
+     */
+    public boolean isEnglish() {
+        return english;
+    }
+
+    /**
+     * Sets a new value to if language is english.
+     *
+     * @param english new value
+     */
+    public void setEnglish(final boolean english) {
+        this.english = english;
     }
 
     /**
@@ -178,7 +201,8 @@ public class BookFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("BookFO [id=%d, author=%s, title=%s, languages=%s, note=%s, position=%d]", id, author, title, languages, note, position);
+        return String.format("BookFO [id=%d, author=%s, title=%s, czech=%b, english=%b, note=%s, position=%d]", id, author, title, czech, english, note,
+                position);
     }
 
 }

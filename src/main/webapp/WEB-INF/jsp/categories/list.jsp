@@ -24,20 +24,20 @@
                     <td><c:out value="${bookCategory.name}"/></td>
                     <td><c:out value="${bookCategory.booksCount}"/></td>
                     <td><c:out value="${bookCategory.note}"/></td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/${bookCategory.id}/books/list">Books</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/${bookCategory.id}/books/list">Books</a></td>
                     <td>
                         <c:if test="${bookCategories.indexOf(bookCategory) > 0}">
-                            <a href="${pageContext.request.contextPath}/bookCategories/moveUp/${bookCategory.id}">Move up</a>
+                            <a href="${pageContext.request.contextPath}/categories/moveUp/${bookCategory.id}">Move up</a>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${bookCategories.indexOf(bookCategory) < bookCategories.size() - 1}">
-                            <a href="${pageContext.request.contextPath}/bookCategories/moveDown/${bookCategory.id}">Move down</a>
+                            <a href="${pageContext.request.contextPath}/categories/moveDown/${bookCategory.id}">Move down</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/duplicate/${bookCategory.id}">Duplicate</a></td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/edit/${bookCategory.id}">Edit</a></td>
-                    <td><a href="${pageContext.request.contextPath}/bookCategories/remove/${bookCategory.id}">Remove</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/duplicate/${bookCategory.id}">Duplicate</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/edit/${bookCategory.id}">Edit</a></td>
+                    <td><a href="${pageContext.request.contextPath}/categories/remove/${bookCategory.id}">Remove</a></td>
                 </tr>
             </c:forEach>
             </tbody>
