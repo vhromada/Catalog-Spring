@@ -5,6 +5,10 @@
 
     <configuration>
         <custom-converters>
+            <converter type="cz.vhromada.catalog.web.converters.ShowConverter">
+                <class-a>cz.vhromada.catalog.web.fo.ShowFO</class-a>
+                <class-b>cz.vhromada.catalog.facade.to.ShowTO</class-b>
+            </converter>
             <converter type="cz.vhromada.catalog.web.converters.SongConverter">
                 <class-a>cz.vhromada.catalog.web.fo.SongFO</class-a>
                 <class-b>cz.vhromada.catalog.facade.to.SongTO</class-b>
@@ -12,6 +16,10 @@
             <converter type="cz.vhromada.catalog.web.converters.BookConverter">
                 <class-a>cz.vhromada.catalog.web.fo.BookFO</class-a>
                 <class-b>cz.vhromada.catalog.facade.to.BookTO</class-b>
+            </converter>
+            <converter type="cz.vhromada.catalog.web.converters.GenreToStringConverter">
+                <class-a>cz.vhromada.catalog.facade.to.GenreTO</class-a>
+                <class-b>java.lang.String</class-b>
             </converter>
         </custom-converters>
     </configuration>

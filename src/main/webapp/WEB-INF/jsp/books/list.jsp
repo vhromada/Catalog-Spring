@@ -10,7 +10,7 @@
             <tr>
                 <th>Author</th>
                 <th>Title</th>
-                <th>Language</th>
+                <th>Languages</th>
                 <th>Note</th>
                 <th></th>
                 <th></th>

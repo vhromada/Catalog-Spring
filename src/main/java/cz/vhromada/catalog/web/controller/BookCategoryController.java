@@ -172,7 +172,7 @@ public class BookCategoryController {
         final BookCategoryTO bookCategory = bookCategoryFacade.getBookCategory(id);
 
         if (bookCategory != null) {
-            return createFormView(model, converter.convert(bookCategory, BookCategoryFO.class), "EditBookCategory", "bookCategoriesEdit");
+            return createFormView(model, converter.convert(bookCategory, BookCategoryFO.class), "Edit book category", "bookCategoriesEdit");
         } else {
             throw new IllegalRequestException("TO for book category doesn't exist.");
         }
@@ -202,7 +202,7 @@ public class BookCategoryController {
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
-                return createFormView(model, bookCategory, "EditBookCategory", "bookCategoriesEdit");
+                return createFormView(model, bookCategory, "Edit book category", "bookCategoriesEdit");
             }
 
             final BookCategoryTO bookCategoryTO = converter.convert(bookCategory, BookCategoryTO.class);

@@ -3,8 +3,8 @@ package cz.vhromada.catalog.web.converters;
 import static org.junit.Assert.assertNull;
 
 import cz.vhromada.catalog.commons.ObjectGeneratorTest;
-import cz.vhromada.catalog.facade.to.GameTO;
-import cz.vhromada.catalog.web.fo.GameFO;
+import cz.vhromada.catalog.facade.to.ShowTO;
+import cz.vhromada.catalog.web.domain.Show;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;
 import cz.vhromada.test.DeepAsserts;
@@ -17,13 +17,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link GameFO} to {@link GameTO}.
+ * A class represents test for converter from {@link ShowTO} to {@link Show}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:testWebConvertersContext.xml")
-public class GameFOToGameTOConverterTest extends ObjectGeneratorTest {
+public class ShowTOToShowConverterTest extends ObjectGeneratorTest {
 
     /**
      * Instance of {@link Converter}
@@ -43,12 +43,10 @@ public class GameFOToGameTOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvert() {
-        final GameFO gameFO = objectGenerator.generate(GameFO.class);
-        gameFO.setMediaCount(Integer.toString(objectGenerator.generate(Integer.class)));
-        final GameTO gameTO = converter.convert(gameFO, GameTO.class);
-        DeepAsserts.assertNotNull(gameTO);
-        DeepAsserts.assertEquals(gameFO, gameTO, "mediaCount");
-        DeepAsserts.assertEquals(gameFO.getMediaCount(), String.valueOf(gameTO.getMediaCount()));
+        final ShowTO showTO = objectGenerator.generate(ShowTO.class);
+        final Show show = converter.convert(showTO, Show.class);
+        DeepAsserts.assertNotNull(show, "totalLength");
+        DeepAsserts.assertEquals(showTO, show, "seasonsCount", "episodesCount", "totalLength");
     }
 
     /**
@@ -56,7 +54,7 @@ public class GameFOToGameTOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvertWithNullArgument() {
-        assertNull(converter.convert(null, GameTO.class));
+        assertNull(converter.convert(null, Show.class));
     }
 
 }

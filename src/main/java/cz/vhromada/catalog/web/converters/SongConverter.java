@@ -25,8 +25,8 @@ public class SongConverter implements CustomConverter {
         } else if (sourceFieldValue instanceof SongTO && sourceClass == SongTO.class && destinationClass == SongFO.class) {
             return convertSongTO((SongTO) sourceFieldValue);
         } else {
-            throw new MappingException("Converter SongConverter used incorrectly. Arguments passed in were:" + existingDestinationFieldValue
-                    + " and " + sourceFieldValue);
+            throw new MappingException("Converter SongConverter used incorrectly. Arguments passed in were:" + existingDestinationFieldValue + " and "
+                    + sourceFieldValue);
         }
     }
 

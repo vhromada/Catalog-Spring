@@ -55,7 +55,7 @@ public class ErrorController {
      */
     @RequestMapping("/unknown")
     public String processUnknownException(final Model model, final HttpServletRequest request) {
-        return processException(model, request, "There was unknown error.");
+        return processException(model, request, "There was unexpected error.");
     }
 
     /**

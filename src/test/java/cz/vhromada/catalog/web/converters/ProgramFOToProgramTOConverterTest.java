@@ -44,7 +44,7 @@ public class ProgramFOToProgramTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final ProgramFO programFO = objectGenerator.generate(ProgramFO.class);
-        programFO.setMediaCount("1");
+        programFO.setMediaCount(Integer.toString(objectGenerator.generate(Integer.class)));
         final ProgramTO programTO = converter.convert(programFO, ProgramTO.class);
         DeepAsserts.assertNotNull(programTO);
         DeepAsserts.assertEquals(programFO, programTO, "mediaCount");

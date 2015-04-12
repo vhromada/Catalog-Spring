@@ -17,6 +17,19 @@
         <put-attribute name="body" value="/WEB-INF/jsp/errorPage.jsp"/>
     </definition>
 
+    <definition name="show.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/shows/menu.jsp"/>
+    </definition>
+    <definition name="showsList" extends="show.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/shows/list.jsp"/>
+    </definition>
+    <definition name="showsAdd" extends="show.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/shows/add.jsp"/>
+    </definition>
+    <definition name="showsEdit" extends="show.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/shows/edit.jsp"/>
+    </definition>
+
     <definition name="game.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/games/menu.jsp"/>
     </definition>

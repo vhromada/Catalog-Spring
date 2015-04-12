@@ -55,4 +55,16 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>genres</name>
+        <tag-class>cz.vhromada.catalog.web.tags.GenresTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>genres</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+    </tag>
+
 </taglib>

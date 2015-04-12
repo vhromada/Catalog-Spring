@@ -28,8 +28,8 @@ public class BookConverter implements CustomConverter {
         } else if (sourceFieldValue instanceof BookTO && sourceClass == BookTO.class && destinationClass == BookFO.class) {
             return convertBookTO((BookTO) sourceFieldValue);
         } else {
-            throw new MappingException("Converter BookConverter used incorrectly. Arguments passed in were:" + existingDestinationFieldValue
-                    + " and " + sourceFieldValue);
+            throw new MappingException("Converter BookConverter used incorrectly. Arguments passed in were:" + existingDestinationFieldValue + " and "
+                    + sourceFieldValue);
         }
     }
 
