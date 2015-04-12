@@ -32,7 +32,7 @@
                     <td><c:out value="${season.episodesCount}"/></td>
                     <td><c:out value="${season.totalLength}"/></td>
                     <td><c:out value="${season.note}"/></td>
-                    <td><a href="${pageContext.request.contextPath}/shows/${show}/seasons/${season.id}/list">Episodes</a></td>
+                    <td><a href="${pageContext.request.contextPath}/shows/${show}/seasons/${season.id}/episodes/list">Episodes</a></td>
                     <td>
                         <c:if test="${seasons.indexOf(season) > 0}">
                             <a href="${pageContext.request.contextPath}/shows/${show}/seasons/moveUp/${season.id}">Move up</a>

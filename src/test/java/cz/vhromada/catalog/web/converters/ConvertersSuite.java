@@ -11,9 +11,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ ShowTOToShowFOConverterTest.class, ShowFOToShowTOConverterTest.class, ShowTOToShowConverterTest.class, ShowToShowTOConverterTest.class,
         SeasonTOToSeasonFOConverterTest.class, SeasonFOToSeasonTOConverterTest.class, SeasonTOToSeasonConverterTest.class, SeasonToSeasonTOConverterTest.class,
-        GameTOToGameFOConverterTest.class, GameFOToGameTOConverterTest.class, MusicTOToMusicFOConverterTest.class,
-        MusicFOToMusicTOConverterTest.class, MusicTOToMusicConverterTest.class, MusicToMusicTOConverterTest.class, SongTOToSongFOConverterTest.class,
-        SongFOToSongTOConverterTest.class, ProgramTOToProgramFOConverterTest.class, ProgramFOToProgramTOConverterTest.class,
+        EpisodeTOToEpisodeFOConverterTest.class, EpisodeFOToEpisodeTOConverterTest.class, GameTOToGameFOConverterTest.class, GameFOToGameTOConverterTest.class,
+        MusicTOToMusicFOConverterTest.class, MusicFOToMusicTOConverterTest.class, MusicTOToMusicConverterTest.class, MusicToMusicTOConverterTest.class,
+        SongTOToSongFOConverterTest.class, SongFOToSongTOConverterTest.class, ProgramTOToProgramFOConverterTest.class, ProgramFOToProgramTOConverterTest.class,
         BookCategoryTOToBookCategoryFOConverterTest.class, BookCategoryFOToBookCategoryTOConverterTest.class, BookCategoryTOToBookCategoryConverterTest.class,
         BookCategoryToBookCategoryTOConverterTest.class, BookTOToBookFOConverterTest.class, BookFOToBookTOConverterTest.class,
         GenreTOToGenreFOConverterTest.class, GenreFOToGenreTOConverterTest.class, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class })

@@ -61,6 +61,7 @@
                             <a href="http://en.wikipedia.org/wiki/${show.wikiEn}">English Wikipedia</a>
                         </c:if>
                     </td>
+                    <td><a href="${pageContext.request.contextPath}/shows/${show.id}/seasons/list">Seasons</a></td>
                     <td>
                         <c:if test="${shows.indexOf(show) > 0}">
                             <a href="${pageContext.request.contextPath}/shows/moveUp/${show.id}">Move up</a>
@@ -71,7 +72,6 @@
                             <a href="${pageContext.request.contextPath}/shows/moveDown/${show.id}">Move down</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/shows/${show.id}/seasons">Seasons</a></td>
                     <td><a href="${pageContext.request.contextPath}/shows/duplicate/${show.id}">Duplicate</a></td>
                     <td><a href="${pageContext.request.contextPath}/shows/edit/${show.id}">Edit</a></td>
                     <td><a href="${pageContext.request.contextPath}/shows/remove/${show.id}">Remove</a></td>
