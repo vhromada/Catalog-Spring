@@ -160,8 +160,6 @@ public class ShowController {
     public String showAdd(final Model model) {
         Validators.validateArgumentNotNull(model, "Model");
 
-        model.addAttribute("genres", genreFacade.getGenres());
-
         return createFormView(model, new ShowFO(), "Add show", "showsAdd");
     }
 
@@ -188,8 +186,6 @@ public class ShowController {
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
-                model.addAttribute("genres", genreFacade.getGenres());
-
                 return createFormView(model, show, "Add show", "showsAdd");
             }
             final ShowTO showTO = converter.convert(show, ShowTO.class);
@@ -217,8 +213,6 @@ public class ShowController {
 
         final ShowTO show = showFacade.getShow(id);
         if (show != null) {
-            model.addAttribute("genres", genreFacade.getGenres());
-
             return createFormView(model, converter.convert(show, ShowFO.class), "Edit show", "showsEdit");
         } else {
             throw new IllegalRequestException("TO for show doesn't exist.");
@@ -249,8 +243,6 @@ public class ShowController {
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
-                model.addAttribute("genres", genreFacade.getGenres());
-
                 return createFormView(model, show, "Edit show", "showsEdit");
             }
 
@@ -379,9 +371,10 @@ public class ShowController {
      * @param view  returning view
      * @return page's view with form
      */
-    private static String createFormView(final Model model, final ShowFO show, final String title, final String view) {
+    private String createFormView(final Model model, final ShowFO show, final String title, final String view) {
         model.addAttribute("show", show);
         model.addAttribute("title", title);
+        model.addAttribute("genres", genreFacade.getGenres());
 
         return view;
     }

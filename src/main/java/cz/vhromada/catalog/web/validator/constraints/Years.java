@@ -9,20 +9,18 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import cz.vhromada.catalog.web.validator.LanguagesValidator;
+import cz.vhromada.catalog.web.validator.YearsValidator;
 
 /**
- * An annotation represents languages constraint.
- *
- * @author Vladimir Hromada
+ * An annotation represents years constraint.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = LanguagesValidator.class)
+@Constraint(validatedBy = YearsValidator.class)
 @Documented
-public @interface Languages {
+public @interface Years {
 
-    String message() default "{cz.vhromada.catalog.validator.Languages.message}";
+    String message() default "{cz.vhromada.catalog.validator.Years.message}";
 
     Class<?>[] groups() default {};
 

@@ -30,6 +30,19 @@
         <put-attribute name="body" value="/WEB-INF/jsp/shows/edit.jsp"/>
     </definition>
 
+    <definition name="season.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/seasons/menu.jsp"/>
+    </definition>
+    <definition name="seasonsList" extends="season.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/seasons/list.jsp"/>
+    </definition>
+    <definition name="seasonsAdd" extends="season.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/seasons/add.jsp"/>
+    </definition>
+    <definition name="seasonsEdit" extends="season.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/seasons/edit.jsp"/>
+    </definition>
+
     <definition name="game.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/games/menu.jsp"/>
     </definition>

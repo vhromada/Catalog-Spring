@@ -42,6 +42,10 @@ public class LanguagesTag extends SimpleTagSupport {
      * @return languages as string
      */
     private String getLanguagesAsString() {
+        if (languages.isEmpty()) {
+            return "";
+        }
+
         final StringBuilder result = new StringBuilder();
         for (final Language language : languages) {
             result.append(language);

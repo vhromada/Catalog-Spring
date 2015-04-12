@@ -1,8 +1,12 @@
 package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
+import java.util.List;
 
-import cz.vhromada.catalog.web.validator.constraints.Languages;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import cz.vhromada.catalog.commons.Language;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -11,7 +15,6 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Vladimir Hromada
  */
-@Languages
 public class BookFO implements Serializable {
 
     /**
@@ -37,14 +40,11 @@ public class BookFO implements Serializable {
     private String title;
 
     /**
-     * True if language is czech
+     * Languages
      */
-    private boolean czech;
-
-    /**
-     * True if language is Eenglish
-     */
-    private boolean english;
+    @NotNull
+    @Size(min = 1)
+    private List<Language> languages;
 
     /**
      * Note
@@ -111,39 +111,21 @@ public class BookFO implements Serializable {
     }
 
     /**
-     * Returns true if language is czech.
+     * Returns languages.
      *
-     * @return true if language is czech
+     * @return languages
      */
-    public boolean isCzech() {
-        return czech;
+    public List<Language> getLanguages() {
+        return languages;
     }
 
     /**
-     * Sets a new value to if language is czech.
+     * Sets a new value to languages.
      *
-     * @param czech new value
+     * @param languages new value
      */
-    public void setCzech(final boolean czech) {
-        this.czech = czech;
-    }
-
-    /**
-     * Returns true if language is english.
-     *
-     * @return true if language is english
-     */
-    public boolean isEnglish() {
-        return english;
-    }
-
-    /**
-     * Sets a new value to if language is english.
-     *
-     * @param english new value
-     */
-    public void setEnglish(final boolean english) {
-        this.english = english;
+    public void setLanguages(final List<Language> languages) {
+        this.languages = languages;
     }
 
     /**
@@ -201,8 +183,7 @@ public class BookFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("BookFO [id=%d, author=%s, title=%s, czech=%b, english=%b, note=%s, position=%d]", id, author, title, czech, english, note,
-                position);
+        return String.format("BookFO [id=%d, author=%s, title=%s, languages=%s, note=%s, position=%d]", id, author, title, languages, note, position);
     }
 
 }

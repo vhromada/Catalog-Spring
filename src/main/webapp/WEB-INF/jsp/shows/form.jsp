@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:useBean id="genres" type="java.util.List<cz.vhromada.catalog.facade.to.GenreTO>" scope="request"/>
 <div class="form-group">
-    <label class="col-sm-2 col-sm-2 control-label" for="czechName">Czech name</label>
+    <label class="col-sm-2 control-label" for="czechName">Czech name</label>
 
     <div class="col-sm-10">
         <form:input type="text" name="czechName" id="czechName" path="czechName" cssClass="form-control"/>
@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 col-sm-2 control-label" for="originalName">Original name</label>
+    <label class="col-sm-2 control-label" for="originalName">Original name</label>
 
     <div class="col-sm-10">
         <form:input type="text" name="originalName" id="originalName" path="originalName" cssClass="form-control"/>

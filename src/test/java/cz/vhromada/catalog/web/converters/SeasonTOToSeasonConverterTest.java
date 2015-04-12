@@ -3,8 +3,8 @@ package cz.vhromada.catalog.web.converters;
 import static org.junit.Assert.assertNull;
 
 import cz.vhromada.catalog.commons.ObjectGeneratorTest;
-import cz.vhromada.catalog.facade.to.BookTO;
-import cz.vhromada.catalog.web.fo.BookFO;
+import cz.vhromada.catalog.facade.to.SeasonTO;
+import cz.vhromada.catalog.web.domain.Season;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;
 import cz.vhromada.test.DeepAsserts;
@@ -17,13 +17,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link BookTO} to {@link BookFO}.
+ * A class represents test for converter from {@link SeasonTO} to {@link Season}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:testWebConvertersContext.xml")
-public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
+public class SeasonTOToSeasonConverterTest extends ObjectGeneratorTest {
 
     /**
      * Instance of {@link Converter}
@@ -43,10 +43,10 @@ public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvert() {
-        final BookTO bookTO = objectGenerator.generate(BookTO.class);
-        final BookFO bookFO = converter.convert(bookTO, BookFO.class);
-        DeepAsserts.assertNotNull(bookFO);
-        DeepAsserts.assertEquals(bookTO, bookFO, "bookCategory");
+        final SeasonTO seasonTO = objectGenerator.generate(SeasonTO.class);
+        final Season season = converter.convert(seasonTO, Season.class);
+        DeepAsserts.assertNotNull(season, "totalLength");
+        DeepAsserts.assertEquals(seasonTO, season, "episodesCount", "totalLength");
     }
 
     /**
@@ -54,7 +54,7 @@ public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvertWithNullArgument() {
-        assertNull(converter.convert(null, BookFO.class));
+        assertNull(converter.convert(null, Season.class));
     }
 
 }

@@ -3,8 +3,8 @@ package cz.vhromada.catalog.web.converters;
 import static org.junit.Assert.assertNull;
 
 import cz.vhromada.catalog.commons.ObjectGeneratorTest;
-import cz.vhromada.catalog.facade.to.BookTO;
-import cz.vhromada.catalog.web.fo.BookFO;
+import cz.vhromada.catalog.facade.to.SeasonTO;
+import cz.vhromada.catalog.web.fo.SeasonFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;
 import cz.vhromada.test.DeepAsserts;
@@ -17,13 +17,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link BookTO} to {@link BookFO}.
+ * A class represents test for converter from {@link SeasonFO} to {@link SeasonTO}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:testWebConvertersContext.xml")
-public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
+public class SeasonFOToSeasonTOConverterTest extends ObjectGeneratorTest {
 
     /**
      * Instance of {@link Converter}
@@ -43,10 +43,16 @@ public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvert() {
-        final BookTO bookTO = objectGenerator.generate(BookTO.class);
-        final BookFO bookFO = converter.convert(bookTO, BookFO.class);
-        DeepAsserts.assertNotNull(bookFO);
-        DeepAsserts.assertEquals(bookTO, bookFO, "bookCategory");
+        final SeasonFO seasonFO = objectGenerator.generate(SeasonFO.class);
+        seasonFO.setNumber(Integer.toString(objectGenerator.generate(Integer.class)));
+        seasonFO.setStartYear(Integer.toString(objectGenerator.generate(Integer.class)));
+        seasonFO.setEndYear(Integer.toString(objectGenerator.generate(Integer.class)));
+        final SeasonTO seasonTO = converter.convert(seasonFO, SeasonTO.class);
+        DeepAsserts.assertNotNull(seasonTO, "show");
+        DeepAsserts.assertEquals(seasonFO, seasonTO, "number", "startYear", "endYear", "show");
+        DeepAsserts.assertEquals(Integer.valueOf(seasonFO.getNumber()), seasonTO.getNumber());
+        DeepAsserts.assertEquals(Integer.valueOf(seasonFO.getStartYear()), seasonTO.getStartYear());
+        DeepAsserts.assertEquals(Integer.valueOf(seasonFO.getEndYear()), seasonTO.getEndYear());
     }
 
     /**
@@ -54,7 +60,7 @@ public class BookTOToBookFOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvertWithNullArgument() {
-        assertNull(converter.convert(null, BookFO.class));
+        assertNull(converter.convert(null, SeasonTO.class));
     }
 
 }

@@ -67,4 +67,22 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>years</name>
+        <tag-class>cz.vhromada.catalog.web.tags.YearsTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>startYear</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <name>endYear</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+        </attribute>
+    </tag>
+
 </taglib>

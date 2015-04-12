@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 
+import cz.vhromada.catalog.commons.Language;
 import cz.vhromada.catalog.facade.BookCategoryFacade;
 import cz.vhromada.catalog.facade.BookFacade;
 import cz.vhromada.catalog.facade.to.BookCategoryTO;
@@ -368,6 +369,7 @@ public class BookController {
         model.addAttribute("book", book);
         model.addAttribute("bookCategory", bookCategoryId);
         model.addAttribute("title", title);
+        model.addAttribute("languages", new Language[]{ Language.CZ, Language.EN });
 
         return view;
     }
