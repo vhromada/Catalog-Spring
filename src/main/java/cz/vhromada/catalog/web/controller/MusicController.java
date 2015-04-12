@@ -44,7 +44,7 @@ public class MusicController {
     /**
      * Facade for songs
      */
-    private SongFacade songsFacade;
+    private SongFacade songFacade;
 
     /**
      * Converter
@@ -55,7 +55,7 @@ public class MusicController {
      * Creates a new instance of MusicController.
      *
      * @param musicFacade facade for music
-     * @param songsFacade facade for songs
+     * @param songFacade facade for songs
      * @param converter   converter
      * @throws IllegalArgumentException if facade for music is null
      *                                  or facade for songs is null
@@ -63,14 +63,14 @@ public class MusicController {
      */
     @Autowired
     public MusicController(final MusicFacade musicFacade,
-            final SongFacade songsFacade,
+            final SongFacade songFacade,
             @Qualifier("webDozerConverter") final Converter converter) {
         Validators.validateArgumentNotNull(musicFacade, "Facade for music");
-        Validators.validateArgumentNotNull(songsFacade, "Facade for songs");
+        Validators.validateArgumentNotNull(songFacade, "Facade for songs");
         Validators.validateArgumentNotNull(converter, "converter");
 
         this.musicFacade = musicFacade;
-        this.songsFacade = songsFacade;
+        this.songFacade = songFacade;
         this.converter = converter;
     }
 
@@ -102,13 +102,12 @@ public class MusicController {
             final Music music = converter.convert(musicTO, Music.class);
             int count = 0;
             int length = 0;
-            for (final SongTO song : songsFacade.findSongsByMusic(musicTO)) {
+            for (final SongTO song : songFacade.findSongsByMusic(musicTO)) {
                 count++;
                 length += song.getLength();
             }
             music.setSongsCount(count);
             music.setTotalLength(new Time(length));
-
             musicList.add(music);
         }
 

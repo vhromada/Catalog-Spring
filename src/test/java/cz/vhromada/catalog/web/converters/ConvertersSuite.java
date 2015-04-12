@@ -12,6 +12,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ GameTOToGameFOConverterTest.class, GameFOToGameTOConverterTest.class, MusicTOToMusicFOConverterTest.class,
         MusicFOToMusicTOConverterTest.class, MusicTOToMusicConverterTest.class, MusicToMusicTOConverterTest.class, SongTOToSongFOConverterTest.class,
         SongFOToSongTOConverterTest.class, ProgramTOToProgramFOConverterTest.class, ProgramFOToProgramTOConverterTest.class,
+        BookCategoryTOToBookCategoryFOConverterTest.class, BookCategoryFOToBookCategoryTOConverterTest.class, BookCategoryTOToBookCategoryConverterTest.class,
+        BookCategoryToBookCategoryTOConverterTest.class, BookTOToBookFOConverterTest.class, BookFOToBookTOConverterTest.class,
         GenreTOToGenreFOConverterTest.class, GenreFOToGenreTOConverterTest.class })
 public class ConvertersSuite {
 }

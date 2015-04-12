@@ -45,12 +45,12 @@
                     <td><a href="${pageContext.request.contextPath}/music/${musicItem.id}/songs/list">Songs</a></td>
                     <td>
                         <c:if test="${music.indexOf(musicItem) > 0}">
-                            <a href="${pageContext.request.contextPath}/games/moveUp/${musicItem.id}">Move up</a>
+                            <a href="${pageContext.request.contextPath}/music/moveUp/${musicItem.id}">Move up</a>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${music.indexOf(musicItem) < music.size() - 1}">
-                            <a href="${pageContext.request.contextPath}/games/moveDown/${musicItem.id}">Move down</a>
+                            <a href="${pageContext.request.contextPath}/music/moveDown/${musicItem.id}">Move down</a>
                         </c:if>
                     </td>
                     <td><a href="${pageContext.request.contextPath}/music/duplicate/${musicItem.id}">Duplicate</a></td>

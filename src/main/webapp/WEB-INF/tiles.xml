@@ -56,7 +56,7 @@
         <put-attribute name="body" value="/WEB-INF/jsp/songs/edit.jsp"/>
     </definition>
 
-     <definition name="program.definition" extends="base.definition">
+    <definition name="program.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/programs/menu.jsp"/>
     </definition>
     <definition name="programsList" extends="program.definition">
@@ -67,6 +67,32 @@
     </definition>
     <definition name="programsEdit" extends="program.definition">
         <put-attribute name="body" value="/WEB-INF/jsp/programs/edit.jsp"/>
+    </definition>
+
+    <definition name="bookCategory.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/bookCategories/menu.jsp"/>
+    </definition>
+    <definition name="bookCategoriesList" extends="bookCategory.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/bookCategories/list.jsp"/>
+    </definition>
+    <definition name="bookCategoriesAdd" extends="bookCategory.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/bookCategories/add.jsp"/>
+    </definition>
+    <definition name="bookCategoriesEdit" extends="bookCategory.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/bookCategories/edit.jsp"/>
+    </definition>
+
+    <definition name="book.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/books/menu.jsp"/>
+    </definition>
+    <definition name="booksList" extends="book.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/books/list.jsp"/>
+    </definition>
+    <definition name="booksAdd" extends="book.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/books/add.jsp"/>
+    </definition>
+    <definition name="booksEdit" extends="book.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/books/edit.jsp"/>
     </definition>
 
     <definition name="genre.definition" extends="base.definition">
