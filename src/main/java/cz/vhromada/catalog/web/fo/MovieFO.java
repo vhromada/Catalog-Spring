@@ -6,18 +6,24 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import cz.vhromada.catalog.commons.Constants;
+import cz.vhromada.catalog.commons.Language;
+import cz.vhromada.catalog.web.validator.constraints.DateRange;
 import cz.vhromada.catalog.web.validator.constraints.Imdb;
 import cz.vhromada.catalog.web.validator.constraints.ImdbCode;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+//import cz.vhromada.catalog.web.validator.constraints.Medium;
+
 /**
- * A class represents FO for show.
+ * A class represents FO for movie.
  *
  * @author Vladimir Hromada
  */
+//@Medium
 @Imdb
-public class ShowFO implements Serializable {
+public class MovieFO implements Serializable {
 
     /**
      * SerialVersionUID
@@ -42,7 +48,29 @@ public class ShowFO implements Serializable {
     private String originalName;
 
     /**
-     * URL to ČSFD page about show
+     * Year
+     */
+    @DateRange(Constants.MIN_YEAR)
+    private String year;
+
+    /**
+     * Language
+     */
+    @NotNull
+    private Language language;
+
+    /**
+     * Subtitles
+     */
+    private List<Language> subtitles;
+
+    /**
+     * Media
+     */
+    private List<String> media;
+
+    /**
+     * URL to ČSFD page about movie
      */
     private String csfd;
 
@@ -58,17 +86,17 @@ public class ShowFO implements Serializable {
     private String imdbCode;
 
     /**
-     * URL to english Wikipedia page about show
+     * URL to english Wikipedia page about movie
      */
     private String wikiEn;
 
     /**
-     * URL to czech Wikipedia page about show
+     * URL to czech Wikipedia page about movie
      */
     private String wikiCz;
 
     /**
-     * Path to file with show picture
+     * Path to file with movie's picture
      */
     private String picture;
 
@@ -144,16 +172,88 @@ public class ShowFO implements Serializable {
     }
 
     /**
-     * Returns URL to ČSFD page about show.
+     * Returns year.
      *
-     * @return URL to ČSFD page about show
+     * @return year
+     */
+    public String getYear() {
+        return year;
+    }
+
+    /**
+     * Sets a new value to year.
+     *
+     * @param year new value
+     */
+    public void setYear(final String year) {
+        this.year = year;
+    }
+
+    /**
+     * Returns language.
+     *
+     * @return language
+     */
+    public Language getLanguage() {
+        return language;
+    }
+
+    /**
+     * Sets a new value to language.
+     *
+     * @param language new value
+     */
+    public void setLanguage(final Language language) {
+        this.language = language;
+    }
+
+    /**
+     * Returns subtitles.
+     *
+     * @return subtitles
+     */
+    public List<Language> getSubtitles() {
+        return subtitles;
+    }
+
+    /**
+     * Sets a new value to subtitles.
+     *
+     * @param subtitles new value
+     */
+    public void setSubtitles(final List<Language> subtitles) {
+        this.subtitles = subtitles;
+    }
+
+    /**
+     * Returns media.
+     *
+     * @return media
+     */
+    public List<String> getMedia() {
+        return media;
+    }
+
+    /**
+     * Sets a new value to media.
+     *
+     * @param media new value
+     */
+    public void setMedia(final List<String> media) {
+        this.media = media;
+    }
+
+    /**
+     * Returns URL to ČSFD page about movie.
+     *
+     * @return URL to ČSFD page about movie
      */
     public String getCsfd() {
         return csfd;
     }
 
     /**
-     * Sets a new value to URL to ČSFD page about show.
+     * Sets a new value to URL to ČSFD page about movie.
      *
      * @param csfd new value
      */
@@ -198,16 +298,16 @@ public class ShowFO implements Serializable {
     }
 
     /**
-     * Returns URL to english Wikipedia page about show.
+     * Returns URL to english Wikipedia page about movie.
      *
-     * @return URL to english Wikipedia page about show
+     * @return URL to english Wikipedia page about movie
      */
     public String getWikiEn() {
         return wikiEn;
     }
 
     /**
-     * Sets a new value to URL to english Wikipedia page about show.
+     * Sets a new value to URL to english Wikipedia page about movie.
      *
      * @param wikiEn new value
      */
@@ -216,16 +316,16 @@ public class ShowFO implements Serializable {
     }
 
     /**
-     * Returns URL to czech Wikipedia page about show.
+     * Returns URL to czech Wikipedia page about movie.
      *
-     * @return URL to czech Wikipedia page about show
+     * @return URL to czech Wikipedia page about movie
      */
     public String getWikiCz() {
         return wikiCz;
     }
 
     /**
-     * Sets a new value to URL to czech Wikipedia page about show.
+     * Sets a new value to URL to czech Wikipedia page about movie.
      *
      * @param wikiCz new value
      */
@@ -234,16 +334,16 @@ public class ShowFO implements Serializable {
     }
 
     /**
-     * Returns path to file with show picture.
+     * Returns path to file with movie's picture.
      *
-     * @return path to file with show picture
+     * @return path to file with movie's picture
      */
     public String getPicture() {
         return picture;
     }
 
     /**
-     * Sets a new value to path to file with show picture.
+     * Sets a new value to path to file with movie's picture.
      *
      * @param picture new value
      */
@@ -310,11 +410,11 @@ public class ShowFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof ShowFO) || id == null) {
+        if (obj == null || !(obj instanceof MovieFO) || id == null) {
             return false;
         }
-        final ShowFO show = (ShowFO) obj;
-        return id.equals(show.id);
+        final MovieFO movie = (MovieFO) obj;
+        return id.equals(movie.id);
     }
 
     @Override
@@ -324,8 +424,9 @@ public class ShowFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("ShowFO [id=%d, czechName=%s, originalName=%s, csfd=%s, imdb=%b, imdbCode=%s, wikiEn=%s, wikiCz=%s, picture=%s, note=%s, "
-                + "position=%d, genres=%s]", id, czechName, originalName, csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
+        return String.format("MovieFO [id=%d, czechName=%s, originalName=%s, year=%s, language=%s, subtitles=%s, media=%s, csfd=%s, imdb=%b, imdbCode=%s, "
+                        + "wikiEn=%s, wikiCz=%s, picture=%s, note=%s, position=%d, genres=%s]", id, czechName, originalName, year, language, subtitles, media,
+                csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
     }
 
 }

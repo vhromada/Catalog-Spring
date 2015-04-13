@@ -85,4 +85,28 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>media</name>
+        <tag-class>cz.vhromada.catalog.web.tags.MediaTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>media</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>totalLength</name>
+        <tag-class>cz.vhromada.catalog.web.tags.TotalLengthTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>media</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+    </tag>
+
 </taglib>

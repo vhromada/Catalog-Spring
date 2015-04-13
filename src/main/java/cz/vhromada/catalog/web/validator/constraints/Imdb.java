@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+import cz.vhromada.catalog.web.validator.ImdbMovieValidator;
 import cz.vhromada.catalog.web.validator.ImdbShowValidator;
 
 /**
@@ -16,7 +17,7 @@ import cz.vhromada.catalog.web.validator.ImdbShowValidator;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ImdbShowValidator.class)
+@Constraint(validatedBy = { ImdbMovieValidator.class, ImdbShowValidator.class })
 @Documented
 public @interface Imdb {
 

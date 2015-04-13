@@ -17,6 +17,19 @@
         <put-attribute name="body" value="/WEB-INF/jsp/errorPage.jsp"/>
     </definition>
 
+    <definition name="movie.definition" extends="base.definition">
+        <put-attribute name="innerMenu" value="/WEB-INF/jsp/movies/menu.jsp"/>
+    </definition>
+    <definition name="moviesList" extends="movie.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/movies/list.jsp"/>
+    </definition>
+    <definition name="moviesAdd" extends="movie.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/movies/add.jsp"/>
+    </definition>
+    <definition name="moviesEdit" extends="movie.definition">
+        <put-attribute name="body" value="/WEB-INF/jsp/movies/edit.jsp"/>
+    </definition>
+
     <definition name="show.definition" extends="base.definition">
         <put-attribute name="innerMenu" value="/WEB-INF/jsp/shows/menu.jsp"/>
     </definition>
