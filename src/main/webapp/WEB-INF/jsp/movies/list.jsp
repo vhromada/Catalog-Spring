@@ -96,8 +96,8 @@
     <tbody>
     <tr>
         <td><c:out value="${movies.size()}"/></td>
-        <td><c:out value="${mediaCount}"/></td>
         <td><c:out value="${totalLength}"/></td>
+        <td><c:out value="${mediaCount}"/></td>
     </tr>
     </tbody>
 </table>
