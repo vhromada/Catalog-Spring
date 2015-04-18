@@ -11,7 +11,7 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <form:button type="submit" name="create" class="btn btn-primary">Create</form:button>
-                <form:button type="submit" name="cancel" class="btn btn-danger">Cancel</form:button>
+                <form:button type="submit" name="cancel" class="btn btn-danger" formnovalidate="formnovalidate">Cancel</form:button>
             </div>
         </div>
     </fieldset>
