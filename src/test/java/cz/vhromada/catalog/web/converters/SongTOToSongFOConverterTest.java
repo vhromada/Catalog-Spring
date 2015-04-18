@@ -2,9 +2,9 @@ package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
 
-import cz.vhromada.catalog.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.catalog.facade.to.SongTO;
+import cz.vhromada.catalog.web.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.web.fo.SongFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;

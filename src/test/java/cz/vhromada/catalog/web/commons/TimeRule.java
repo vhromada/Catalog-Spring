@@ -1,5 +1,6 @@
-package cz.vhromada.catalog.commons;
+package cz.vhromada.catalog.web.commons;
 
+import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.generator.configuration.Rule;
 
 /**

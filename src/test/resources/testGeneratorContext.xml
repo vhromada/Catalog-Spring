@@ -14,7 +14,7 @@
         </property>
         <property name="rules">
             <list>
-                <bean class="cz.vhromada.catalog.commons.TimeRule"/>
+                <bean class="cz.vhromada.catalog.web.commons.TimeRule"/>
             </list>
         </property>
         <property name="collectionSize" value="2"/>

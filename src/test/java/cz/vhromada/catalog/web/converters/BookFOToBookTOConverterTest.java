@@ -2,8 +2,8 @@ package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
 
-import cz.vhromada.catalog.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.facade.to.BookTO;
+import cz.vhromada.catalog.web.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.web.fo.BookFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;

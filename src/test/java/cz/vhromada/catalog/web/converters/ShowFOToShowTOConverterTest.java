@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNull;
 import java.util.Arrays;
 import java.util.List;
 
-import cz.vhromada.catalog.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.facade.to.GenreTO;
 import cz.vhromada.catalog.facade.to.ShowTO;
+import cz.vhromada.catalog.web.commons.ObjectGeneratorTest;
 import cz.vhromada.catalog.web.fo.ShowFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;

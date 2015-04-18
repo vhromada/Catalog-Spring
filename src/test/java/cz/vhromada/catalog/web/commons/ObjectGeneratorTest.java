@@ -1,4 +1,4 @@
-package cz.vhromada.catalog.commons;
+package cz.vhromada.catalog.web.commons;
 
 import cz.vhromada.generator.ObjectGenerator;
 
