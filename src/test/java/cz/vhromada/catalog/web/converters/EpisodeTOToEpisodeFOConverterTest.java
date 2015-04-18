@@ -45,14 +45,17 @@ public class EpisodeTOToEpisodeFOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final EpisodeTO episodeTO = objectGenerator.generate(EpisodeTO.class);
+
         final EpisodeFO episodeFO = converter.convert(episodeTO, EpisodeFO.class);
+
         DeepAsserts.assertNotNull(episodeFO);
-        DeepAsserts.assertEquals(episodeTO, episodeFO, "number", "length", "hours", "minutes", "seconds", "season");
-        DeepAsserts.assertEquals(String.valueOf(episodeTO.getNumber()), episodeFO.getNumber());
+        DeepAsserts.assertEquals(episodeTO, episodeFO, "number", "length", "season");
+        DeepAsserts.assertEquals(Integer.toString(episodeTO.getNumber()), episodeFO.getNumber());
         final Time length = new Time(episodeTO.getLength());
-        DeepAsserts.assertEquals(String.valueOf(length.getData(Time.TimeData.HOUR)), episodeFO.getHours());
-        DeepAsserts.assertEquals(String.valueOf(length.getData(Time.TimeData.MINUTE)), episodeFO.getMinutes());
-        DeepAsserts.assertEquals(String.valueOf(length.getData(Time.TimeData.SECOND)), episodeFO.getSeconds());
+        DeepAsserts.assertEquals(length, episodeFO.getLength(), "length", "hours", "minutes", "seconds");
+        DeepAsserts.assertEquals(Integer.toString(length.getData(Time.TimeData.HOUR)), episodeFO.getLength().getHours());
+        DeepAsserts.assertEquals(Integer.toString(length.getData(Time.TimeData.MINUTE)), episodeFO.getLength().getMinutes());
+        DeepAsserts.assertEquals(Integer.toString(length.getData(Time.TimeData.SECOND)), episodeFO.getLength().getSeconds());
     }
 
     /**

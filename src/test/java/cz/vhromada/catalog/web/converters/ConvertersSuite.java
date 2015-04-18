@@ -17,6 +17,7 @@ import org.junit.runners.Suite;
         SongTOToSongFOConverterTest.class, SongFOToSongTOConverterTest.class, ProgramTOToProgramFOConverterTest.class, ProgramFOToProgramTOConverterTest.class,
         BookCategoryTOToBookCategoryFOConverterTest.class, BookCategoryFOToBookCategoryTOConverterTest.class, BookCategoryTOToBookCategoryConverterTest.class,
         BookCategoryToBookCategoryTOConverterTest.class, BookTOToBookFOConverterTest.class, BookFOToBookTOConverterTest.class,
-        GenreTOToGenreFOConverterTest.class, GenreFOToGenreTOConverterTest.class, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class })
+        GenreTOToGenreFOConverterTest.class, GenreFOToGenreTOConverterTest.class, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class,
+        IntegerToTimeFOConverterTest.class, TimeFOToIntegerConverterTest.class })
 public class ConvertersSuite {
 }

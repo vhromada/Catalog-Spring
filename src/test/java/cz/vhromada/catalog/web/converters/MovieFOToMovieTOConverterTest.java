@@ -48,7 +48,9 @@ public class MovieFOToMovieTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvertWithSelectedImdbCode() {
         final MovieFO movieFO = newMovieFO(true);
+
         final MovieTO movieTO = converter.convert(movieFO, MovieTO.class);
+
         assertMovieDeepEquals(movieFO, movieTO, true);
     }
 
@@ -58,7 +60,9 @@ public class MovieFOToMovieTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvertWithNotSelectedImdbCode() {
         final MovieFO movieFO = newMovieFO(false);
+
         final MovieTO movieTO = converter.convert(movieFO, MovieTO.class);
+
         assertMovieDeepEquals(movieFO, movieTO, false);
     }
 

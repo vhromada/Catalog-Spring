@@ -25,24 +25,24 @@
     <label class="col-sm-2 control-label" for="hours">Hours</label>
 
     <div class="col-sm-10">
-        <form:input type="number" name="hours" id="hours" path="hours" min="0" max="23" step="1" cssClass="form-control"/>
-        <span class="error"><form:errors path="hours"/></span>
+        <form:input type="number" name="hours" id="hours" path="length.hours" min="0" max="23" step="1" cssClass="form-control"/>
+        <span class="error"><form:errors path="length.hours"/></span>
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label" for="minutes">Minutes</label>
 
     <div class="col-sm-10">
-        <form:input type="number" name="minutes" id="minutes" path="minutes" min="0" max="59" step="1" cssClass="form-control"/>
-        <span class="error"><form:errors path="minutes"/></span>
+        <form:input type="number" name="minutes" id="minutes" path="length.minutes" min="0" max="59" step="1" cssClass="form-control"/>
+        <span class="error"><form:errors path="length.minutes"/></span>
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label" for="seconds">Seconds</label>
 
     <div class="col-sm-10">
-        <form:input type="number" name="seconds" id="seconds" path="seconds" min="0" max="59" step="1" cssClass="form-control"/>
-        <span class="error"><form:errors path="seconds"/></span>
+        <form:input type="number" name="seconds" id="seconds" path="length.seconds" min="0" max="59" step="1" cssClass="form-control"/>
+        <span class="error"><form:errors path="length.seconds"/></span>
     </div>
 </div>
 <div class="form-group">

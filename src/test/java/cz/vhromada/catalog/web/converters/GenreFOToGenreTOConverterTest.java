@@ -44,7 +44,9 @@ public class GenreFOToGenreTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final GenreFO genreFO = objectGenerator.generate(GenreFO.class);
+
         final GenreTO genreTO = converter.convert(genreFO, GenreTO.class);
+
         DeepAsserts.assertNotNull(genreTO);
         DeepAsserts.assertEquals(genreFO, genreTO);
     }

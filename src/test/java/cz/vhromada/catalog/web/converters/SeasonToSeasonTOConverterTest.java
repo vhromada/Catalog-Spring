@@ -44,7 +44,9 @@ public class SeasonToSeasonTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final Season season = objectGenerator.generate(Season.class);
+
         final SeasonTO seasonTO = converter.convert(season, SeasonTO.class);
+
         DeepAsserts.assertNotNull(seasonTO);
         DeepAsserts.assertEquals(season, seasonTO, "episodesCount", "totalLength");
     }

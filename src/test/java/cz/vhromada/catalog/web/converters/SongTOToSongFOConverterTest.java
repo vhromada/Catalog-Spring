@@ -45,13 +45,16 @@ public class SongTOToSongFOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final SongTO songTO = objectGenerator.generate(SongTO.class);
+
         final SongFO songFO = converter.convert(songTO, SongFO.class);
+
         DeepAsserts.assertNotNull(songFO);
-        DeepAsserts.assertEquals(songTO, songFO, "length", "hours", "minutes", "seconds", "music");
+        DeepAsserts.assertEquals(songTO, songFO, "length", "music");
         final Time length = new Time(songTO.getLength());
-        DeepAsserts.assertEquals(String.valueOf(length.getData(Time.TimeData.HOUR)), songFO.getHours());
-        DeepAsserts.assertEquals(String.valueOf(length.getData(Time.TimeData.MINUTE)), songFO.getMinutes());
-        DeepAsserts.assertEquals(String.valueOf(length.getData(Time.TimeData.SECOND)), songFO.getSeconds());
+        DeepAsserts.assertEquals(length, songFO.getLength(), "length", "hours", "minutes", "seconds");
+        DeepAsserts.assertEquals(Integer.toString(length.getData(Time.TimeData.HOUR)), songFO.getLength().getHours());
+        DeepAsserts.assertEquals(Integer.toString(length.getData(Time.TimeData.MINUTE)), songFO.getLength().getMinutes());
+        DeepAsserts.assertEquals(Integer.toString(length.getData(Time.TimeData.SECOND)), songFO.getLength().getSeconds());
     }
 
     /**

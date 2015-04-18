@@ -50,7 +50,9 @@ public class MovieTOToMovieFOConverterTest extends ObjectGeneratorTest {
     public void testConvertWithSelectedImdbCode() {
         final MovieTO movieTO = objectGenerator.generate(MovieTO.class);
         movieTO.setImdbCode(objectGenerator.generate(Integer.class));
+
         final MovieFO movieFO = converter.convert(movieTO, MovieFO.class);
+
         assertMovieDeepEquals(movieTO, movieFO, true);
     }
 
@@ -61,7 +63,9 @@ public class MovieTOToMovieFOConverterTest extends ObjectGeneratorTest {
     public void testConvertWithNotSelectedImdbCode() {
         final MovieTO movieTO = objectGenerator.generate(MovieTO.class);
         movieTO.setImdbCode(-1);
+
         final MovieFO movieFO = converter.convert(movieTO, MovieFO.class);
+
         assertMovieDeepEquals(movieTO, movieFO, false);
     }
 
@@ -88,7 +92,7 @@ public class MovieTOToMovieFOConverterTest extends ObjectGeneratorTest {
         if (imdbCode) {
             assertTrue(actual.getImdb());
             DeepAsserts.assertNotNull(actual.getImdbCode());
-            DeepAsserts.assertEquals(String.valueOf(expected.getImdbCode()), actual.getImdbCode());
+            DeepAsserts.assertEquals(Integer.toString(expected.getImdbCode()), actual.getImdbCode());
         } else {
             assertFalse(actual.getImdb());
             assertNull(actual.getImdbCode());

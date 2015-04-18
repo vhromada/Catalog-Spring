@@ -43,7 +43,9 @@ public class GenreTOToStringConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final GenreTO genre = objectGenerator.generate(GenreTO.class);
+
         final String result = converter.convert(genre, String.class);
+
         DeepAsserts.assertNotNull(result);
         DeepAsserts.assertEquals(Integer.toString(genre.getId()), result);
     }

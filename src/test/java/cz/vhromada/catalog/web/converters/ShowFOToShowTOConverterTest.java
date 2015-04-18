@@ -48,7 +48,9 @@ public class ShowFOToShowTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvertWithSelectedImdbCode() {
         final ShowFO showFO = newShowFO(true);
+
         final ShowTO showTO = converter.convert(showFO, ShowTO.class);
+
         DeepAsserts.assertNotNull(showTO);
         DeepAsserts.assertEquals(showFO, showTO, "imdbCode", "imdb", "genres");
         DeepAsserts.assertEquals(Integer.valueOf(showFO.getImdbCode()), showTO.getImdbCode());
@@ -61,7 +63,9 @@ public class ShowFOToShowTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvertWithNotSelectedImdbCode() {
         final ShowFO showFO = newShowFO(false);
+
         final ShowTO showTO = converter.convert(showFO, ShowTO.class);
+
         DeepAsserts.assertNotNull(showTO);
         DeepAsserts.assertEquals(showFO, showTO, "imdbCode", "imdb", "genres");
         DeepAsserts.assertEquals(-1, showTO.getImdbCode());

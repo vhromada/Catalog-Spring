@@ -44,7 +44,9 @@ public class ShowToShowTOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final Show show = objectGenerator.generate(Show.class);
+
         final ShowTO showTO = converter.convert(show, ShowTO.class);
+
         DeepAsserts.assertNotNull(showTO);
         DeepAsserts.assertEquals(show, showTO, "seasonsCount", "episodesCount", "totalLength");
     }

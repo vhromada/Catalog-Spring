@@ -44,7 +44,9 @@ public class BookCategoryTOToBookCategoryConverterTest extends ObjectGeneratorTe
     @Test
     public void testConvert() {
         final BookCategoryTO bookCategoryTO = objectGenerator.generate(BookCategoryTO.class);
+
         final BookCategory bookCategory = converter.convert(bookCategoryTO, BookCategory.class);
+
         DeepAsserts.assertNotNull(bookCategory);
         DeepAsserts.assertEquals(bookCategoryTO, bookCategory, "booksCount");
     }

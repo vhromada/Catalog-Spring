@@ -2,8 +2,9 @@ package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
 
+import javax.validation.Valid;
+
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 
 /**
  * A class represents FO for song.
@@ -29,22 +30,10 @@ public class SongFO implements Serializable {
     private String name;
 
     /**
-     * Hours
+     * Length
      */
-    @Range(min = 0, max = 23)
-    private String hours;
-
-    /**
-     * Minutes
-     */
-    @Range(min = 0, max = 59)
-    private String minutes;
-
-    /**
-     * Seconds
-     */
-    @Range(min = 0, max = 59)
-    private String seconds;
+    @Valid
+    private TimeFO length;
 
     /**
      * Note
@@ -93,57 +82,21 @@ public class SongFO implements Serializable {
     }
 
     /**
-     * Returns hours.
+     * Returns length.
      *
-     * @return hours
+     * @return length
      */
-    public String getHours() {
-        return hours;
+    public TimeFO getLength() {
+        return length;
     }
 
     /**
-     * Sets a new value to hours.
+     * Sets a new value to length.
      *
-     * @param hours new value
+     * @param length new value
      */
-    public void setHours(final String hours) {
-        this.hours = hours;
-    }
-
-    /**
-     * Returns minutes.
-     *
-     * @return minutes
-     */
-    public String getMinutes() {
-        return minutes;
-    }
-
-    /**
-     * Sets a new value to minutes.
-     *
-     * @param minutes new value
-     */
-    public void setMinutes(final String minutes) {
-        this.minutes = minutes;
-    }
-
-    /**
-     * Returns seconds.
-     *
-     * @return seconds
-     */
-    public String getSeconds() {
-        return seconds;
-    }
-
-    /**
-     * Sets a new value to seconds.
-     *
-     * @param seconds new value
-     */
-    public void setSeconds(final String seconds) {
-        this.seconds = seconds;
+    public void setLength(final TimeFO length) {
+        this.length = length;
     }
 
     /**
@@ -201,9 +154,7 @@ public class SongFO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("SongFO [id=%d, name=%s, hours=%s, minutes=%s, seconds=%s, note=%s, position=%d]", id, name, hours, minutes, seconds, note,
-                position);
+        return String.format("SongFO [id=%d, name=%s, length=%s, note=%s, position=%d]", id, name, length, note, position);
     }
 
 }
-

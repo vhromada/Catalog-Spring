@@ -3,8 +3,8 @@ package cz.vhromada.catalog.web.converters;
 import static org.junit.Assert.assertNull;
 
 import cz.vhromada.catalog.commons.ObjectGeneratorTest;
-import cz.vhromada.catalog.facade.to.SeasonTO;
-import cz.vhromada.catalog.web.fo.SeasonFO;
+import cz.vhromada.catalog.commons.Time;
+import cz.vhromada.catalog.web.fo.TimeFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;
 import cz.vhromada.test.DeepAsserts;
@@ -17,13 +17,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link SeasonTO} to {@link SeasonFO}.
+ * A class represents test for converter from {@link TimeFO} to {@link Integer}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:testWebConvertersContext.xml")
-public class SeasonTOToSeasonFOConverterTest extends ObjectGeneratorTest {
+public class TimeFOToIntegerConverterTest extends ObjectGeneratorTest {
 
     /**
      * Instance of {@link Converter}
@@ -43,15 +43,16 @@ public class SeasonTOToSeasonFOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvert() {
-        final SeasonTO seasonTO = objectGenerator.generate(SeasonTO.class);
+        final Time length = objectGenerator.generate(Time.class);
+        final TimeFO time = new TimeFO();
+        time.setHours(Integer.toString(length.getData(Time.TimeData.HOUR)));
+        time.setMinutes(Integer.toString(length.getData(Time.TimeData.MINUTE)));
+        time.setSeconds(Integer.toString(length.getData(Time.TimeData.SECOND)));
 
-        final SeasonFO seasonFO = converter.convert(seasonTO, SeasonFO.class);
+        final Integer result = converter.convert(time, Integer.class);
 
-        DeepAsserts.assertNotNull(seasonFO);
-        DeepAsserts.assertEquals(seasonTO, seasonFO, "number", "startYear", "endYear", "show");
-        DeepAsserts.assertEquals(Integer.toString(seasonTO.getNumber()), seasonFO.getNumber());
-        DeepAsserts.assertEquals(Integer.toString(seasonTO.getStartYear()), seasonFO.getStartYear());
-        DeepAsserts.assertEquals(Integer.toString(seasonTO.getEndYear()), seasonFO.getEndYear());
+        DeepAsserts.assertNotNull(result);
+        DeepAsserts.assertEquals(length.getLength(), result);
     }
 
     /**
@@ -59,7 +60,7 @@ public class SeasonTOToSeasonFOConverterTest extends ObjectGeneratorTest {
      */
     @Test
     public void testConvertWithNullArgument() {
-        assertNull(converter.convert(null, SeasonFO.class));
+        assertNull(converter.convert(null, Integer.class));
     }
 
 }

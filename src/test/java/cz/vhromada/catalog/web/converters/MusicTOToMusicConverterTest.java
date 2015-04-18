@@ -44,7 +44,9 @@ public class MusicTOToMusicConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final MusicTO musicTO = objectGenerator.generate(MusicTO.class);
+
         final Music music = converter.convert(musicTO, Music.class);
+
         DeepAsserts.assertNotNull(music, "totalLength");
         DeepAsserts.assertEquals(musicTO, music, "songsCount", "totalLength");
     }

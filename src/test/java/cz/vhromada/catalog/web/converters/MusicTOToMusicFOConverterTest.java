@@ -44,10 +44,12 @@ public class MusicTOToMusicFOConverterTest extends ObjectGeneratorTest {
     @Test
     public void testConvert() {
         final MusicTO musicTO = objectGenerator.generate(MusicTO.class);
+
         final MusicFO musicFO = converter.convert(musicTO, MusicFO.class);
+
         DeepAsserts.assertNotNull(musicFO);
         DeepAsserts.assertEquals(musicTO, musicFO, "mediaCount");
-        DeepAsserts.assertEquals(String.valueOf(musicTO.getMediaCount()), musicFO.getMediaCount());
+        DeepAsserts.assertEquals(Integer.toString(musicTO.getMediaCount()), musicFO.getMediaCount());
     }
 
     /**
