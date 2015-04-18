@@ -7,9 +7,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import cz.vhromada.catalog.commons.ObjectGeneratorTest;
+import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.catalog.facade.to.GenreTO;
 import cz.vhromada.catalog.facade.to.MovieTO;
 import cz.vhromada.catalog.web.fo.MovieFO;
+import cz.vhromada.catalog.web.fo.TimeFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.generator.ObjectGenerator;
 import cz.vhromada.test.DeepAsserts;
@@ -86,9 +88,9 @@ public class MovieTOToMovieFOConverterTest extends ObjectGeneratorTest {
      */
     private static void assertMovieDeepEquals(final MovieTO expected, final MovieFO actual, final boolean imdbCode) {
         DeepAsserts.assertNotNull(actual, "imdbCode");
-        //TODO Vladimir.Hromada 13.04.2015: media
-        DeepAsserts.assertEquals(expected, actual, "year", "imdbCode", "imdb", "genres", "media");
+        DeepAsserts.assertEquals(expected, actual, "year", "media", "imdbCode", "imdb", "genres");
         DeepAsserts.assertEquals(Integer.toString(expected.getYear()), actual.getYear());
+        assertMediaDeepEquals(expected.getMedia(), actual.getMedia());
         if (imdbCode) {
             assertTrue(actual.getImdb());
             DeepAsserts.assertNotNull(actual.getImdbCode());
@@ -98,6 +100,33 @@ public class MovieTOToMovieFOConverterTest extends ObjectGeneratorTest {
             assertNull(actual.getImdbCode());
         }
         assertGenresDeepEquals(expected.getGenres(), actual.getGenres());
+    }
+
+    /**
+     * Assert media deep equals.
+     *
+     * @param expected expected media
+     * @param actual   actual media
+     */
+    private static void assertMediaDeepEquals(final List<Integer> expected, final List<TimeFO> actual) {
+        DeepAsserts.assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertMediumDeepEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    /**
+     * Assert medium deep equals.
+     *
+     * @param expected expected medium
+     * @param actual   actual medium
+     */
+    private static void assertMediumDeepEquals(final Integer expected, final TimeFO actual) {
+        final Time time = new Time(expected);
+        DeepAsserts.assertEquals(time, actual, "length", "hours", "minutes", "seconds");
+        DeepAsserts.assertEquals(Integer.toString(time.getData(Time.TimeData.HOUR)), actual.getHours());
+        DeepAsserts.assertEquals(Integer.toString(time.getData(Time.TimeData.MINUTE)), actual.getMinutes());
+        DeepAsserts.assertEquals(Integer.toString(time.getData(Time.TimeData.SECOND)), actual.getSeconds());
     }
 
     /**

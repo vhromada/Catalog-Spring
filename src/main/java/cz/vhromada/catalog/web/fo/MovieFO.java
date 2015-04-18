@@ -1,8 +1,10 @@
 package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,14 +16,11 @@ import cz.vhromada.catalog.web.validator.constraints.ImdbCode;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-//import cz.vhromada.catalog.web.validator.constraints.Medium;
-
 /**
  * A class represents FO for movie.
  *
  * @author Vladimir Hromada
  */
-//@Medium
 @Imdb
 public class MovieFO implements Serializable {
 
@@ -67,7 +66,8 @@ public class MovieFO implements Serializable {
     /**
      * Media
      */
-    private List<String> media;
+    @Valid
+    private List<TimeFO> media;
 
     /**
      * URL to ČSFD page about movie
@@ -116,6 +116,14 @@ public class MovieFO implements Serializable {
     @NotNull
     @Size(min = 1)
     private List<String> genres;
+
+    /**
+     * Creates a new instance of MovieFO.
+     */
+    public MovieFO() {
+        media = new ArrayList<>();
+        media.add(new TimeFO());
+    }
 
     /**
      * Returns ID.
@@ -230,7 +238,7 @@ public class MovieFO implements Serializable {
      *
      * @return media
      */
-    public List<String> getMedia() {
+    public List<TimeFO> getMedia() {
         return media;
     }
 
@@ -239,7 +247,7 @@ public class MovieFO implements Serializable {
      *
      * @param media new value
      */
-    public void setMedia(final List<String> media) {
+    public void setMedia(final List<TimeFO> media) {
         this.media = media;
     }
 
@@ -429,4 +437,13 @@ public class MovieFO implements Serializable {
                 csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
     }
 
+//    private String mediaCount = "1";
+//
+//    public String getMediaCount() {
+//        return mediaCount;
+//    }
+//
+//    public void setMediaCount(final String mediaCount) {
+//        this.mediaCount = mediaCount;
+//    }
 }

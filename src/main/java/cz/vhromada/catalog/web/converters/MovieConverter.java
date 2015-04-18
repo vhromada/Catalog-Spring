@@ -1,12 +1,12 @@
 package cz.vhromada.catalog.web.converters;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import cz.vhromada.catalog.facade.to.GenreTO;
 import cz.vhromada.catalog.facade.to.MovieTO;
 import cz.vhromada.catalog.web.fo.MovieFO;
+import cz.vhromada.catalog.web.fo.TimeFO;
 
 import org.dozer.CustomConverter;
 import org.dozer.Mapper;
@@ -60,8 +60,7 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setYear(Integer.valueOf(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
-        //TODO Vladimir.Hromada 13.04.2015: media
-        movie.setMedia(Collections.singletonList(0));
+        movie.setMedia(convertMedia(source.getMedia()));
         movie.setCsfd(source.getCsfd());
         movie.setImdbCode(source.getImdb() ? Integer.valueOf(source.getImdbCode()) : -1);
         movie.setWikiCz(source.getWikiCz());
@@ -72,6 +71,21 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setGenres(convertIdList(source.getGenres()));
 
         return movie;
+    }
+
+    /**
+     * Returns media.
+     *
+     * @param source source
+     * @return media
+     */
+    private List<Integer> convertMedia(final List<TimeFO> source) {
+        final List<Integer> media = new ArrayList<>();
+        for (final TimeFO medium : source) {
+            media.add(mapper.map(medium, Integer.class));
+        }
+
+        return media;
     }
 
     /**
@@ -103,8 +117,7 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setYear(Integer.toString(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
-        //TODO Vladimir.Hromada 13.04.2015: media
-        movie.setMedia(Collections.singletonList("0"));
+        movie.setMedia(convertMediaLength(source.getMedia()));
         movie.setCsfd(source.getCsfd());
         if (source.getImdbCode() < 1) {
             movie.setImdb(false);
@@ -120,6 +133,21 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setGenres(convertGenres(source.getGenres()));
 
         return movie;
+    }
+
+    /**
+     * Returns media.
+     *
+     * @param source source
+     * @return media
+     */
+    private List<TimeFO> convertMediaLength(final List<Integer> source) {
+        final List<TimeFO> media = new ArrayList<>();
+        for (final Integer medium : source) {
+            media.add(mapper.map(medium, TimeFO.class));
+        }
+
+        return media;
     }
 
     /**

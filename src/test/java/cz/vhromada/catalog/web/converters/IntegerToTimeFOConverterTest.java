@@ -49,6 +49,7 @@ public class IntegerToTimeFOConverterTest extends ObjectGeneratorTest {
 
         DeepAsserts.assertNotNull(result);
         final Time time = new Time(length);
+        DeepAsserts.assertEquals(time, result, "length", "hours", "minutes", "seconds");
         DeepAsserts.assertEquals(Integer.toString(time.getData(Time.TimeData.HOUR)), result.getHours());
         DeepAsserts.assertEquals(Integer.toString(time.getData(Time.TimeData.MINUTE)), result.getMinutes());
         DeepAsserts.assertEquals(Integer.toString(time.getData(Time.TimeData.SECOND)), result.getSeconds());

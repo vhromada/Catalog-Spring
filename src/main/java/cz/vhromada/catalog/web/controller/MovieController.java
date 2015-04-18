@@ -1,8 +1,10 @@
 package cz.vhromada.catalog.web.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import cz.vhromada.catalog.commons.Language;
@@ -12,6 +14,7 @@ import cz.vhromada.catalog.facade.to.GenreTO;
 import cz.vhromada.catalog.facade.to.MovieTO;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
+import cz.vhromada.catalog.web.fo.TimeFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.validators.Validators;
 
@@ -24,7 +27,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for movies.
@@ -121,25 +123,26 @@ public class MovieController {
     /**
      * Process adding movie.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param movie        FO for movie
-     * @param errors       errors
+     * @param model   model
+     * @param movie   FO for movie
+     * @param errors  errors
+     * @param request HTTP request
      * @return view for redirect to page with list of movies (no errors) or view for page for adding movie (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for movie is null
      *                                                               or errors are null
+     *                                                               or HTTP request is null
      * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("movie") @Valid final MovieFO movie, final Errors errors) {
+    public String processAdd(final Model model, @ModelAttribute("movie") @Valid final MovieFO movie, final Errors errors, final HttpServletRequest request) {
         Validators.validateArgumentNotNull(model, "Model");
         Validators.validateArgumentNotNull(movie, "FO for movie");
         Validators.validateArgumentNotNull(errors, "Errors");
+        Validators.validateArgumentNotNull(request, "Request");
         Validators.validateNull(movie.getId(), "ID");
 
-        if ("Submit".equals(createButton)) {
+        if ("Submit".equals(request.getParameter("create"))) {
             if (errors.hasErrors()) {
                 return createFormView(model, movie, "Add movie", "moviesAdd");
             }
@@ -149,6 +152,19 @@ public class MovieController {
             }
             movieTO.setGenres(getGenres(movieTO.getGenres()));
             movieFacade.add(movieTO);
+        }
+
+        if ("Submit".equals(request.getParameter("add"))) {
+            movie.getMedia().add(new TimeFO());
+
+            return createFormView(model, movie, "Add movie", "moviesAdd");
+        }
+
+        final Integer index = getRemoveIndex(request);
+        if (index != null) {
+            movie.getMedia().remove(index.intValue());
+
+            return createFormView(model, movie, "Add movie", "moviesAdd");
         }
 
         return "redirect:/movies/list";
@@ -181,26 +197,27 @@ public class MovieController {
     /**
      * Process editing movie.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param movie        FO for movie
-     * @param errors       errors
+     * @param model   model
+     * @param movie   FO for movie
+     * @param errors  errors
+     * @param request HTTP request
      * @return view for redirect to page with list of movies (no errors) or view for page for editing movie (errors)
      * @throws IllegalArgumentException                                   if model is null
      *                                                                    or FO for movie is null
      *                                                                    or errors are null
+     *                                                                    or HTTP request is null
      * @throws cz.vhromada.validators.exceptions.ValidationException      if ID is null
      * @throws cz.vhromada.catalog.web.exceptions.IllegalRequestException if TO for movie doesn't exist
      */
     @RequestMapping(value = "edit", method = RequestMethod.POST)
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("movie") @Valid final MovieFO movie, final Errors errors) {
+    public String processEdit(final Model model, @ModelAttribute("movie") @Valid final MovieFO movie, final Errors errors, final HttpServletRequest request) {
         Validators.validateArgumentNotNull(model, "Model");
         Validators.validateArgumentNotNull(movie, "FO for movie");
         Validators.validateArgumentNotNull(errors, "Errors");
+        Validators.validateArgumentNotNull(request, "Request");
         Validators.validateNotNull(movie.getId(), "ID");
 
-        if ("Submit".equals(createButton)) {
+        if ("Submit".equals(request.getParameter("create"))) {
             if (errors.hasErrors()) {
                 return createFormView(model, movie, "Edit movie", "moviesEdit");
             }
@@ -215,6 +232,19 @@ public class MovieController {
             } else {
                 throw new IllegalRequestException("TO for movie doesn't exist.");
             }
+        }
+
+        if ("Submit".equals(request.getParameter("add"))) {
+            movie.getMedia().add(new TimeFO());
+
+            return createFormView(model, movie, "Edit movie", "moviesEdit");
+        }
+
+        final Integer index = getRemoveIndex(request);
+        if (index != null) {
+            movie.getMedia().remove(index.intValue());
+
+            return createFormView(model, movie, "Edit movie", "moviesEdit");
         }
 
         return "redirect:/movies/list";
@@ -356,6 +386,26 @@ public class MovieController {
         }
 
         return genres;
+    }
+
+    /**
+     * Returns index of removing media.
+     *
+     * @param request HTTP request
+     * @return index of removing media
+     */
+    private Integer getRemoveIndex(final HttpServletRequest request) {
+        Integer index = null;
+        for (final Enumeration<String> names = request.getParameterNames(); names.hasMoreElements() && index == null; ) {
+            final String name = names.nextElement();
+            if (name.startsWith("remove")) {
+                if ("Submit".equals(request.getParameter(name))) {
+                    index = Integer.valueOf(name.substring(6));
+                }
+            }
+        }
+
+        return index;
     }
 
 }
