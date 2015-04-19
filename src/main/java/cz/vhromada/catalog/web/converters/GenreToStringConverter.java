@@ -36,7 +36,7 @@ public class GenreToStringConverter implements CustomConverter {
      */
     private static GenreTO convertString(final String source) {
         final GenreTO song = new GenreTO();
-        song.setId(Integer.valueOf(source));
+        song.setId(Integer.parseInt(source));
 
         return song;
     }

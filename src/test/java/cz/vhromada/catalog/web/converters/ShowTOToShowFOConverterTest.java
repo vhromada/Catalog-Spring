@@ -31,6 +31,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ShowTOToShowFOConverterTest extends ObjectGeneratorTest {
 
     /**
+     * IMDB code property
+     */
+    private static final String IMDB_CODE_PROPERTY = "imdbCode";
+
+    /**
      * Instance of {@link Converter}
      */
     @Autowired
@@ -54,7 +59,7 @@ public class ShowTOToShowFOConverterTest extends ObjectGeneratorTest {
         final ShowFO showFO = converter.convert(showTO, ShowFO.class);
 
         DeepAsserts.assertNotNull(showFO);
-        DeepAsserts.assertEquals(showTO, showFO, "imdbCode", "imdb", "genres");
+        DeepAsserts.assertEquals(showTO, showFO, IMDB_CODE_PROPERTY, "imdb", "genres");
         assertTrue(showFO.getImdb());
         DeepAsserts.assertEquals(Integer.toString(showTO.getImdbCode()), showFO.getImdbCode());
         assertGenresDeepEquals(showTO.getGenres(), showFO.getGenres());
@@ -70,8 +75,8 @@ public class ShowTOToShowFOConverterTest extends ObjectGeneratorTest {
 
         final ShowFO showFO = converter.convert(showTO, ShowFO.class);
 
-        DeepAsserts.assertNotNull(showFO, "imdbCode");
-        DeepAsserts.assertEquals(showTO, showFO, "imdbCode", "imdb", "genres");
+        DeepAsserts.assertNotNull(showFO, IMDB_CODE_PROPERTY);
+        DeepAsserts.assertEquals(showTO, showFO, IMDB_CODE_PROPERTY, "imdb", "genres");
         assertFalse(showFO.getImdb());
         assertNull(showFO.getImdbCode());
         assertGenresDeepEquals(showTO.getGenres(), showFO.getGenres());

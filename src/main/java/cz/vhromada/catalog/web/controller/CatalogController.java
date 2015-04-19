@@ -32,6 +32,7 @@ public class CatalogController {
      * @return view for forwarding to fav icon
      */
     @RequestMapping("**/favicon.ico")
+    @SuppressWarnings("SpringMVCViewInspection")
     public String favIconForward() {
         return "forward:/resources/fav.ico";
     }

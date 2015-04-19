@@ -32,6 +32,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GameController {
 
     /**
+     * Redirect URL to list
+     */
+    private static final String LIST_REDIRECT_URL = "redirect:/games/list";
+
+    /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for game doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
      * Facade for games
      */
     private GameFacade gameFacade;
@@ -68,7 +88,7 @@ public class GameController {
     public String processNew() {
         gameFacade.newData();
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -80,7 +100,7 @@ public class GameController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         model.addAttribute("games", new ArrayList<>(gameFacade.getGames()));
         model.addAttribute("mediaCount", gameFacade.getTotalMediaCount());
@@ -98,7 +118,7 @@ public class GameController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         return createFormView(model, new GameFO(), "Add game", "gamesAdd");
     }
@@ -119,10 +139,10 @@ public class GameController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(game, "FO for game");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(game.getId(), "ID");
+        Validators.validateNull(game.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -131,7 +151,7 @@ public class GameController {
             gameFacade.add(converter.convert(game, GameTO.class));
         }
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -146,15 +166,15 @@ public class GameController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GameTO game = gameFacade.getGame(id);
 
         if (game != null) {
             return createFormView(model, converter.convert(game, GameFO.class), "Edit game", "gamesEdit");
         } else {
-            throw new IllegalRequestException("TO for game doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -175,10 +195,10 @@ public class GameController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(game, "FO for game");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(game.getId(), "ID");
+        Validators.validateNotNull(game.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -189,11 +209,11 @@ public class GameController {
             if (gameFacade.exists(gameTO)) {
                 gameFacade.update(gameTO);
             } else {
-                throw new IllegalRequestException("TO for game doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -206,17 +226,17 @@ public class GameController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GameTO game = new GameTO();
         game.setId(id);
         if (gameFacade.exists(game)) {
             gameFacade.duplicate(game);
         } else {
-            throw new IllegalRequestException("TO for game doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -229,17 +249,17 @@ public class GameController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GameTO game = new GameTO();
         game.setId(id);
         if (gameFacade.exists(game)) {
             gameFacade.remove(game);
         } else {
-            throw new IllegalRequestException("TO for game doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -252,17 +272,17 @@ public class GameController {
      */
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GameTO game = new GameTO();
         game.setId(id);
         if (gameFacade.exists(game)) {
             gameFacade.moveUp(game);
         } else {
-            throw new IllegalRequestException("TO for game doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -275,17 +295,17 @@ public class GameController {
      */
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GameTO game = new GameTO();
         game.setId(id);
         if (gameFacade.exists(game)) {
             gameFacade.moveDown(game);
         } else {
-            throw new IllegalRequestException("TO for game doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -297,7 +317,7 @@ public class GameController {
     public String processUpdatePositions() {
         gameFacade.updatePositions();
 
-        return "redirect:/games/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**

@@ -57,7 +57,7 @@ public class ShowConverter implements MapperAware, CustomConverter {
         show.setCzechName(source.getCzechName());
         show.setOriginalName(source.getOriginalName());
         show.setCsfd(source.getCsfd());
-        show.setImdbCode(source.getImdb() ? Integer.valueOf(source.getImdbCode()) : -1);
+        show.setImdbCode(source.getImdb() ? Integer.parseInt(source.getImdbCode()) : -1);
         show.setWikiCz(source.getWikiCz());
         show.setWikiEn(source.getWikiEn());
         show.setPicture(source.getPicture());

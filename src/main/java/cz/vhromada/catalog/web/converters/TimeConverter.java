@@ -37,9 +37,9 @@ public class TimeConverter implements CustomConverter {
      * @return converted FO for time to length
      */
     private static Integer convertTimeFO(final TimeFO source) {
-        final int hours = Integer.valueOf(source.getHours());
-        final int minutes = Integer.valueOf(source.getMinutes());
-        final int seconds = Integer.valueOf(source.getSeconds());
+        final int hours = Integer.parseInt(source.getHours());
+        final int minutes = Integer.parseInt(source.getMinutes());
+        final int seconds = Integer.parseInt(source.getSeconds());
 
         return new Time(hours, minutes, seconds).getLength();
     }

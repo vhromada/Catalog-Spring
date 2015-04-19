@@ -53,7 +53,7 @@ public class ShowFOToShowTOConverterTest extends ObjectGeneratorTest {
 
         DeepAsserts.assertNotNull(showTO);
         DeepAsserts.assertEquals(showFO, showTO, "imdbCode", "imdb", "genres");
-        DeepAsserts.assertEquals(Integer.valueOf(showFO.getImdbCode()), showTO.getImdbCode());
+        DeepAsserts.assertEquals(Integer.parseInt(showFO.getImdbCode()), showTO.getImdbCode());
         assertGenresDeepEquals(showFO.getGenres(), showTO.getGenres());
     }
 
@@ -106,7 +106,7 @@ public class ShowFOToShowTOConverterTest extends ObjectGeneratorTest {
     private static void assertGenresDeepEquals(final List<String> expected, final List<GenreTO> actual) {
         DeepAsserts.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
-            DeepAsserts.assertEquals(Integer.valueOf(expected.get(i)), actual.get(i).getId());
+            DeepAsserts.assertEquals(Integer.parseInt(expected.get(i)), actual.get(i).getId());
         }
     }
 

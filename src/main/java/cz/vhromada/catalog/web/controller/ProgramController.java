@@ -32,6 +32,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProgramController {
 
     /**
+     * Redirect URL to list
+     */
+    private static final String LIST_REDIRECT_URL = "redirect:/programs/list";
+
+    /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for program doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
      * Facade for programs
      */
     private ProgramFacade programFacade;
@@ -68,7 +88,7 @@ public class ProgramController {
     public String processNew() {
         programFacade.newData();
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -80,7 +100,7 @@ public class ProgramController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         model.addAttribute("programs", new ArrayList<>(programFacade.getPrograms()));
         model.addAttribute("mediaCount", programFacade.getTotalMediaCount());
@@ -98,7 +118,7 @@ public class ProgramController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         return createFormView(model, new ProgramFO(), "Add program", "programsAdd");
     }
@@ -119,10 +139,10 @@ public class ProgramController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(program, "FO for program");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(program.getId(), "ID");
+        Validators.validateNull(program.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -131,7 +151,7 @@ public class ProgramController {
             programFacade.add(converter.convert(program, ProgramTO.class));
         }
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -146,15 +166,15 @@ public class ProgramController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ProgramTO program = programFacade.getProgram(id);
 
         if (program != null) {
             return createFormView(model, converter.convert(program, ProgramFO.class), "Edit program", "programsEdit");
         } else {
-            throw new IllegalRequestException("TO for program doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -175,10 +195,10 @@ public class ProgramController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(program, "FO for program");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(program.getId(), "ID");
+        Validators.validateNotNull(program.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -189,11 +209,11 @@ public class ProgramController {
             if (programFacade.exists(programTO)) {
                 programFacade.update(programTO);
             } else {
-                throw new IllegalRequestException("TO for program doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -206,17 +226,17 @@ public class ProgramController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
         if (programFacade.exists(program)) {
             programFacade.duplicate(program);
         } else {
-            throw new IllegalRequestException("TO for program doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -229,17 +249,17 @@ public class ProgramController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
         if (programFacade.exists(program)) {
             programFacade.remove(program);
         } else {
-            throw new IllegalRequestException("TO for program doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -252,17 +272,17 @@ public class ProgramController {
      */
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
         if (programFacade.exists(program)) {
             programFacade.moveUp(program);
         } else {
-            throw new IllegalRequestException("TO for program doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -275,17 +295,17 @@ public class ProgramController {
      */
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
         if (programFacade.exists(program)) {
             programFacade.moveDown(program);
         } else {
-            throw new IllegalRequestException("TO for program doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -297,7 +317,7 @@ public class ProgramController {
     public String processUpdatePositions() {
         programFacade.updatePositions();
 
-        return "redirect:/programs/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**

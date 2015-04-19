@@ -52,9 +52,9 @@ public class SeasonFOToSeasonTOConverterTest extends ObjectGeneratorTest {
 
         DeepAsserts.assertNotNull(seasonTO, "show");
         DeepAsserts.assertEquals(seasonFO, seasonTO, "number", "startYear", "endYear", "show");
-        DeepAsserts.assertEquals(Integer.valueOf(seasonFO.getNumber()), seasonTO.getNumber());
-        DeepAsserts.assertEquals(Integer.valueOf(seasonFO.getStartYear()), seasonTO.getStartYear());
-        DeepAsserts.assertEquals(Integer.valueOf(seasonFO.getEndYear()), seasonTO.getEndYear());
+        DeepAsserts.assertEquals(Integer.parseInt(seasonFO.getNumber()), seasonTO.getNumber());
+        DeepAsserts.assertEquals(Integer.parseInt(seasonFO.getStartYear()), seasonTO.getStartYear());
+        DeepAsserts.assertEquals(Integer.parseInt(seasonFO.getEndYear()), seasonTO.getEndYear());
     }
 
     /**

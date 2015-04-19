@@ -120,10 +120,10 @@ public class MovieFOToMovieTOConverterTest extends ObjectGeneratorTest {
     private static void assertMovieDeepEquals(final MovieFO expected, final MovieTO actual, final boolean imdbCode) {
         DeepAsserts.assertNotNull(actual);
         DeepAsserts.assertEquals(expected, actual, "year", "media", "imdbCode", "imdb", "genres");
-        DeepAsserts.assertEquals(Integer.valueOf(expected.getYear()), actual.getYear());
+        DeepAsserts.assertEquals(Integer.parseInt(expected.getYear()), actual.getYear());
         assertMediaDeepEquals(expected.getMedia(), actual.getMedia());
         if (imdbCode) {
-            DeepAsserts.assertEquals(Integer.valueOf(expected.getImdbCode()), actual.getImdbCode());
+            DeepAsserts.assertEquals(Integer.parseInt(expected.getImdbCode()), actual.getImdbCode());
         } else {
             DeepAsserts.assertEquals(-1, actual.getImdbCode());
         }
@@ -150,9 +150,9 @@ public class MovieFOToMovieTOConverterTest extends ObjectGeneratorTest {
      * @param actual   actual medium
      */
     private static void assertMediumDeepEquals(final TimeFO expected, final Integer actual) {
-        final int hours = Integer.valueOf(expected.getHours());
-        final int minutes = Integer.valueOf(expected.getMinutes());
-        final int seconds = Integer.valueOf(expected.getSeconds());
+        final int hours = Integer.parseInt(expected.getHours());
+        final int minutes = Integer.parseInt(expected.getMinutes());
+        final int seconds = Integer.parseInt(expected.getSeconds());
         final Time length = new Time(hours, minutes, seconds);
         DeepAsserts.assertEquals(length.getLength(), actual);
     }
@@ -166,7 +166,7 @@ public class MovieFOToMovieTOConverterTest extends ObjectGeneratorTest {
     private static void assertGenresDeepEquals(final List<String> expected, final List<GenreTO> actual) {
         DeepAsserts.assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
-            DeepAsserts.assertEquals(Integer.valueOf(expected.get(i)), actual.get(i).getId());
+            DeepAsserts.assertEquals(Integer.parseInt(expected.get(i)), actual.get(i).getId());
         }
     }
 

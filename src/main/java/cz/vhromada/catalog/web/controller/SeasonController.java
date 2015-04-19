@@ -40,6 +40,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SeasonController {
 
     /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for season doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
      * Facade for shows
      */
     private ShowFacade showFacade;
@@ -99,8 +114,8 @@ public class SeasonController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model, @PathVariable("showId") final Integer showId) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
 
         final ShowTO show = showFacade.getShow(showId);
         if (show == null) {
@@ -140,8 +155,8 @@ public class SeasonController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model, @PathVariable("showId") final Integer showId) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
         validateShow(showId);
 
         return createFormView(model, new SeasonFO(), showId, "Add season", "seasonsAdd");
@@ -166,11 +181,11 @@ public class SeasonController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
         Validators.validateArgumentNotNull(seasonFO, "FO for season");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(seasonFO.getId(), "ID");
+        Validators.validateNull(seasonFO.getId(), ID_ARGUMENT);
         validateShow(showId);
 
         if ("Submit".equals(createButton)) {
@@ -186,7 +201,7 @@ public class SeasonController {
             seasonFacade.add(seasonTO);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/list";
+        return getListRedirectUrl(showId);
     }
 
     /**
@@ -204,16 +219,16 @@ public class SeasonController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
 
         final SeasonTO season = seasonFacade.getSeason(id);
         if (season != null) {
             return createFormView(model, converter.convert(season, SeasonFO.class), showId, "Edit season", "seasonsEdit");
         } else {
-            throw new IllegalRequestException("TO for season doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -237,11 +252,11 @@ public class SeasonController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
         Validators.validateArgumentNotNull(seasonFO, "FO for season");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(seasonFO.getId(), "ID");
+        Validators.validateNotNull(seasonFO.getId(), ID_ARGUMENT);
         validateShow(showId);
 
         if ("Submit".equals(createButton)) {
@@ -261,7 +276,7 @@ public class SeasonController {
             }
         }
 
-        return "redirect:/shows/" + showId + "/seasons/list";
+        return getListRedirectUrl(showId);
     }
 
     /**
@@ -277,8 +292,8 @@ public class SeasonController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("showId") final Integer showId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
 
         final SeasonTO season = new SeasonTO();
@@ -286,10 +301,10 @@ public class SeasonController {
         if (seasonFacade.exists(season)) {
             seasonFacade.duplicate(season);
         } else {
-            throw new IllegalRequestException("TO for season doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/list";
+        return getListRedirectUrl(showId);
     }
 
     /**
@@ -305,8 +320,8 @@ public class SeasonController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("showId") final Integer showId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
 
         final SeasonTO season = new SeasonTO();
@@ -314,10 +329,10 @@ public class SeasonController {
         if (seasonFacade.exists(season)) {
             seasonFacade.remove(season);
         } else {
-            throw new IllegalRequestException("TO for season doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/list";
+        return getListRedirectUrl(showId);
     }
 
     /**
@@ -333,8 +348,8 @@ public class SeasonController {
      */
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("showId") final Integer showId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
 
         final SeasonTO season = new SeasonTO();
@@ -342,10 +357,10 @@ public class SeasonController {
         if (seasonFacade.exists(season)) {
             seasonFacade.moveUp(season);
         } else {
-            throw new IllegalRequestException("TO for season doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/list";
+        return getListRedirectUrl(showId);
     }
 
     /**
@@ -361,8 +376,8 @@ public class SeasonController {
      */
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("showId") final Integer showId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
 
         final SeasonTO season = new SeasonTO();
@@ -370,10 +385,10 @@ public class SeasonController {
         if (seasonFacade.exists(season)) {
             seasonFacade.moveDown(season);
         } else {
-            throw new IllegalRequestException("TO for season doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/list";
+        return getListRedirectUrl(showId);
     }
 
     /**
@@ -408,6 +423,16 @@ public class SeasonController {
         model.addAttribute("title", title);
 
         return view;
+    }
+
+    /**
+     * Returns redirect URL to list.
+     *
+     * @param showId show ID
+     * @return redirect URL to list
+     */
+    private static String getListRedirectUrl(final Integer showId) {
+        return "redirect:/shows/" + showId + "/seasons/list";
     }
 
 }

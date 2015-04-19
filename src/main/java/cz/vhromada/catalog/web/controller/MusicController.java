@@ -37,6 +37,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MusicController {
 
     /**
+     * Redirect URL to list
+     */
+    private static final String LIST_REDIRECT_URL = "redirect:/music/list";
+
+    /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for music doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
      * Facade for music
      */
     private MusicFacade musicFacade;
@@ -83,7 +103,7 @@ public class MusicController {
     public String processNew() {
         musicFacade.newData();
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -95,7 +115,7 @@ public class MusicController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         final List<Music> musicList = new ArrayList<>();
         for (final MusicTO musicTO : musicFacade.getMusic()) {
@@ -129,7 +149,7 @@ public class MusicController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         return createFormView(model, new MusicFO(), "Add music", "musicAdd");
     }
@@ -150,10 +170,10 @@ public class MusicController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("music") @Valid final MusicFO music, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(music, "FO for music");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(music.getId(), "ID");
+        Validators.validateNull(music.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -162,7 +182,7 @@ public class MusicController {
             musicFacade.add(converter.convert(music, MusicTO.class));
         }
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -177,15 +197,15 @@ public class MusicController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final MusicTO music = musicFacade.getMusic(id);
 
         if (music != null) {
             return createFormView(model, converter.convert(music, MusicFO.class), "Edit music", "musicEdit");
         } else {
-            throw new IllegalRequestException("TO for music doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -206,10 +226,10 @@ public class MusicController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("music") @Valid final MusicFO music, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(music, "FO for music");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(music.getId(), "ID");
+        Validators.validateNotNull(music.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -220,11 +240,11 @@ public class MusicController {
             if (musicFacade.exists(musicTO)) {
                 musicFacade.update(musicTO);
             } else {
-                throw new IllegalRequestException("TO for music doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -237,17 +257,17 @@ public class MusicController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final MusicTO music = new MusicTO();
         music.setId(id);
         if (musicFacade.exists(music)) {
             musicFacade.duplicate(music);
         } else {
-            throw new IllegalRequestException("TO for music doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -260,17 +280,17 @@ public class MusicController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final MusicTO music = new MusicTO();
         music.setId(id);
         if (musicFacade.exists(music)) {
             musicFacade.remove(music);
         } else {
-            throw new IllegalRequestException("TO for music doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -283,17 +303,17 @@ public class MusicController {
      */
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final MusicTO music = new MusicTO();
         music.setId(id);
         if (musicFacade.exists(music)) {
             musicFacade.moveUp(music);
         } else {
-            throw new IllegalRequestException("TO for music doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -306,17 +326,17 @@ public class MusicController {
      */
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final MusicTO music = new MusicTO();
         music.setId(id);
         if (musicFacade.exists(music)) {
             musicFacade.moveDown(music);
         } else {
-            throw new IllegalRequestException("TO for music doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -328,7 +348,7 @@ public class MusicController {
     public String processUpdatePositions() {
         musicFacade.updatePositions();
 
-        return "redirect:/music/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**

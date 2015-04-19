@@ -36,6 +36,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class EpisodeController {
 
     /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for episode doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
+     * Show ID argument
+     */
+    private static final String SHOW_ID_ARGUMENT = "Show ID";
+
+    /**
+     * Season ID argument
+     */
+    private static final String SEASON_ID_ARGUMENT = "Season ID";
+
+    /**
      * Facade for shows
      */
     private ShowFacade showFacade;
@@ -88,19 +113,19 @@ public class EpisodeController {
      *
      * @param model    model
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @return view for page with list of episodes
      * @throws IllegalArgumentException if model is null
      *                                  or show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
         validateShow(showId);
 
         final SeasonTO seasonTO = seasonFacade.getSeason(seasonId);
@@ -121,19 +146,19 @@ public class EpisodeController {
      *
      * @param model    model
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @return view for page for adding episode
      * @throws IllegalArgumentException if model is null
      *                                  or show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -146,13 +171,13 @@ public class EpisodeController {
      * @param model        model
      * @param createButton button create
      * @param showId       show ID
-     * @param seasonId     season's ID
+     * @param seasonId     season ID
      * @param episodeFO    FO for episode
      * @param errors       errors
      * @return view for redirect to page with list of episodes (no errors) or view for page for adding episode (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or show ID is null
-     *                                                               or season's ID is null
+     *                                                               or season ID is null
      *                                                               or FO for episode is null
      *                                                               or errors are null
      * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
@@ -163,12 +188,12 @@ public class EpisodeController {
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @ModelAttribute("episode") @Valid final EpisodeFO episodeFO, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
         Validators.validateArgumentNotNull(episodeFO, "FO for episode");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(episodeFO.getId(), "ID");
+        Validators.validateNull(episodeFO.getId(), ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -182,7 +207,7 @@ public class EpisodeController {
             episodeFacade.add(episodeTO);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**
@@ -190,12 +215,12 @@ public class EpisodeController {
      *
      * @param model    model
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @param id       ID of editing episode
      * @return view for page for editing episode
      * @throws IllegalArgumentException if model is null
      *                                  or show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      *                                  or FO for episode is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
@@ -204,10 +229,10 @@ public class EpisodeController {
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -215,7 +240,7 @@ public class EpisodeController {
         if (episode != null) {
             return createFormView(model, converter.convert(episode, EpisodeFO.class), showId, seasonId, "Edit episode", "episodesEdit");
         } else {
-            throw new IllegalRequestException("TO for episode doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -225,13 +250,13 @@ public class EpisodeController {
      * @param model        model
      * @param createButton button create
      * @param showId       show ID
-     * @param seasonId     season's ID
+     * @param seasonId     season ID
      * @param episodeFO    FO for episode
      * @param errors       errors
      * @return view for redirect to page with list of episodes (no errors) or view for page for editing episode (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or show ID is null
-     *                                                               or season's ID is null
+     *                                                               or season ID is null
      *                                                               or FO for episode is null
      *                                                               or errors are null
      * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
@@ -243,12 +268,12 @@ public class EpisodeController {
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @ModelAttribute("episode") @Valid final EpisodeFO episodeFO, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
         Validators.validateArgumentNotNull(episodeFO, "FO for episode");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(episodeFO.getId(), "ID");
+        Validators.validateNotNull(episodeFO.getId(), ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -262,22 +287,22 @@ public class EpisodeController {
                 episodeTO.setSeason(seasonFacade.getSeason(seasonId));
                 episodeFacade.update(episodeTO);
             } else {
-                throw new IllegalRequestException("TO for episode doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**
      * Process duplicating episode.
      *
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @param id       ID of duplicating episode
      * @return view for redirect to page with list of episodes
      * @throws IllegalArgumentException if show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
@@ -286,9 +311,9 @@ public class EpisodeController {
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -297,21 +322,21 @@ public class EpisodeController {
         if (episodeFacade.exists(episode)) {
             episodeFacade.duplicate(episode);
         } else {
-            throw new IllegalRequestException("TO for episode doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**
      * Process removing episode.
      *
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @param id       ID of removing episode
      * @return view for redirect to page with list of episodes
      * @throws IllegalArgumentException if show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
@@ -320,9 +345,9 @@ public class EpisodeController {
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -331,21 +356,21 @@ public class EpisodeController {
         if (episodeFacade.exists(episode)) {
             episodeFacade.remove(episode);
         } else {
-            throw new IllegalRequestException("TO for episode doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**
      * Process moving episode up.
      *
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @param id       ID of moving episode
      * @return view for redirect to page with list of episodes
      * @throws IllegalArgumentException if show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
@@ -354,9 +379,9 @@ public class EpisodeController {
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -365,21 +390,21 @@ public class EpisodeController {
         if (episodeFacade.exists(episode)) {
             episodeFacade.moveUp(episode);
         } else {
-            throw new IllegalRequestException("TO for episode doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**
      * Process moving episode down.
      *
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @param id       ID of moving episode
      * @return view for redirect to page with list of episodes
      * @throws IllegalArgumentException if show ID is null
-     *                                  or season's ID is null
+     *                                  or season ID is null
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for show with show doesn't exist
      *                                  or TO for season with show doesn't exist
@@ -388,9 +413,9 @@ public class EpisodeController {
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(showId, "Show ID");
-        Validators.validateArgumentNotNull(seasonId, "Season's ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(showId, SHOW_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(seasonId, SEASON_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateShow(showId);
         validateSeason(seasonId);
 
@@ -399,10 +424,10 @@ public class EpisodeController {
         if (episodeFacade.exists(episode)) {
             episodeFacade.moveDown(episode);
         } else {
-            throw new IllegalRequestException("TO for episode doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**
@@ -422,7 +447,7 @@ public class EpisodeController {
     /**
      * Validates TO for season.
      *
-     * @param id season's ID
+     * @param id season ID
      * @throws IllegalRequestException if TO for season with show doesn't exist
      */
     private void validateSeason(final int id) {
@@ -439,7 +464,7 @@ public class EpisodeController {
      * @param model    model
      * @param episode  FO for episode
      * @param showId   show ID
-     * @param seasonId season's ID
+     * @param seasonId season ID
      * @param title    page's title
      * @param view     returning view
      * @return page's view  with form
@@ -452,6 +477,17 @@ public class EpisodeController {
         model.addAttribute("title", title);
 
         return view;
+    }
+
+    /**
+     * Returns redirect URL to list.
+     *
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @return redirect URL to list
+     */
+    private static String getListRedirectUrl(final Integer showId, final Integer seasonId) {
+        return "redirect:/shows/" + showId + "/seasons/" + seasonId + "/episodes/list";
     }
 
 }

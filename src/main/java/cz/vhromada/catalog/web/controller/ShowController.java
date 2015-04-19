@@ -41,6 +41,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ShowController {
 
     /**
+     * Redirect URL to list
+     */
+    private static final String LIST_REDIRECT_URL = "redirect:/shows/list";
+
+    /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for show doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
      * Facade for shows
      */
     private ShowFacade showFacade;
@@ -107,7 +127,7 @@ public class ShowController {
     public String processNew() {
         showFacade.newData();
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -119,7 +139,7 @@ public class ShowController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         final List<Show> shows = new ArrayList<>();
         for (final ShowTO showTO : showFacade.getShows()) {
@@ -158,7 +178,7 @@ public class ShowController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         return createFormView(model, new ShowFO(), "Add show", "showsAdd");
     }
@@ -179,10 +199,10 @@ public class ShowController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("show") @Valid final ShowFO show, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(show, "FO for show");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(show.getId(), "ID");
+        Validators.validateNull(show.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -193,7 +213,7 @@ public class ShowController {
             showFacade.add(showTO);
         }
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -208,14 +228,14 @@ public class ShowController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ShowTO show = showFacade.getShow(id);
         if (show != null) {
             return createFormView(model, converter.convert(show, ShowFO.class), "Edit show", "showsEdit");
         } else {
-            throw new IllegalRequestException("TO for show doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -236,10 +256,10 @@ public class ShowController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("show") @Valid final ShowFO show, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(show, "FO for show");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(show.getId(), "ID");
+        Validators.validateNotNull(show.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -251,11 +271,11 @@ public class ShowController {
                 showTO.setGenres(getGenres(showTO.getGenres()));
                 showFacade.update(showTO);
             } else {
-                throw new IllegalRequestException("TO for show doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -268,17 +288,17 @@ public class ShowController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ShowTO show = new ShowTO();
         show.setId(id);
         if (showFacade.exists(show)) {
             showFacade.duplicate(show);
         } else {
-            throw new IllegalRequestException("TO for show doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -291,17 +311,17 @@ public class ShowController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ShowTO show = new ShowTO();
         show.setId(id);
         if (showFacade.exists(show)) {
             showFacade.remove(show);
         } else {
-            throw new IllegalRequestException("TO for show doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -314,17 +334,17 @@ public class ShowController {
      */
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ShowTO show = new ShowTO();
         show.setId(id);
         if (showFacade.exists(show)) {
             showFacade.moveUp(show);
         } else {
-            throw new IllegalRequestException("TO for show doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -337,17 +357,17 @@ public class ShowController {
      */
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final ShowTO show = new ShowTO();
         show.setId(id);
         if (showFacade.exists(show)) {
             showFacade.moveDown(show);
         } else {
-            throw new IllegalRequestException("TO for show doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -359,7 +379,7 @@ public class ShowController {
     public String processUpdatePositions() {
         showFacade.updatePositions();
 
-        return "redirect:/shows/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**

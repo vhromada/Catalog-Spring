@@ -35,6 +35,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookController {
 
     /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for book doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
+     * Book category ID argument
+     */
+    private static final String BOOK_CATEGORY_ID_ARGUMENT = "Book category ID";
+
+    /**
      * Facade for book categories
      */
     private BookCategoryFacade bookCategoryFacade;
@@ -84,8 +104,8 @@ public class BookController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model, @PathVariable("bookCategoryId") final Integer bookCategoryId) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
 
         final BookCategoryTO bookCategory = bookCategoryFacade.getBookCategory(bookCategoryId);
         if (bookCategory == null) {
@@ -111,8 +131,8 @@ public class BookController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model, @PathVariable("bookCategoryId") final Integer bookCategoryId) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         return createFormView(model, new BookFO(), bookCategoryId, "Add book", "booksAdd");
@@ -137,11 +157,11 @@ public class BookController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @PathVariable("bookCategoryId") final Integer bookCategoryId, @ModelAttribute("book") @Valid final BookFO bookFO, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
         Validators.validateArgumentNotNull(bookFO, "FO for book");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(bookFO.getId(), "ID");
+        Validators.validateNull(bookFO.getId(), ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         if ("Submit".equals(createButton)) {
@@ -154,7 +174,7 @@ public class BookController {
             bookFacade.add(bookTO);
         }
 
-        return "redirect:/categories/" + bookCategoryId + "/books/list";
+        return getListRedirectUrl(bookCategoryId);
     }
 
     /**
@@ -172,16 +192,16 @@ public class BookController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("bookCategoryId") final Integer bookCategoryId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         final BookTO book = bookFacade.getBook(id);
         if (book != null) {
             return createFormView(model, converter.convert(book, BookFO.class), bookCategoryId, "Edit book", "booksEdit");
         } else {
-            throw new IllegalRequestException("TO for book doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -205,11 +225,11 @@ public class BookController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @PathVariable("bookCategoryId") final Integer bookCategoryId, @ModelAttribute("book") @Valid final BookFO bookFO, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
         Validators.validateArgumentNotNull(bookFO, "FO for book");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(bookFO.getId(), "ID");
+        Validators.validateNotNull(bookFO.getId(), ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         if ("Submit".equals(createButton)) {
@@ -222,11 +242,11 @@ public class BookController {
                 bookTO.setBookCategory(bookCategoryFacade.getBookCategory(bookCategoryId));
                 bookFacade.update(bookTO);
             } else {
-                throw new IllegalRequestException("TO for book doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/categories/" + bookCategoryId + "/books/list";
+        return getListRedirectUrl(bookCategoryId);
     }
 
     /**
@@ -242,8 +262,8 @@ public class BookController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("bookCategoryId") final Integer bookCategoryId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         final BookTO book = new BookTO();
@@ -251,10 +271,10 @@ public class BookController {
         if (bookFacade.exists(book)) {
             bookFacade.duplicate(book);
         } else {
-            throw new IllegalRequestException("TO for book doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/categories/" + bookCategoryId + "/books/list";
+        return getListRedirectUrl(bookCategoryId);
     }
 
     /**
@@ -270,8 +290,8 @@ public class BookController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("bookCategoryId") final Integer bookCategoryId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         final BookTO book = new BookTO();
@@ -279,10 +299,10 @@ public class BookController {
         if (bookFacade.exists(book)) {
             bookFacade.remove(book);
         } else {
-            throw new IllegalRequestException("TO for book doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/categories/" + bookCategoryId + "/books/list";
+        return getListRedirectUrl(bookCategoryId);
     }
 
     /**
@@ -298,8 +318,8 @@ public class BookController {
      */
     @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
     public String processMoveUp(@PathVariable("bookCategoryId") final Integer bookCategoryId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         final BookTO book = new BookTO();
@@ -307,10 +327,10 @@ public class BookController {
         if (bookFacade.exists(book)) {
             bookFacade.moveUp(book);
         } else {
-            throw new IllegalRequestException("TO for book doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/categories/" + bookCategoryId + "/books/list";
+        return getListRedirectUrl(bookCategoryId);
     }
 
     /**
@@ -326,8 +346,8 @@ public class BookController {
      */
     @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
     public String processMoveDown(@PathVariable("bookCategoryId") final Integer bookCategoryId, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(bookCategoryId, "Book category ID");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(bookCategoryId, BOOK_CATEGORY_ID_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
         validateBookCategory(bookCategoryId);
 
         final BookTO book = new BookTO();
@@ -335,10 +355,10 @@ public class BookController {
         if (bookFacade.exists(book)) {
             bookFacade.moveDown(book);
         } else {
-            throw new IllegalRequestException("TO for book doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/categories/" + bookCategoryId + "/books/list";
+        return getListRedirectUrl(bookCategoryId);
     }
 
     /**
@@ -372,6 +392,16 @@ public class BookController {
         model.addAttribute("languages", new Language[]{ Language.CZ, Language.EN });
 
         return view;
+    }
+
+    /**
+     * Returns redirect URL to list.
+     *
+     * @param bookCategoryId book category ID
+     * @return redirect URL to list
+     */
+    private static String getListRedirectUrl(final Integer bookCategoryId) {
+        return "redirect:/categories/" + bookCategoryId + "/books/list";
     }
 
 }

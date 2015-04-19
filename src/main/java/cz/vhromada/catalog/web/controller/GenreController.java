@@ -32,6 +32,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GenreController {
 
     /**
+     * Redirect URL to list
+     */
+    private static final String LIST_REDIRECT_URL = "redirect:/genres/list";
+
+    /**
+     * Message for illegal request
+     */
+    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for genre doesn't exist.";
+
+    /**
+     * Model argument
+     */
+    private static final String MODEL_ARGUMENT = "Model";
+
+    /**
+     * ID argument
+     */
+    private static final String ID_ARGUMENT = "ID";
+
+    /**
      * Facade for genres
      */
     private GenreFacade genreFacade;
@@ -68,7 +88,7 @@ public class GenreController {
     public String processNew() {
         genreFacade.newData();
 
-        return "redirect:/genres/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -80,7 +100,7 @@ public class GenreController {
      */
     @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         model.addAttribute("genres", new ArrayList<>(genreFacade.getGenres()));
         model.addAttribute("title", "Genres");
@@ -97,7 +117,7 @@ public class GenreController {
      */
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
 
         return createFormView(model, new GenreFO(), "Add genre", "genresAdd");
     }
@@ -118,10 +138,10 @@ public class GenreController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("genre") @Valid final GenreFO genre, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(genre, "FO for genre");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(genre.getId(), "ID");
+        Validators.validateNull(genre.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -130,7 +150,7 @@ public class GenreController {
             genreFacade.add(converter.convert(genre, GenreTO.class));
         }
 
-        return "redirect:/genres/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -145,15 +165,15 @@ public class GenreController {
      */
     @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, "Model");
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GenreTO genre = genreFacade.getGenre(id);
 
         if (genre != null) {
             return createFormView(model, converter.convert(genre, GenreFO.class), "Edit genre", "genresEdit");
         } else {
-            throw new IllegalRequestException("TO for genre doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
     }
 
@@ -174,10 +194,10 @@ public class GenreController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("genre") @Valid final GenreFO genre, final Errors errors) {
-        Validators.validateArgumentNotNull(model, "Model");
+        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
         Validators.validateArgumentNotNull(genre, "FO for genre");
         Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(genre.getId(), "ID");
+        Validators.validateNotNull(genre.getId(), ID_ARGUMENT);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
@@ -188,11 +208,11 @@ public class GenreController {
             if (genreFacade.exists(genreTO)) {
                 genreFacade.update(genreTO);
             } else {
-                throw new IllegalRequestException("TO for genre doesn't exist.");
+                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
             }
         }
 
-        return "redirect:/genres/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -205,17 +225,17 @@ public class GenreController {
      */
     @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GenreTO genre = new GenreTO();
         genre.setId(id);
         if (genreFacade.exists(genre)) {
             genreFacade.duplicate(genre);
         } else {
-            throw new IllegalRequestException("TO for genre doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/genres/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**
@@ -228,17 +248,17 @@ public class GenreController {
      */
     @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, "ID");
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
 
         final GenreTO genre = new GenreTO();
         genre.setId(id);
         if (genreFacade.exists(genre)) {
             genreFacade.remove(genre);
         } else {
-            throw new IllegalRequestException("TO for genre doesn't exist.");
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
 
-        return "redirect:/genres/list";
+        return LIST_REDIRECT_URL;
     }
 
     /**

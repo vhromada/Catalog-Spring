@@ -57,12 +57,12 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setId(source.getId());
         movie.setCzechName(source.getCzechName());
         movie.setOriginalName(source.getOriginalName());
-        movie.setYear(Integer.valueOf(source.getYear()));
+        movie.setYear(Integer.parseInt(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
         movie.setMedia(convertMedia(source.getMedia()));
         movie.setCsfd(source.getCsfd());
-        movie.setImdbCode(source.getImdb() ? Integer.valueOf(source.getImdbCode()) : -1);
+        movie.setImdbCode(source.getImdb() ? Integer.parseInt(source.getImdbCode()) : -1);
         movie.setWikiCz(source.getWikiCz());
         movie.setWikiEn(source.getWikiEn());
         movie.setPicture(source.getPicture());
