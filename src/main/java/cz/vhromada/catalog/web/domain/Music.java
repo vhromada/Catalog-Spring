@@ -147,7 +147,6 @@ public class Music implements Serializable {
      * Sets a new value to count of media.
      *
      * @param mediaCount new value
-     * @throws IllegalArgumentException if new value isn't positive number
      */
     public void setMediaCount(final int mediaCount) {
         this.mediaCount = mediaCount;
