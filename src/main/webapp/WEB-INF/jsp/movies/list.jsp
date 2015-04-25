@@ -89,8 +89,8 @@
     <thead>
     <tr>
         <th>Count of movies</th>
-        <th>Count of media</th>
         <th>Total length</th>
+        <th>Count of media</th>
     </tr>
     </thead>
     <tbody>
