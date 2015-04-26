@@ -1,5 +1,7 @@
 package cz.vhromada.catalog.web.controller;
 
+import cz.vhromada.validators.Validators;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +20,13 @@ public class CatalogController {
      * Show index page.
      *
      * @return view for index page
+     * @param model    model
+     * @throws IllegalArgumentException if model is null
      */
     @RequestMapping(method = RequestMethod.GET)
     public String showIndex(final Model model) {
+        Validators.validateArgumentNotNull(model, "Model");
+
         model.addAttribute("title", "Catalog");
 
         return "index";
