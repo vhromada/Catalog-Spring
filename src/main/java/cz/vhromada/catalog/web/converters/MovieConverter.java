@@ -60,7 +60,7 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setYear(Integer.parseInt(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
-        movie.setMedia(convertMedia(source.getMedia()));
+//        movie.setMedia(convertMedia(source.getMedia()));
         movie.setCsfd(source.getCsfd());
         movie.setImdbCode(source.getImdb() ? Integer.parseInt(source.getImdbCode()) : -1);
         movie.setWikiCz(source.getWikiCz());
@@ -117,7 +117,7 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setYear(Integer.toString(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
-        movie.setMedia(convertMediaLength(source.getMedia()));
+//        movie.setMedia(convertMediaLength(source.getMedia()));
         movie.setCsfd(source.getCsfd());
         if (source.getImdbCode() < 1) {
             movie.setImdb(false);

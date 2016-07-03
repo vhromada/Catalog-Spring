@@ -40,11 +40,6 @@
     </error-page>
 
     <error-page>
-        <exception-type>cz.vhromada.catalog.facade.exceptions.FacadeOperationException</exception-type>
-        <location>/error/known</location>
-    </error-page>
-
-    <error-page>
         <exception-type>cz.vhromada.catalog.web.exceptions.IllegalRequestException</exception-type>
         <location>/error/request</location>
     </error-page>

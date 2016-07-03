@@ -206,7 +206,7 @@ public class GameController {
             }
 
             final GameTO gameTO = converter.convert(game, GameTO.class);
-            if (gameFacade.exists(gameTO)) {
+            if (gameFacade.getGame(gameTO.getId()) != null) {
                 gameFacade.update(gameTO);
             } else {
                 throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -230,7 +230,7 @@ public class GameController {
 
         final GameTO game = new GameTO();
         game.setId(id);
-        if (gameFacade.exists(game)) {
+        if (gameFacade.getGame(id) != null) {
             gameFacade.duplicate(game);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -253,7 +253,7 @@ public class GameController {
 
         final GameTO game = new GameTO();
         game.setId(id);
-        if (gameFacade.exists(game)) {
+        if (gameFacade.getGame(id) != null) {
             gameFacade.remove(game);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -276,7 +276,7 @@ public class GameController {
 
         final GameTO game = new GameTO();
         game.setId(id);
-        if (gameFacade.exists(game)) {
+        if (gameFacade.getGame(id) != null) {
             gameFacade.moveUp(game);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -299,7 +299,7 @@ public class GameController {
 
         final GameTO game = new GameTO();
         game.setId(id);
-        if (gameFacade.exists(game)) {
+        if (gameFacade.getGame(id) != null) {
             gameFacade.moveDown(game);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);

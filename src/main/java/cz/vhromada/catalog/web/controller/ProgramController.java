@@ -206,7 +206,7 @@ public class ProgramController {
             }
 
             final ProgramTO programTO = converter.convert(program, ProgramTO.class);
-            if (programFacade.exists(programTO)) {
+            if (programFacade.getProgram(programTO.getId()) != null) {
                 programFacade.update(programTO);
             } else {
                 throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -230,7 +230,7 @@ public class ProgramController {
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
-        if (programFacade.exists(program)) {
+        if (programFacade.getProgram(id) != null) {
             programFacade.duplicate(program);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -253,7 +253,7 @@ public class ProgramController {
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
-        if (programFacade.exists(program)) {
+        if (programFacade.getProgram(id) != null) {
             programFacade.remove(program);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -276,7 +276,7 @@ public class ProgramController {
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
-        if (programFacade.exists(program)) {
+        if (programFacade.getProgram(id) != null) {
             programFacade.moveUp(program);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -299,7 +299,7 @@ public class ProgramController {
 
         final ProgramTO program = new ProgramTO();
         program.setId(id);
-        if (programFacade.exists(program)) {
+        if (programFacade.getProgram(id) != null) {
             programFacade.moveDown(program);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);

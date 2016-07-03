@@ -248,7 +248,7 @@ public class MovieController {
             }
 
             final MovieTO movieTO = converter.convert(movie, MovieTO.class);
-            if (movieFacade.exists(movieTO)) {
+            if (movieFacade.getMovie(movieTO.getId()) != null) {
                 if (movieTO.getSubtitles() == null) {
                     movieTO.setSubtitles(new ArrayList<Language>());
                 }
@@ -289,7 +289,7 @@ public class MovieController {
 
         final MovieTO movie = new MovieTO();
         movie.setId(id);
-        if (movieFacade.exists(movie)) {
+        if (movieFacade.getMovie(id) != null) {
             movieFacade.duplicate(movie);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -312,7 +312,7 @@ public class MovieController {
 
         final MovieTO movie = new MovieTO();
         movie.setId(id);
-        if (movieFacade.exists(movie)) {
+        if (movieFacade.getMovie(id) != null) {
             movieFacade.remove(movie);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -335,7 +335,7 @@ public class MovieController {
 
         final MovieTO movie = new MovieTO();
         movie.setId(id);
-        if (movieFacade.exists(movie)) {
+        if (movieFacade.getMovie(id) != null) {
             movieFacade.moveUp(movie);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -358,7 +358,7 @@ public class MovieController {
 
         final MovieTO movie = new MovieTO();
         movie.setId(id);
-        if (movieFacade.exists(movie)) {
+        if (movieFacade.getMovie(id) != null) {
             movieFacade.moveDown(movie);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);

@@ -237,7 +237,7 @@ public class MusicController {
             }
 
             final MusicTO musicTO = converter.convert(music, MusicTO.class);
-            if (musicFacade.exists(musicTO)) {
+            if (musicFacade.getMusic(musicTO.getId()) != null) {
                 musicFacade.update(musicTO);
             } else {
                 throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -261,7 +261,7 @@ public class MusicController {
 
         final MusicTO music = new MusicTO();
         music.setId(id);
-        if (musicFacade.exists(music)) {
+        if (musicFacade.getMusic(id) != null) {
             musicFacade.duplicate(music);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -284,7 +284,7 @@ public class MusicController {
 
         final MusicTO music = new MusicTO();
         music.setId(id);
-        if (musicFacade.exists(music)) {
+        if (musicFacade.getMusic(id) != null) {
             musicFacade.remove(music);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -307,7 +307,7 @@ public class MusicController {
 
         final MusicTO music = new MusicTO();
         music.setId(id);
-        if (musicFacade.exists(music)) {
+        if (musicFacade.getMusic(id) != null) {
             musicFacade.moveUp(music);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -330,7 +330,7 @@ public class MusicController {
 
         final MusicTO music = new MusicTO();
         music.setId(id);
-        if (musicFacade.exists(music)) {
+        if (musicFacade.getMusic(id) != null) {
             musicFacade.moveDown(music);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);

@@ -203,8 +203,7 @@ public class EpisodeController {
             }
 
             final EpisodeTO episodeTO = converter.convert(episodeFO, EpisodeTO.class);
-            episodeTO.setSeason(seasonFacade.getSeason(seasonId));
-            episodeFacade.add(episodeTO);
+            episodeFacade.add(seasonFacade.getSeason(seasonId), episodeTO);
         }
 
         return getListRedirectUrl(showId, seasonId);
@@ -283,8 +282,7 @@ public class EpisodeController {
             }
 
             final EpisodeTO episodeTO = converter.convert(episodeFO, EpisodeTO.class);
-            if (episodeFacade.exists(episodeTO)) {
-                episodeTO.setSeason(seasonFacade.getSeason(seasonId));
+            if (episodeFacade.getEpisode(episodeTO.getId()) != null) {
                 episodeFacade.update(episodeTO);
             } else {
                 throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -319,7 +317,7 @@ public class EpisodeController {
 
         final EpisodeTO episode = new EpisodeTO();
         episode.setId(id);
-        if (episodeFacade.exists(episode)) {
+        if (episodeFacade.getEpisode(id) != null) {
             episodeFacade.duplicate(episode);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -353,7 +351,7 @@ public class EpisodeController {
 
         final EpisodeTO episode = new EpisodeTO();
         episode.setId(id);
-        if (episodeFacade.exists(episode)) {
+        if (episodeFacade.getEpisode(id) != null) {
             episodeFacade.remove(episode);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -387,7 +385,7 @@ public class EpisodeController {
 
         final EpisodeTO episode = new EpisodeTO();
         episode.setId(id);
-        if (episodeFacade.exists(episode)) {
+        if (episodeFacade.getEpisode(id) != null) {
             episodeFacade.moveUp(episode);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -421,7 +419,7 @@ public class EpisodeController {
 
         final EpisodeTO episode = new EpisodeTO();
         episode.setId(id);
-        if (episodeFacade.exists(episode)) {
+        if (episodeFacade.getEpisode(id) != null) {
             episodeFacade.moveDown(episode);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -439,7 +437,7 @@ public class EpisodeController {
     private void validateShow(final int id) {
         final ShowTO showTO = new ShowTO();
         showTO.setId(id);
-        if (!showFacade.exists(showTO)) {
+        if (showFacade.getShow(showTO.getId()) != null) {
             throw new IllegalRequestException("TO for show doesn't exist.");
         }
     }
@@ -453,7 +451,7 @@ public class EpisodeController {
     private void validateSeason(final int id) {
         final SeasonTO seasonTO = new SeasonTO();
         seasonTO.setId(id);
-        if (!seasonFacade.exists(seasonTO)) {
+        if (seasonFacade.getSeason(id) != null) {
             throw new IllegalRequestException("TO for season doesn't exist.");
         }
     }

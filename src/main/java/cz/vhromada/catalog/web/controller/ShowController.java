@@ -267,7 +267,7 @@ public class ShowController {
             }
 
             final ShowTO showTO = converter.convert(show, ShowTO.class);
-            if (showFacade.exists(showTO)) {
+            if (showFacade.getShow(show.getId()) != null) {
                 showTO.setGenres(getGenres(showTO.getGenres()));
                 showFacade.update(showTO);
             } else {
@@ -292,7 +292,7 @@ public class ShowController {
 
         final ShowTO show = new ShowTO();
         show.setId(id);
-        if (showFacade.exists(show)) {
+        if (showFacade.getShow(id) != null) {
             showFacade.duplicate(show);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -315,7 +315,7 @@ public class ShowController {
 
         final ShowTO show = new ShowTO();
         show.setId(id);
-        if (showFacade.exists(show)) {
+        if (showFacade.getShow(id) != null) {
             showFacade.remove(show);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -338,7 +338,7 @@ public class ShowController {
 
         final ShowTO show = new ShowTO();
         show.setId(id);
-        if (showFacade.exists(show)) {
+        if (showFacade.getShow(id) != null) {
             showFacade.moveUp(show);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -361,7 +361,7 @@ public class ShowController {
 
         final ShowTO show = new ShowTO();
         show.setId(id);
-        if (showFacade.exists(show)) {
+        if (showFacade.getShow(id) != null) {
             showFacade.moveDown(show);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);

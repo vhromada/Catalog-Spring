@@ -169,8 +169,7 @@ public class SongController {
             }
 
             final SongTO songTO = converter.convert(songFO, SongTO.class);
-            songTO.setMusic(musicFacade.getMusic(musicId));
-            songFacade.add(songTO);
+            songFacade.add(musicFacade.getMusic(musicId), songTO);
         }
 
         return getListRedirectUrl(musicId);
@@ -237,8 +236,7 @@ public class SongController {
             }
 
             final SongTO songTO = converter.convert(songFO, SongTO.class);
-            if (songFacade.exists(songTO)) {
-                songTO.setMusic(musicFacade.getMusic(musicId));
+            if (songFacade.getSong(songTO.getId()) != null) {
                 songFacade.update(songTO);
             } else {
                 throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -267,7 +265,7 @@ public class SongController {
 
         final SongTO song = new SongTO();
         song.setId(id);
-        if (songFacade.exists(song)) {
+        if (songFacade.getSong(id) != null) {
             songFacade.duplicate(song);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -295,7 +293,7 @@ public class SongController {
 
         final SongTO song = new SongTO();
         song.setId(id);
-        if (songFacade.exists(song)) {
+        if (songFacade.getSong(id) != null) {
             songFacade.remove(song);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -323,7 +321,7 @@ public class SongController {
 
         final SongTO song = new SongTO();
         song.setId(id);
-        if (songFacade.exists(song)) {
+        if (songFacade.getSong(id) != null) {
             songFacade.moveUp(song);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -351,7 +349,7 @@ public class SongController {
 
         final SongTO song = new SongTO();
         song.setId(id);
-        if (songFacade.exists(song)) {
+        if (songFacade.getSong(id) != null) {
             songFacade.moveDown(song);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -369,7 +367,7 @@ public class SongController {
     private void validateMusic(final int id) {
         final MusicTO music = new MusicTO();
         music.setId(id);
-        if (!musicFacade.exists(music)) {
+        if (musicFacade.getMusic(id) != null) {
             throw new IllegalRequestException("TO for music doesn't exist.");
         }
     }

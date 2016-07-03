@@ -205,7 +205,7 @@ public class GenreController {
             }
 
             final GenreTO genreTO = converter.convert(genre, GenreTO.class);
-            if (genreFacade.exists(genreTO)) {
+            if (genreFacade.getGenre(genreTO.getId()) != null) {
                 genreFacade.update(genreTO);
             } else {
                 throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -229,7 +229,7 @@ public class GenreController {
 
         final GenreTO genre = new GenreTO();
         genre.setId(id);
-        if (genreFacade.exists(genre)) {
+        if (genreFacade.getGenre(id) != null) {
             genreFacade.duplicate(genre);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -252,7 +252,7 @@ public class GenreController {
 
         final GenreTO genre = new GenreTO();
         genre.setId(id);
-        if (genreFacade.exists(genre)) {
+        if (genreFacade.getGenre(id) != null) {
             genreFacade.remove(genre);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);

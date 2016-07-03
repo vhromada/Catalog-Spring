@@ -197,8 +197,7 @@ public class SeasonController {
             if (seasonTO.getSubtitles() == null) {
                 seasonTO.setSubtitles(new ArrayList<Language>());
             }
-            seasonTO.setShow(showFacade.getShow(showId));
-            seasonFacade.add(seasonTO);
+            seasonFacade.add(showFacade.getShow(showId), seasonTO);
         }
 
         return getListRedirectUrl(showId);
@@ -265,11 +264,10 @@ public class SeasonController {
             }
 
             final SeasonTO seasonTO = converter.convert(seasonFO, SeasonTO.class);
-            if (seasonFacade.exists(seasonTO)) {
+            if (seasonFacade.getSeason(seasonTO.getId()) != null) {
                 if (seasonTO.getSubtitles() == null) {
                     seasonTO.setSubtitles(new ArrayList<Language>());
                 }
-                seasonTO.setShow(showFacade.getShow(showId));
                 seasonFacade.update(seasonTO);
             } else {
                 throw new IllegalRequestException("TO for episode doesn't exist.");
@@ -298,7 +296,7 @@ public class SeasonController {
 
         final SeasonTO season = new SeasonTO();
         season.setId(id);
-        if (seasonFacade.exists(season)) {
+        if (seasonFacade.getSeason(id) != null) {
             seasonFacade.duplicate(season);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -326,7 +324,7 @@ public class SeasonController {
 
         final SeasonTO season = new SeasonTO();
         season.setId(id);
-        if (seasonFacade.exists(season)) {
+        if (seasonFacade.getSeason(id) != null) {
             seasonFacade.remove(season);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -354,7 +352,7 @@ public class SeasonController {
 
         final SeasonTO season = new SeasonTO();
         season.setId(id);
-        if (seasonFacade.exists(season)) {
+        if (seasonFacade.getSeason(id) != null) {
             seasonFacade.moveUp(season);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -382,7 +380,7 @@ public class SeasonController {
 
         final SeasonTO season = new SeasonTO();
         season.setId(id);
-        if (seasonFacade.exists(season)) {
+        if (seasonFacade.getSeason(id) != null) {
             seasonFacade.moveDown(season);
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
@@ -400,7 +398,7 @@ public class SeasonController {
     private void validateShow(final int id) {
         final ShowTO showTO = new ShowTO();
         showTO.setId(id);
-        if (!showFacade.exists(showTO)) {
+        if (showFacade.getShow(id) != null) {
             throw new IllegalRequestException("TO for show doesn't exist.");
         }
     }

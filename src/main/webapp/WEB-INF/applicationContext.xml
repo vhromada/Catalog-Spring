@@ -9,9 +9,11 @@
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
                            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
 
-    <import resource="classpath:daoContext.xml"/>
+    <import resource="classpath:repositoryContext.xml"/>
 
     <import resource="classpath:cacheContext.xml"/>
+
+    <import resource="classpath:aopContext.xml"/>
 
     <import resource="classpath:serviceContext.xml"/>
 
