@@ -3,6 +3,7 @@ package cz.vhromada.catalog.web.domain;
 import java.io.Serializable;
 
 import cz.vhromada.catalog.commons.Time;
+import cz.vhromada.catalog.facade.to.MusicTO;
 
 /**
  * A class represents music.
@@ -17,39 +18,9 @@ public class Music implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * TO for music
      */
-    private Integer id;
-
-    /**
-     * Name
-     */
-    private String name;
-
-    /**
-     * URL to english Wikipedia page about music
-     */
-    private String wikiEn;
-
-    /**
-     * URL to czech Wikipedia page about music
-     */
-    private String wikiCz;
-
-    /**
-     * Count of media
-     */
-    private int mediaCount;
-
-    /**
-     * Note
-     */
-    private String note;
-
-    /**
-     * Position
-     */
-    private int position;
+    private MusicTO music;
 
     /**
      * Count of songs
@@ -62,130 +33,21 @@ public class Music implements Serializable {
     private Time totalLength;
 
     /**
-     * Returns ID.
+     * Returns TO for music.
      *
-     * @return ID
+     * @return TO for music
      */
-    public Integer getId() {
-        return id;
+    public MusicTO getMusic() {
+        return music;
     }
 
     /**
-     * Sets a new value to ID.
+     * Sets a new value to TO for music.
      *
-     * @param id new value
+     * @param music new value
      */
-    public void setId(final Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * Returns name.
-     *
-     * @return name
-     */
-
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets a new value to name.
-     *
-     * @param name new value
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * Returns URL to english Wikipedia page about music.
-     *
-     * @return URL to english Wikipedia page about music
-     */
-    public String getWikiEn() {
-        return wikiEn;
-    }
-
-    /**
-     * Sets a new value to URL to english Wikipedia page about music.
-     *
-     * @param wikiEn new value
-     */
-    public void setWikiEn(final String wikiEn) {
-        this.wikiEn = wikiEn;
-    }
-
-    /**
-     * Returns URL to czech Wikipedia page about music.
-     *
-     * @return URL to czech Wikipedia page about music
-     */
-    public String getWikiCz() {
-        return wikiCz;
-    }
-
-    /**
-     * Sets a new value to URL to czech Wikipedia page about music.
-     *
-     * @param wikiCz new value
-     */
-    public void setWikiCz(final String wikiCz) {
-        this.wikiCz = wikiCz;
-    }
-
-    /**
-     * Returns count of media.
-     *
-     * @return count of media
-     */
-    public int getMediaCount() {
-        return mediaCount;
-    }
-
-    /**
-     * Sets a new value to count of media.
-     *
-     * @param mediaCount new value
-     */
-    public void setMediaCount(final int mediaCount) {
-        this.mediaCount = mediaCount;
-    }
-
-    /**
-     * Returns note.
-     *
-     * @return note
-     */
-    public String getNote() {
-        return note;
-    }
-
-    /**
-     * Sets a new value to note.
-     *
-     * @param note new value
-     */
-    public void setNote(final String note) {
-        this.note = note;
-    }
-
-    /**
-     * Returns position.
-     *
-     * @return position
-     */
-    public int getPosition() {
-        return position;
-    }
-
-    /**
-     * Sets a new value to position.
-     *
-     * @param position new value
-     */
-    public void setPosition(final int position) {
-        this.position = position;
+    public void setMusic(final MusicTO music) {
+        this.music = music;
     }
 
     /**
@@ -229,22 +91,21 @@ public class Music implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof Music) || id == null) {
+        if (!(obj instanceof Music)) {
             return false;
         }
-        final Music music = (Music) obj;
-        return id.equals(music.id);
+
+        return music.equals(((Music) obj).music);
     }
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id.hashCode();
+        return music.hashCode();
     }
 
     @Override
     public String toString() {
-        return String.format("Music [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%d, note=%s, position=%d, songsCount=%d, totalLength=%s]", id, name,
-                wikiEn, wikiCz, mediaCount, note, position, songsCount, totalLength);
+        return String.format("Music [music=%s, songsCount=%d, totalLength=%s]", music, songsCount, totalLength);
     }
 
 }

@@ -1,10 +1,9 @@
 package cz.vhromada.catalog.web.converters;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import cz.vhromada.catalog.facade.to.GameTO;
+import cz.vhromada.catalog.web.commons.GameUtils;
 import cz.vhromada.catalog.web.fo.GameFO;
 import cz.vhromada.converters.Converter;
 
@@ -36,11 +35,11 @@ public class GameConverterTest {
      */
     @Test
     public void testConvertGameFO() {
-        final GameFO gameFO = getGameFO();
+        final GameFO gameFO = GameUtils.getGameFO();
 
         final GameTO gameTO = converter.convert(gameFO, GameTO.class);
 
-        assertGameDeepEquals(gameTO, gameFO);
+        GameUtils.assertGameDeepEquals(gameFO, gameTO);
     }
 
     /**
@@ -56,11 +55,11 @@ public class GameConverterTest {
      */
     @Test
     public void testConvertGameTO() {
-        final GameTO gameTO = getGameTO();
+        final GameTO gameTO = GameUtils.getGameTO();
 
         final GameFO gameFO = converter.convert(gameTO, GameFO.class);
 
-        assertGameDeepEquals(gameTO, gameFO);
+        GameUtils.assertGameDeepEquals(gameFO, gameTO);
     }
 
     /**
@@ -71,82 +70,5 @@ public class GameConverterTest {
         assertNull(converter.convert(null, GameFO.class));
     }
 
-    /**
-     * Returns FO for game.
-     *
-     * @return FO for game
-     */
-    private static GameFO getGameFO() {
-        final GameFO game = new GameFO();
-        game.setId(1);
-        game.setName("Name");
-        game.setWikiEn("enWiki");
-        game.setWikiCz("czWiki");
-        game.setMediaCount("1");
-        game.setCrack(true);
-        game.setSerialKey(true);
-        game.setPatch(true);
-        game.setTrainer(true);
-        game.setTrainerData(true);
-        game.setEditor(true);
-        game.setSaves(true);
-        game.setOtherData("Other data");
-        game.setNote("Note");
-
-        return game;
-    }
-
-    /**
-     * Returns TO for game.
-     *
-     * @return TO for game
-     */
-    private static GameTO getGameTO() {
-        final GameTO game = new GameTO();
-        game.setId(1);
-        game.setName("Name");
-        game.setWikiEn("enWiki");
-        game.setWikiCz("czWiki");
-        game.setMediaCount(1);
-        game.setCrack(true);
-        game.setSerialKey(true);
-        game.setPatch(true);
-        game.setTrainer(true);
-        game.setTrainerData(true);
-        game.setEditor(true);
-        game.setSaves(true);
-        game.setOtherData("Other data");
-        game.setNote("Note");
-
-        return game;
-    }
-
-    /**
-     * Asserts game deep equals.
-     *
-     * @param expected expected TO for game
-     * @param actual   actual game
-     */
-    public static void assertGameDeepEquals(final GameTO expected, final GameFO actual) {
-        assertNotNull(expected);
-        assertNotNull(actual);
-        assertNotNull(expected.getMediaCount());
-        assertNotNull(actual.getMediaCount());
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getWikiEn(), actual.getWikiEn());
-        assertEquals(expected.getWikiCz(), actual.getWikiCz());
-        assertEquals(Integer.toString(expected.getMediaCount()), actual.getMediaCount());
-        assertEquals(expected.getCrack(), actual.getCrack());
-        assertEquals(expected.getSerialKey(), actual.getSerialKey());
-        assertEquals(expected.getPatch(), actual.getPatch());
-        assertEquals(expected.getTrainer(), actual.getTrainer());
-        assertEquals(expected.getTrainerData(), actual.getTrainerData());
-        assertEquals(expected.getEditor(), actual.getEditor());
-        assertEquals(expected.getSaves(), actual.getSaves());
-        assertEquals(expected.getOtherData(), actual.getOtherData());
-        assertEquals(expected.getNote(), actual.getNote());
-        assertEquals(expected.getPosition(), actual.getPosition());
-    }
 
 }

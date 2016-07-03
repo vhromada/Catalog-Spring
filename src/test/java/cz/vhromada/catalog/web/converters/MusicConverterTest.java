@@ -2,9 +2,9 @@ package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
 
-import cz.vhromada.catalog.facade.to.GenreTO;
-import cz.vhromada.catalog.web.commons.GenreUtils;
-import cz.vhromada.catalog.web.fo.GenreFO;
+import cz.vhromada.catalog.facade.to.MusicTO;
+import cz.vhromada.catalog.web.commons.MusicUtils;
+import cz.vhromada.catalog.web.fo.MusicFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
@@ -15,13 +15,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link GenreFO} to {@link GenreTO}.
+ * A class represents test for converter from {@link MusicFO} to {@link MusicTO}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:webDozerMappingContext.xml")
-public class GenreConverterTest {
+public class MusicConverterTest {
 
     /**
      * Instance of {@link Converter}
@@ -34,40 +34,40 @@ public class GenreConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
      */
     @Test
-    public void testConvertGenreFO() {
-        final GenreFO genreFO = GenreUtils.getGenreFO();
+    public void testConvertMusicFO() {
+        final MusicFO musicFO = MusicUtils.getMusicFO();
 
-        final GenreTO genreTO = converter.convert(genreFO, GenreTO.class);
+        final MusicTO musicTO = converter.convert(musicFO, MusicTO.class);
 
-        GenreUtils.assertGenreDeepEquals(genreFO, genreTO);
+        MusicUtils.assertMusicDeepEquals(musicFO, musicTO);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
      */
     @Test
-    public void testConvertGenreFO_NullArgument() {
-        assertNull(converter.convert(null, GenreTO.class));
+    public void testConvertMusicFO_NullArgument() {
+        assertNull(converter.convert(null, MusicTO.class));
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
      */
     @Test
-    public void testConvertGenreTO() {
-        final GenreTO genreTO = GenreUtils.getGenreTO();
+    public void testConvertMusicTO() {
+        final MusicTO musicTO = MusicUtils.getMusicTO();
 
-        final GenreFO genreFO = converter.convert(genreTO, GenreFO.class);
+        final MusicFO musicFO = converter.convert(musicTO, MusicFO.class);
 
-        GenreUtils.assertGenreDeepEquals(genreFO, genreTO);
+        MusicUtils.assertMusicDeepEquals(musicFO, musicTO);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
      */
     @Test
-    public void testConvertGenreTO_NullArgument() {
-        assertNull(converter.convert(null, GenreFO.class));
+    public void testConvertMusicTO_NullArgument() {
+        assertNull(converter.convert(null, MusicFO.class));
     }
 
 }

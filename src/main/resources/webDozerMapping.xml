@@ -5,18 +5,18 @@
 
     <configuration>
         <custom-converters>
-            <converter type="cz.vhromada.catalog.web.converters.MovieConverter">
-                <class-a>cz.vhromada.catalog.web.fo.MovieFO</class-a>
-                <class-b>cz.vhromada.catalog.facade.to.MovieTO</class-b>
-            </converter>
-            <converter type="cz.vhromada.catalog.web.converters.ShowConverter">
-                <class-a>cz.vhromada.catalog.web.fo.ShowFO</class-a>
-                <class-b>cz.vhromada.catalog.facade.to.ShowTO</class-b>
-            </converter>
-            <converter type="cz.vhromada.catalog.web.converters.GenreToStringConverter">
-                <class-a>cz.vhromada.catalog.facade.to.GenreTO</class-a>
-                <class-b>java.lang.String</class-b>
-            </converter>
+            <!--<converter type="cz.vhromada.catalog.web.converters.MovieConverter">-->
+            <!--<class-a>cz.vhromada.catalog.web.fo.MovieFO</class-a>-->
+            <!--<class-b>cz.vhromada.catalog.facade.to.MovieTO</class-b>-->
+            <!--</converter>-->
+            <!--<converter type="cz.vhromada.catalog.web.converters.ShowConverter">-->
+            <!--<class-a>cz.vhromada.catalog.web.fo.ShowFO</class-a>-->
+            <!--<class-b>cz.vhromada.catalog.facade.to.ShowTO</class-b>-->
+            <!--</converter>-->
+            <!--<converter type="cz.vhromada.catalog.web.converters.GenreToStringConverter">-->
+            <!--<class-a>cz.vhromada.catalog.facade.to.GenreTO</class-a>-->
+            <!--<class-b>java.lang.String</class-b>-->
+            <!--</converter>-->
             <converter type="cz.vhromada.catalog.web.converters.TimeConverter">
                 <class-a>cz.vhromada.catalog.web.fo.TimeFO</class-a>
                 <class-b>java.lang.Integer</class-b>

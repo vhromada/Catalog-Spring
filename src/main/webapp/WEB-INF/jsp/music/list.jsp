@@ -27,35 +27,35 @@
             <tbody>
             <c:forEach items="${music}" var="musicItem">
                 <tr>
-                    <td><c:out value="${musicItem.name}"/></td>
-                    <td><c:out value="${musicItem.mediaCount}"/></td>
+                    <td><c:out value="${musicItem.music.name}"/></td>
+                    <td><c:out value="${musicItem.music.mediaCount}"/></td>
                     <td><c:out value="${musicItem.songsCount}"/></td>
                     <td><c:out value="${musicItem.totalLength}"/></td>
-                    <td><c:out value="${musicItem.note}"/></td>
+                    <td><c:out value="${musicItem.music.note}"/></td>
                     <td>
-                        <c:if test="${!empty(musicItem.wikiCz)}">
-                            <a href="http://cz.wikipedia.org/wiki/${musicItem.wikiCz}">Czech Wikipedia</a>
+                        <c:if test="${!empty(musicItem.music.wikiCz)}">
+                            <a href="http://cz.wikipedia.org/wiki/${musicItem.music.wikiCz}">Czech Wikipedia</a>
                         </c:if>
                     </td>
                     <td>
-                        <c:if test="${!empty(musicItem.wikiEn)}">
-                            <a href="http://en.wikipedia.org/wiki/${musicItem.wikiEn}">English Wikipedia</a>
+                        <c:if test="${!empty(musicItem.music.wikiEn)}">
+                            <a href="http://en.wikipedia.org/wiki/${musicItem.music.wikiEn}">English Wikipedia</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/music/${musicItem.id}/songs/list">Songs</a></td>
+                    <td><%--<a href="${pageContext.request.contextPath}/music/${musicItem.music.id}/songs/list">Songs</a>--%></td>
                     <td>
                         <c:if test="${music.indexOf(musicItem) > 0}">
-                            <a href="${pageContext.request.contextPath}/music/moveUp/${musicItem.id}">Move up</a>
+                            <a href="${pageContext.request.contextPath}/music/moveUp/${musicItem.music.id}">Move up</a>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${music.indexOf(musicItem) < music.size() - 1}">
-                            <a href="${pageContext.request.contextPath}/music/moveDown/${musicItem.id}">Move down</a>
+                            <a href="${pageContext.request.contextPath}/music/moveDown/${musicItem.music.id}">Move down</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/music/duplicate/${musicItem.id}">Duplicate</a></td>
-                    <td><a href="${pageContext.request.contextPath}/music/edit/${musicItem.id}">Edit</a></td>
-                    <td><a href="${pageContext.request.contextPath}/music/remove/${musicItem.id}">Remove</a></td>
+                    <td><a href="${pageContext.request.contextPath}/music/duplicate/${musicItem.music.id}">Duplicate</a></td>
+                    <td><a href="${pageContext.request.contextPath}/music/edit/${musicItem.music.id}">Edit</a></td>
+                    <td><a href="${pageContext.request.contextPath}/music/remove/${musicItem.music.id}">Remove</a></td>
                 </tr>
             </c:forEach>
             </tbody>

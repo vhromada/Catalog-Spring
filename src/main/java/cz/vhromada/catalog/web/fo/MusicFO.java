@@ -189,8 +189,8 @@ public class MusicFO implements Serializable {
         if (obj == null || !(obj instanceof MusicFO) || id == null) {
             return false;
         }
-        final MusicFO music = (MusicFO) obj;
-        return id.equals(music.id);
+
+        return id.equals(((MusicFO) obj).id);
     }
 
     @Override

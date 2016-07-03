@@ -143,8 +143,8 @@ public class SongFO implements Serializable {
         if (obj == null || !(obj instanceof SongFO) || id == null) {
             return false;
         }
-        final SongFO song = (SongFO) obj;
-        return id.equals(song.id);
+
+        return id.equals(((SongFO) obj).id);
     }
 
     @Override

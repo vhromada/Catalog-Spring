@@ -4,11 +4,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="webMapper" class="org.dozer.DozerBeanMapper">
-        <!--<property name="mappingFiles">-->
-        <!--<list>-->
-        <!--<value>webDozerMapping.xml</value>-->
-        <!--</list>-->
-        <!--</property>-->
+        <property name="mappingFiles">
+            <list>
+                <value>webDozerMapping.xml</value>
+            </list>
+        </property>
     </bean>
 
     <bean name="webDozerConverter" class="cz.vhromada.converters.dozer.DozerConverter">

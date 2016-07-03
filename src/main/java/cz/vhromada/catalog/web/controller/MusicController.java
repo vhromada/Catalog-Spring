@@ -119,7 +119,8 @@ public class MusicController {
 
         final List<Music> musicList = new ArrayList<>();
         for (final MusicTO musicTO : musicFacade.getMusic()) {
-            final Music music = converter.convert(musicTO, Music.class);
+            final Music music = new Music();
+            music.setMusic(musicTO);
             int count = 0;
             int length = 0;
             for (final SongTO song : songFacade.findSongsByMusic(musicTO)) {
