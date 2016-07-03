@@ -373,8 +373,8 @@ public class GameFO implements Serializable {
         if (obj == null || !(obj instanceof GameFO) || id == null) {
             return false;
         }
-        final GameFO game = (GameFO) obj;
-        return id.equals(game.id);
+
+        return id.equals(((GameFO) obj).id);
     }
 
     @Override

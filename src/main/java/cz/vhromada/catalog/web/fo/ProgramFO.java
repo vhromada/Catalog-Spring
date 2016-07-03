@@ -258,8 +258,8 @@ public class ProgramFO implements Serializable {
         if (obj == null || !(obj instanceof ProgramFO) || id == null) {
             return false;
         }
-        final ProgramFO program = (ProgramFO) obj;
-        return id.equals(program.id);
+
+        return id.equals(((ProgramFO) obj).id);
     }
 
     @Override
