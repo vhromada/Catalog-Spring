@@ -9,13 +9,15 @@ import org.junit.runners.Suite;
  * @author Vladimir Hromada
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ /*MovieTOToMovieFOConverterTest.class, MovieFOToMovieTOConverterTest.class, ShowTOToShowFOConverterTest.class,
-        ShowFOToShowTOConverterTest.class, ShowTOToShowConverterTest.class, ShowToShowTOConverterTest.class, SeasonTOToSeasonFOConverterTest.class,
+@Suite.SuiteClasses({ /*MovieTOToMovieFOConverterTest.class, MovieFOToMovieTOConverterTest.class,
+        ShowTOToShowFOConverterTest.class, ShowFOToShowTOConverterTest.class, ShowTOToShowConverterTest.class, ShowToShowTOConverterTest.class, SeasonTOToSeasonFOConverterTest.class,
         SeasonFOToSeasonTOConverterTest.class, SeasonTOToSeasonConverterTest.class, SeasonToSeasonTOConverterTest.class,
-        EpisodeTOToEpisodeFOConverterTest.class, EpisodeFOToEpisodeTOConverterTest.class, GameTOToGameFOConverterTest.class, GameFOToGameTOConverterTest.class,
-        MusicTOToMusicFOConverterTest.class, MusicFOToMusicTOConverterTest.class, MusicTOToMusicConverterTest.class, MusicToMusicTOConverterTest.class,
+        EpisodeTOToEpisodeFOConverterTest.class, EpisodeFOToEpisodeTOConverterTest.class, */
+        GameConverterTest.class,
+        /*MusicTOToMusicFOConverterTest.class, MusicFOToMusicTOConverterTest.class, MusicTOToMusicConverterTest.class, MusicToMusicTOConverterTest.class,
         SongTOToSongFOConverterTest.class, SongFOToSongTOConverterTest.class, ProgramTOToProgramFOConverterTest.class, ProgramFOToProgramTOConverterTest.class,*/
-        GenreConverterTest.class/*, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class,
+        GenreConverterTest.class
+        /*, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class,
         IntegerToTimeFOConverterTest.class, TimeFOToIntegerConverterTest.class*/ })
 public class ConvertersSuite {
 }

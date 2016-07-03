@@ -308,6 +308,18 @@ public class GenreController {
     }
 
     /**
+     * Process updating positions.
+     *
+     * @return view for redirect to page with list of genres
+     */
+    @RequestMapping(value = "update", method = RequestMethod.GET)
+    public String processUpdatePositions() {
+        genreFacade.updatePositions();
+
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
      * Returns page's view with form.
      *
      * @param model model

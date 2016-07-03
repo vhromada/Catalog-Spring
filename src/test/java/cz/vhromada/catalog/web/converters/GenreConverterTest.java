@@ -36,17 +36,11 @@ public class GenreConverterTest {
      */
     @Test
     public void testConvertGenreFO() {
-        final GenreFO genreFO = new GenreFO();
-        genreFO.setId(1);
-        genreFO.setName("Name");
-        genreFO.setPosition(0);
+        final GenreFO genreFO = getGenreFO();
 
         final GenreTO genreTO = converter.convert(genreFO, GenreTO.class);
 
-        assertNotNull(genreTO);
-        assertEquals(genreFO.getId(), genreTO.getId());
-        assertEquals(genreFO.getName(), genreTO.getName());
-        assertEquals(genreFO.getPosition(), genreTO.getPosition());
+        assertGenreDeepEquals(genreTO, genreFO);
     }
 
     /**
@@ -62,17 +56,11 @@ public class GenreConverterTest {
      */
     @Test
     public void testConvertGenreTO() {
-        final GenreTO genreTO = new GenreTO();
-        genreTO.setId(1);
-        genreTO.setName("Name");
-        genreTO.setPosition(0);
+        final GenreTO genreTO = getGenreTO();
 
         final GenreFO genreFO = converter.convert(genreTO, GenreFO.class);
 
-        assertNotNull(genreFO);
-        assertEquals(genreTO.getId(), genreFO.getId());
-        assertEquals(genreTO.getName(), genreFO.getName());
-        assertEquals(genreTO.getPosition(), genreFO.getPosition());
+        assertGenreDeepEquals(genreTO, genreFO);
     }
 
     /**
@@ -81,6 +69,48 @@ public class GenreConverterTest {
     @Test
     public void testConvertGenreTO_NullArgument() {
         assertNull(converter.convert(null, GenreFO.class));
+    }
+
+    /**
+     * Returns FO for genre.
+     *
+     * @return FO for genre
+     */
+    private static GenreFO getGenreFO() {
+        final GenreFO genre = new GenreFO();
+        genre.setId(1);
+        genre.setName("Name");
+        genre.setPosition(0);
+
+        return genre;
+    }
+
+    /**
+     * Returns TO for genre.
+     *
+     * @return TO for genre
+     */
+    private static GenreTO getGenreTO() {
+        final GenreTO genre = new GenreTO();
+        genre.setId(1);
+        genre.setName("Name");
+        genre.setPosition(0);
+
+        return genre;
+    }
+
+    /**
+     * Asserts genre deep equals.
+     *
+     * @param expected expected TO for genre
+     * @param actual   actual FO for genre
+     */
+    public static void assertGenreDeepEquals(final GenreTO expected, final GenreFO actual) {
+        assertNotNull(expected);
+        assertNotNull(actual);
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getPosition(), actual.getPosition());
     }
 
 }
