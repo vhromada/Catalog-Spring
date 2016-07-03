@@ -262,6 +262,52 @@ public class GenreController {
     }
 
     /**
+     * Process moving genre up.
+     *
+     * @param id ID of moving genre
+     * @return view for redirect to page with list of genres
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if TO for genre doesn't exist
+     */
+    @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
+    public String processMoveUp(@PathVariable("id") final Integer id) {
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+
+        final GenreTO genre = new GenreTO();
+        genre.setId(id);
+        if (genreFacade.getGenre(id) != null) {
+            genreFacade.moveUp(genre);
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
+
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Process moving genre down.
+     *
+     * @param id ID of moving genre
+     * @return view for redirect to page with list of genres
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if TO for genre doesn't exist
+     */
+    @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
+    public String processMoveDown(@PathVariable("id") final Integer id) {
+        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+
+        final GenreTO genre = new GenreTO();
+        genre.setId(id);
+        if (genreFacade.getGenre(id) != null) {
+            genreFacade.moveDown(genre);
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
+
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
      * Returns page's view with form.
      *
      * @param model model
