@@ -10,13 +10,13 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ /*MovieTOToMovieFOConverterTest.class, MovieFOToMovieTOConverterTest.class,
-        ShowTOToShowFOConverterTest.class, ShowFOToShowTOConverterTest.class, ShowTOToShowConverterTest.class, ShowToShowTOConverterTest.class, SeasonTOToSeasonFOConverterTest.class,
-        SeasonFOToSeasonTOConverterTest.class, SeasonTOToSeasonConverterTest.class, SeasonToSeasonTOConverterTest.class,
+        ShowTOToShowFOConverterTest.class, ShowFOToShowTOConverterTest.class, ShowTOToShowConverterTest.class, ShowToShowTOConverterTest.class,
+        SeasonTOToSeasonFOConverterTest.class, SeasonFOToSeasonTOConverterTest.class, SeasonTOToSeasonConverterTest.class, SeasonToSeasonTOConverterTest.class,
         EpisodeTOToEpisodeFOConverterTest.class, EpisodeFOToEpisodeTOConverterTest.class, */
         GameConverterTest.class,
         /*MusicTOToMusicFOConverterTest.class, MusicFOToMusicTOConverterTest.class, MusicTOToMusicConverterTest.class, MusicToMusicTOConverterTest.class,
-        SongTOToSongFOConverterTest.class, SongFOToSongTOConverterTest.class, ProgramTOToProgramFOConverterTest.class, ProgramFOToProgramTOConverterTest.class,*/
-        GenreConverterTest.class
+        SongTOToSongFOConverterTest.class, SongFOToSongTOConverterTest.class, */
+        ProgramConverterTest.class, GenreConverterTest.class
         /*, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class,
         IntegerToTimeFOConverterTest.class, TimeFOToIntegerConverterTest.class*/ })
 public class ConvertersSuite {

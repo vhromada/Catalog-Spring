@@ -10,7 +10,7 @@
             <%--<li><a href="${pageContext.request.contextPath}/shows/list">Shows</a>--%>
             <li><a href="${pageContext.request.contextPath}/games/list">Games</a>
             <%--<li><a href="${pageContext.request.contextPath}/music/list">Music</a>--%>
-            <%--<li><a href="${pageContext.request.contextPath}/programs/list">Programs</a>--%>
+            <li><a href="${pageContext.request.contextPath}/programs/list">Programs</a>
             <li><a href="${pageContext.request.contextPath}/genres/list">Genres</a>
         </ul>
     </div>
