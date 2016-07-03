@@ -26,11 +26,11 @@ public final class GameUtils {
      */
     public static GameFO getGameFO() {
         final GameFO game = new GameFO();
-        game.setId(1);
-        game.setName("Name");
-        game.setWikiEn("enWiki");
-        game.setWikiCz("czWiki");
-        game.setMediaCount("1");
+        game.setId(TestConstants.ID);
+        game.setName(TestConstants.NAME);
+        game.setWikiEn(TestConstants.EN_WIKI);
+        game.setWikiCz(TestConstants.CZ_WIKI);
+        game.setMediaCount(Integer.toString(TestConstants.MEDIA));
         game.setCrack(true);
         game.setSerialKey(true);
         game.setPatch(true);
@@ -39,8 +39,8 @@ public final class GameUtils {
         game.setEditor(true);
         game.setSaves(true);
         game.setOtherData("Other data");
-        game.setNote("Note");
-        game.setPosition(0);
+        game.setNote(TestConstants.NOTE);
+        game.setPosition(TestConstants.POSITION);
 
         return game;
     }
@@ -52,11 +52,11 @@ public final class GameUtils {
      */
     public static GameTO getGameTO() {
         final GameTO game = new GameTO();
-        game.setId(1);
-        game.setName("Name");
-        game.setWikiEn("enWiki");
-        game.setWikiCz("czWiki");
-        game.setMediaCount(1);
+        game.setId(TestConstants.ID);
+        game.setName(TestConstants.NAME);
+        game.setWikiEn(TestConstants.EN_WIKI);
+        game.setWikiCz(TestConstants.CZ_WIKI);
+        game.setMediaCount(TestConstants.MEDIA);
         game.setCrack(true);
         game.setSerialKey(true);
         game.setPatch(true);
@@ -65,8 +65,8 @@ public final class GameUtils {
         game.setEditor(true);
         game.setSaves(true);
         game.setOtherData("Other data");
-        game.setNote("Note");
-        game.setPosition(0);
+        game.setNote(TestConstants.NOTE);
+        game.setPosition(TestConstants.POSITION);
 
         return game;
     }

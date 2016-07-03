@@ -2,9 +2,9 @@ package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
 
-import cz.vhromada.catalog.facade.to.GameTO;
-import cz.vhromada.catalog.web.commons.GameUtils;
-import cz.vhromada.catalog.web.fo.GameFO;
+import cz.vhromada.catalog.facade.to.MovieTO;
+import cz.vhromada.catalog.web.commons.MovieUtils;
+import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
@@ -15,13 +15,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link GameFO} to {@link GameTO}.
+ * A class represents test for converter from {@link MovieFO} to {@link MovieTO}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:webDozerMappingContext.xml")
-public class GameConverterTest {
+public class MovieConverterTest {
 
     /**
      * Instance of {@link Converter}
@@ -34,40 +34,40 @@ public class GameConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
      */
     @Test
-    public void testConvertGameFO() {
-        final GameFO gameFO = GameUtils.getGameFO();
+    public void testConvertMovieFO() {
+        final MovieFO movieFO = MovieUtils.getMovieFO();
 
-        final GameTO gameTO = converter.convert(gameFO, GameTO.class);
+        final MovieTO movieTO = converter.convert(movieFO, MovieTO.class);
 
-        GameUtils.assertGameDeepEquals(gameFO, gameTO);
+        MovieUtils.assertMovieDeepEquals(movieFO, movieTO);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
      */
     @Test
-    public void testConvertGameFO_NullArgument() {
-        assertNull(converter.convert(null, GameTO.class));
+    public void testConvertMovieFO_NullArgument() {
+        assertNull(converter.convert(null, MovieTO.class));
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
      */
     @Test
-    public void testConvertGameTO() {
-        final GameTO gameTO = GameUtils.getGameTO();
+    public void testConvertMovieTO() {
+        final MovieTO movieTO = MovieUtils.getMovieTO();
 
-        final GameFO gameFO = converter.convert(gameTO, GameFO.class);
+        final MovieFO movieFO = converter.convert(movieTO, MovieFO.class);
 
-        GameUtils.assertGameDeepEquals(gameFO, gameTO);
+        MovieUtils.assertMovieDeepEquals(movieFO, movieTO);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
      */
     @Test
-    public void testConvertGameTO_NullArgument() {
-        assertNull(converter.convert(null, GameFO.class));
+    public void testConvertMovieTO_NullArgument() {
+        assertNull(converter.convert(null, MovieFO.class));
     }
 
 }

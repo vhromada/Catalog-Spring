@@ -2,9 +2,9 @@ package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
 
-import cz.vhromada.catalog.facade.to.GameTO;
-import cz.vhromada.catalog.web.commons.GameUtils;
-import cz.vhromada.catalog.web.fo.GameFO;
+import cz.vhromada.catalog.facade.to.EpisodeTO;
+import cz.vhromada.catalog.web.commons.EpisodeUtils;
+import cz.vhromada.catalog.web.fo.EpisodeFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
@@ -15,13 +15,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link GameFO} to {@link GameTO}.
+ * A class represents test for converter from {@link EpisodeFO} to {@link EpisodeTO}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:webDozerMappingContext.xml")
-public class GameConverterTest {
+public class EpisodeConverterTest {
 
     /**
      * Instance of {@link Converter}
@@ -34,40 +34,40 @@ public class GameConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
      */
     @Test
-    public void testConvertGameFO() {
-        final GameFO gameFO = GameUtils.getGameFO();
+    public void testConvertEpisodeFO() {
+        final EpisodeFO episodeFO = EpisodeUtils.getEpisodeFO();
 
-        final GameTO gameTO = converter.convert(gameFO, GameTO.class);
+        final EpisodeTO episodeTO = converter.convert(episodeFO, EpisodeTO.class);
 
-        GameUtils.assertGameDeepEquals(gameFO, gameTO);
+        EpisodeUtils.assertEpisodeDeepEquals(episodeFO, episodeTO);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
      */
     @Test
-    public void testConvertGameFO_NullArgument() {
-        assertNull(converter.convert(null, GameTO.class));
+    public void testConvertEpisodeFO_NullArgument() {
+        assertNull(converter.convert(null, EpisodeTO.class));
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
      */
     @Test
-    public void testConvertGameTO() {
-        final GameTO gameTO = GameUtils.getGameTO();
+    public void testConvertEpisodeTO() {
+        final EpisodeTO episodeTO = EpisodeUtils.getEpisodeTO();
 
-        final GameFO gameFO = converter.convert(gameTO, GameFO.class);
+        final EpisodeFO episodeFO = converter.convert(episodeTO, EpisodeFO.class);
 
-        GameUtils.assertGameDeepEquals(gameFO, gameTO);
+        EpisodeUtils.assertEpisodeDeepEquals(episodeFO, episodeTO);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
      */
     @Test
-    public void testConvertGameTO_NullArgument() {
-        assertNull(converter.convert(null, GameFO.class));
+    public void testConvertEpisodeTO_NullArgument() {
+        assertNull(converter.convert(null, EpisodeFO.class));
     }
 
 }

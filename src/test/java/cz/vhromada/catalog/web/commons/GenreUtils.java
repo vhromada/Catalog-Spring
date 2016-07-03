@@ -26,9 +26,9 @@ public final class GenreUtils {
      */
     public static GenreFO getGenreFO() {
         final GenreFO genre = new GenreFO();
-        genre.setId(1);
-        genre.setName("Name");
-        genre.setPosition(0);
+        genre.setId(TestConstants.ID);
+        genre.setName(TestConstants.NAME);
+        genre.setPosition(TestConstants.POSITION);
 
         return genre;
     }
@@ -40,9 +40,9 @@ public final class GenreUtils {
      */
     public static GenreTO getGenreTO() {
         final GenreTO genre = new GenreTO();
-        genre.setId(1);
-        genre.setName("Name");
-        genre.setPosition(0);
+        genre.setId(TestConstants.ID);
+        genre.setName(TestConstants.NAME);
+        genre.setPosition(TestConstants.POSITION);
 
         return genre;
     }

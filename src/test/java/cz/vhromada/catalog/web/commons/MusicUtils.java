@@ -26,13 +26,13 @@ public final class MusicUtils {
      */
     public static MusicFO getMusicFO() {
         final MusicFO music = new MusicFO();
-        music.setId(1);
-        music.setName("Name");
-        music.setWikiEn("enWiki");
-        music.setWikiCz("czWiki");
-        music.setMediaCount("1");
-        music.setNote("Note");
-        music.setPosition(0);
+        music.setId(TestConstants.ID);
+        music.setName(TestConstants.NAME);
+        music.setWikiEn(TestConstants.EN_WIKI);
+        music.setWikiCz(TestConstants.CZ_WIKI);
+        music.setMediaCount(Integer.toString(TestConstants.MEDIA));
+        music.setNote(TestConstants.NOTE);
+        music.setPosition(TestConstants.POSITION);
 
         return music;
     }
@@ -44,13 +44,13 @@ public final class MusicUtils {
      */
     public static MusicTO getMusicTO() {
         final MusicTO music = new MusicTO();
-        music.setId(1);
-        music.setName("Name");
-        music.setWikiEn("enWiki");
-        music.setWikiCz("czWiki");
-        music.setMediaCount(1);
-        music.setNote("Note");
-        music.setPosition(0);
+        music.setId(TestConstants.ID);
+        music.setName(TestConstants.NAME);
+        music.setWikiEn(TestConstants.EN_WIKI);
+        music.setWikiCz(TestConstants.CZ_WIKI);
+        music.setMediaCount(TestConstants.MEDIA);
+        music.setNote(TestConstants.NOTE);
+        music.setPosition(TestConstants.POSITION);
 
         return music;
     }

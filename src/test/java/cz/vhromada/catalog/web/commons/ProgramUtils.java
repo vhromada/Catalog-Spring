@@ -26,16 +26,16 @@ public final class ProgramUtils {
      */
     public static ProgramFO getProgramFO() {
         final ProgramFO program = new ProgramFO();
-        program.setId(1);
-        program.setName("Name");
-        program.setWikiEn("enWiki");
-        program.setWikiCz("czWiki");
-        program.setMediaCount("1");
+        program.setId(TestConstants.ID);
+        program.setName(TestConstants.NAME);
+        program.setWikiEn(TestConstants.EN_WIKI);
+        program.setWikiCz(TestConstants.CZ_WIKI);
+        program.setMediaCount(Integer.toString(TestConstants.MEDIA));
         program.setCrack(true);
         program.setSerialKey(true);
         program.setOtherData("Other data");
-        program.setNote("Note");
-        program.setPosition(0);
+        program.setNote(TestConstants.NOTE);
+        program.setPosition(TestConstants.POSITION);
 
         return program;
     }
@@ -47,16 +47,16 @@ public final class ProgramUtils {
      */
     public static ProgramTO getProgramTO() {
         final ProgramTO program = new ProgramTO();
-        program.setId(1);
-        program.setName("Name");
-        program.setWikiEn("enWiki");
-        program.setWikiCz("czWiki");
-        program.setMediaCount(1);
+        program.setId(TestConstants.ID);
+        program.setName(TestConstants.NAME);
+        program.setWikiEn(TestConstants.EN_WIKI);
+        program.setWikiCz(TestConstants.CZ_WIKI);
+        program.setMediaCount(TestConstants.MEDIA);
         program.setCrack(true);
         program.setSerialKey(true);
         program.setOtherData("Other data");
-        program.setNote("Note");
-        program.setPosition(0);
+        program.setNote(TestConstants.NOTE);
+        program.setPosition(TestConstants.POSITION);
 
         return program;
     }

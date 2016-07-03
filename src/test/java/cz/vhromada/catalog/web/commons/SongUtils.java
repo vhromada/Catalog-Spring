@@ -26,11 +26,11 @@ public final class SongUtils {
      */
     public static SongFO getSongFO() {
         final SongFO song = new SongFO();
-        song.setId(1);
-        song.setName("Name");
+        song.setId(TestConstants.ID);
+        song.setName(TestConstants.NAME);
         song.setLength(TimeUtils.getTimeFO());
-        song.setNote("Note");
-        song.setPosition(0);
+        song.setNote(TestConstants.NOTE);
+        song.setPosition(TestConstants.POSITION);
 
         return song;
     }
@@ -42,11 +42,11 @@ public final class SongUtils {
      */
     public static SongTO getSongTO() {
         final SongTO song = new SongTO();
-        song.setId(1);
-        song.setName("Name");
-        song.setLength(10);
-        song.setNote("Note");
-        song.setPosition(0);
+        song.setId(TestConstants.ID);
+        song.setName(TestConstants.NAME);
+        song.setLength(TestConstants.LENGTH);
+        song.setNote(TestConstants.NOTE);
+        song.setPosition(TestConstants.POSITION);
 
         return song;
     }
@@ -58,7 +58,6 @@ public final class SongUtils {
      * @param actual   actual TO for song
      */
     public static void assertSongDeepEquals(final SongFO expected, final SongTO actual) {
-        assertNotNull(expected);
         assertNotNull(actual);
         assertNotNull(actual.getLength());
         assertEquals(expected.getId(), actual.getId());
