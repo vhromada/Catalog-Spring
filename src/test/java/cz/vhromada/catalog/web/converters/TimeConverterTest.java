@@ -30,7 +30,7 @@ public class TimeConverterTest {
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to data.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to integer.
      */
     @Test
     public void testConvertTimeFO() {
@@ -42,7 +42,7 @@ public class TimeConverterTest {
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to data with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to integer with null argument.
      */
     @Test
     public void testConvertTimeFO_NullArgument() {
@@ -50,7 +50,7 @@ public class TimeConverterTest {
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from data to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from integer to FO.
      */
     @Test
     public void testConvertInteger() {
@@ -62,7 +62,7 @@ public class TimeConverterTest {
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from data to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from integer to FO with null argument.
      */
     @Test
     public void testConvertInteger_NullArgument() {

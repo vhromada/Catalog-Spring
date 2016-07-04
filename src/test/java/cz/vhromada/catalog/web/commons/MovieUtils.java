@@ -48,7 +48,7 @@ public final class MovieUtils {
         movie.setPicture("Picture");
         movie.setNote(TestConstants.NOTE);
         movie.setMedia(CollectionUtils.newList(TimeUtils.getTimeFO()));
-        movie.setGenres(CollectionUtils.newList(TestConstants.NAME));
+        movie.setGenres(CollectionUtils.newList(Integer.toString(TestConstants.ID)));
         movie.setPosition(TestConstants.POSITION);
 
         return movie;

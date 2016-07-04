@@ -222,8 +222,8 @@ public class SeasonFO implements Serializable {
         if (obj == null || !(obj instanceof SeasonFO) || id == null) {
             return false;
         }
-        final SeasonFO season = (SeasonFO) obj;
-        return id.equals(season.id);
+
+        return id.equals(((SeasonFO) obj).id);
     }
 
     @Override

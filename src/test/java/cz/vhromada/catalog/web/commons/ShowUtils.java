@@ -1,7 +1,10 @@
 package cz.vhromada.catalog.web.commons;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import cz.vhromada.catalog.commons.CollectionUtils;
 import cz.vhromada.catalog.facade.to.MediumTO;
@@ -43,8 +46,8 @@ public final class ShowUtils {
         show.setWikiCz(TestConstants.CZ_WIKI);
         show.setPicture("Picture");
         show.setNote(TestConstants.NOTE);
-        show.setGenres(CollectionUtils.newList(TestConstants.NAME));
         show.setPosition(TestConstants.POSITION);
+        show.setGenres(CollectionUtils.newList(TestConstants.ID));
 
         return show;
     }
@@ -70,8 +73,8 @@ public final class ShowUtils {
         show.setWikiCz(TestConstants.CZ_WIKI);
         show.setPicture("Picture");
         show.setNote(TestConstants.NOTE);
-        show.setGenres(CollectionUtils.newList(GenreUtils.getGenreTO()));
         show.setPosition(TestConstants.POSITION);
+        show.setGenres(CollectionUtils.newList(GenreUtils.getGenreTO()));
 
         return show;
     }
@@ -89,7 +92,11 @@ public final class ShowUtils {
         assertEquals(expected.getCzechName(), actual.getCzechName());
         assertEquals(expected.getOriginalName(), actual.getOriginalName());
         assertEquals(expected.getCsfd(), actual.getCsfd());
-        //assertEquals(expected.getImdbCode(), Integer.toString(actual.getImdbCode()));
+        if (expected.getImdb()) {
+            assertEquals(expected.getImdbCode(), Integer.toString(actual.getImdbCode()));
+        } else {
+            assertEquals(-1, actual.getImdbCode());
+        }
         assertEquals(expected.getWikiEn(), actual.getWikiEn());
         assertEquals(expected.getWikiCz(), actual.getWikiCz());
         assertEquals(expected.getPicture(), actual.getPicture());
@@ -100,4 +107,33 @@ public final class ShowUtils {
 //        GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
     }
 
+    /**
+     * Asserts show deep equals.
+     *
+     * @param expected expected TO for show
+     * @param actual   actual FO for show
+     */
+    public static void assertShowDeepEquals(final ShowTO expected, final ShowFO actual) {
+        assertNotNull(actual);
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getCzechName(), actual.getCzechName());
+        assertEquals(expected.getOriginalName(), actual.getOriginalName());
+        assertEquals(expected.getCsfd(), actual.getCsfd());
+        if (expected.getImdbCode() < 1) {
+            assertFalse(actual.getImdb());
+            assertNull(actual.getImdbCode());
+        } else {
+            assertTrue(actual.getImdb());
+            assertNotNull(actual.getImdbCode());
+            assertEquals(Integer.toString(expected.getImdbCode()), actual.getImdbCode());
+        }
+        assertEquals(expected.getWikiEn(), actual.getWikiEn());
+        assertEquals(expected.getWikiCz(), actual.getWikiCz());
+        assertEquals(expected.getPicture(), actual.getPicture());
+        assertEquals(expected.getNote(), actual.getNote());
+        assertEquals(expected.getPosition(), actual.getPosition());
+        //TODO vhromada 03.07.2016: test
+//        MediumUtils.assertMediumListDeepEquals(expected.getMedia(), actual.getMedia());
+//        GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
+    }
 }

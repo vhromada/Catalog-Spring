@@ -100,7 +100,7 @@ public class Music implements Serializable {
 
     @Override
     public int hashCode() {
-        return music.hashCode();
+        return music == null ? 0 : music.hashCode();
     }
 
     @Override

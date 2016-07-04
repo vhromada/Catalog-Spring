@@ -39,7 +39,7 @@ public class ShowConverterTest {
 
         final ShowTO showTO = converter.convert(showFO, ShowTO.class);
 
-        ShowUtils.assertShowDeepEquals(showFO, showTO);
+        ShowUtils.assertShowDeepEquals(showTO, showFO);
     }
 
     /**

@@ -2,6 +2,7 @@ package cz.vhromada.catalog.web.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -143,7 +144,8 @@ public class ShowController {
 
         final List<Show> shows = new ArrayList<>();
         for (final ShowTO showTO : showFacade.getShows()) {
-            final Show show = converter.convert(showTO, Show.class);
+            final Show show = new Show();
+            show.setShow(showTO);
             int seasonsCount = 0;
             int episodesCount = 0;
             int length = 0;
@@ -266,8 +268,8 @@ public class ShowController {
                 return createFormView(model, show, "Edit show", "showsEdit");
             }
 
-            final ShowTO showTO = converter.convert(show, ShowTO.class);
             if (showFacade.getShow(show.getId()) != null) {
+                final ShowTO showTO = converter.convert(show, ShowTO.class);
                 showTO.setGenres(getGenres(showTO.getGenres()));
                 showFacade.update(showTO);
             } else {
@@ -406,12 +408,7 @@ public class ShowController {
      * @return genres
      */
     private List<GenreTO> getGenres(final List<GenreTO> source) {
-        final List<GenreTO> genres = new ArrayList<>();
-        for (final GenreTO genre : source) {
-            genres.add(genreFacade.getGenre(genre.getId()));
-        }
-
-        return genres;
+        return source.stream().map(genre -> genreFacade.getGenre(genre.getId())).collect(Collectors.toList());
     }
 
 }

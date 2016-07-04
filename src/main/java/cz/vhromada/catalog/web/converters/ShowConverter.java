@@ -74,9 +74,9 @@ public class ShowConverter implements MapperAware, CustomConverter {
      * @param source source
      * @return genres
      */
-    private List<GenreTO> convertIdList(final List<String> source) {
+    private List<GenreTO> convertIdList(final List<Integer> source) {
         final List<GenreTO> genres = new ArrayList<>();
-        for (final String id : source) {
+        for (final Integer id : source) {
             genres.add(mapper.map(id, GenreTO.class));
         }
 
@@ -117,10 +117,10 @@ public class ShowConverter implements MapperAware, CustomConverter {
      * @param source source
      * @return genres
      */
-    private List<String> convertGenres(final List<GenreTO> source) {
-        final List<String> genres = new ArrayList<>();
+    private List<Integer> convertGenres(final List<GenreTO> source) {
+        final List<Integer> genres = new ArrayList<>();
         for (final GenreTO genre : source) {
-            genres.add(mapper.map(genre, String.class));
+            genres.add(mapper.map(genre, Integer.class));
         }
 
         return genres;

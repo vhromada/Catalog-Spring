@@ -168,8 +168,8 @@ public class EpisodeFO implements Serializable {
         if (obj == null || !(obj instanceof EpisodeFO) || id == null) {
             return false;
         }
-        final EpisodeFO episode = (EpisodeFO) obj;
-        return id.equals(episode.id);
+
+        return id.equals(((EpisodeFO) obj).id);
     }
 
     @Override

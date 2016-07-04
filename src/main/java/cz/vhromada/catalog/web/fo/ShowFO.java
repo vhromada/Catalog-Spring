@@ -87,7 +87,7 @@ public class ShowFO implements Serializable {
      */
     @NotNull
     @Size(min = 1)
-    private List<String> genres;
+    private List<Integer> genres;
 
     /**
      * Returns ID.
@@ -292,7 +292,7 @@ public class ShowFO implements Serializable {
      *
      * @return genres
      */
-    public List<String> getGenres() {
+    public List<Integer> getGenres() {
         return genres;
     }
 
@@ -301,7 +301,7 @@ public class ShowFO implements Serializable {
      *
      * @param genres new value
      */
-    public void setGenres(final List<String> genres) {
+    public void setGenres(final List<Integer> genres) {
         this.genres = genres;
     }
 
@@ -313,8 +313,8 @@ public class ShowFO implements Serializable {
         if (obj == null || !(obj instanceof ShowFO) || id == null) {
             return false;
         }
-        final ShowFO show = (ShowFO) obj;
-        return id.equals(show.id);
+
+        return id.equals(((ShowFO) obj).id);
     }
 
     @Override

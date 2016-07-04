@@ -94,9 +94,10 @@ public class TimeFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof TimeFO)) {
+        if (!(obj instanceof TimeFO)) {
             return false;
         }
+
         final TimeFO time = (TimeFO) obj;
         return Objects.equals(hours, time.hours) && Objects.equals(minutes, time.minutes) && Objects.equals(seconds, time.seconds);
     }

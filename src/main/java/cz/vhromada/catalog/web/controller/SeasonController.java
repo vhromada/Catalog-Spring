@@ -124,7 +124,8 @@ public class SeasonController {
 
         final List<Season> seasons = new ArrayList<>();
         for (final SeasonTO seasonTO : seasonFacade.findSeasonsByShow(show)) {
-            final Season season = converter.convert(seasonTO, Season.class);
+            final Season season = new Season();
+            season.setSeason(seasonTO);
             int count = 0;
             int length = 0;
             for (final EpisodeTO episode : episodeFacade.findEpisodesBySeason(seasonTO)) {
@@ -195,7 +196,7 @@ public class SeasonController {
 
             final SeasonTO seasonTO = converter.convert(seasonFO, SeasonTO.class);
             if (seasonTO.getSubtitles() == null) {
-                seasonTO.setSubtitles(new ArrayList<Language>());
+                seasonTO.setSubtitles(new ArrayList<>());
             }
             seasonFacade.add(showFacade.getShow(showId), seasonTO);
         }
@@ -266,7 +267,7 @@ public class SeasonController {
             final SeasonTO seasonTO = converter.convert(seasonFO, SeasonTO.class);
             if (seasonFacade.getSeason(seasonTO.getId()) != null) {
                 if (seasonTO.getSubtitles() == null) {
-                    seasonTO.setSubtitles(new ArrayList<Language>());
+                    seasonTO.setSubtitles(new ArrayList<>());
                 }
                 seasonFacade.update(seasonTO);
             } else {
@@ -398,7 +399,7 @@ public class SeasonController {
     private void validateShow(final int id) {
         final ShowTO showTO = new ShowTO();
         showTO.setId(id);
-        if (showFacade.getShow(id) != null) {
+        if (showFacade.getShow(id) == null) {
             throw new IllegalRequestException("TO for show doesn't exist.");
         }
     }

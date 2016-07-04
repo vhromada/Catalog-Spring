@@ -10,8 +10,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ MovieConverterTest.class, ShowConverterTest.class, SeasonConverterTest.class, EpisodeConverterTest.class, GameConverterTest.class,
-        MusicConverterTest.class, SongConverterTest.class, ProgramConverterTest.class, GenreConverterTest.class,
-        /*, GenreTOToStringConverterTest.class, StringToGenreTOConverterTest.class,*/
+        MusicConverterTest.class, SongConverterTest.class, ProgramConverterTest.class, GenreConverterTest.class, GenreToIntegerConverterTest.class,
         TimeConverterTest.class })
 public class ConvertersSuite {
 }

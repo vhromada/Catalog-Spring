@@ -437,7 +437,7 @@ public class EpisodeController {
     private void validateShow(final int id) {
         final ShowTO showTO = new ShowTO();
         showTO.setId(id);
-        if (showFacade.getShow(showTO.getId()) != null) {
+        if (showFacade.getShow(showTO.getId()) == null) {
             throw new IllegalRequestException("TO for show doesn't exist.");
         }
     }
@@ -451,7 +451,7 @@ public class EpisodeController {
     private void validateSeason(final int id) {
         final SeasonTO seasonTO = new SeasonTO();
         seasonTO.setId(id);
-        if (seasonFacade.getSeason(id) != null) {
+        if (seasonFacade.getSeason(id) == null) {
             throw new IllegalRequestException("TO for season doesn't exist.");
         }
     }
