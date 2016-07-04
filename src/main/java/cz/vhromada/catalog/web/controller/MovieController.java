@@ -3,6 +3,7 @@ package cz.vhromada.catalog.web.controller;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -173,7 +174,7 @@ public class MovieController {
             }
             final MovieTO movieTO = converter.convert(movie, MovieTO.class);
             if (movieTO.getSubtitles() == null) {
-                movieTO.setSubtitles(new ArrayList<Language>());
+                movieTO.setSubtitles(new ArrayList<>());
             }
             movieTO.setGenres(getGenres(movieTO.getGenres()));
             movieFacade.add(movieTO);
@@ -250,7 +251,7 @@ public class MovieController {
             final MovieTO movieTO = converter.convert(movie, MovieTO.class);
             if (movieFacade.getMovie(movieTO.getId()) != null) {
                 if (movieTO.getSubtitles() == null) {
-                    movieTO.setSubtitles(new ArrayList<Language>());
+                    movieTO.setSubtitles(new ArrayList<>());
                 }
                 movieTO.setGenres(getGenres(movieTO.getGenres()));
                 movieFacade.update(movieTO);
@@ -427,12 +428,7 @@ public class MovieController {
      * @return genres
      */
     private List<GenreTO> getGenres(final List<GenreTO> source) {
-        final List<GenreTO> genres = new ArrayList<>();
-        for (final GenreTO genre : source) {
-            genres.add(genreFacade.getGenre(genre.getId()));
-        }
-
-        return genres;
+        return source.stream().map(genre -> genreFacade.getGenre(genre.getId())).collect(Collectors.toList());
     }
 
     /**

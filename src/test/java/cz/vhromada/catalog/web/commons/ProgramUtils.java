@@ -26,16 +26,16 @@ public final class ProgramUtils {
      */
     public static ProgramFO getProgramFO() {
         final ProgramFO program = new ProgramFO();
-        program.setId(TestConstants.ID);
-        program.setName(TestConstants.NAME);
-        program.setWikiEn(TestConstants.EN_WIKI);
-        program.setWikiCz(TestConstants.CZ_WIKI);
-        program.setMediaCount(Integer.toString(TestConstants.MEDIA));
+        program.setId(CatalogUtils.ID);
+        program.setName(CatalogUtils.NAME);
+        program.setWikiEn(CatalogUtils.EN_WIKI);
+        program.setWikiCz(CatalogUtils.CZ_WIKI);
+        program.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
         program.setCrack(true);
         program.setSerialKey(true);
         program.setOtherData("Other data");
-        program.setNote(TestConstants.NOTE);
-        program.setPosition(TestConstants.POSITION);
+        program.setNote(CatalogUtils.NOTE);
+        program.setPosition(CatalogUtils.POSITION);
 
         return program;
     }
@@ -47,16 +47,16 @@ public final class ProgramUtils {
      */
     public static ProgramTO getProgramTO() {
         final ProgramTO program = new ProgramTO();
-        program.setId(TestConstants.ID);
-        program.setName(TestConstants.NAME);
-        program.setWikiEn(TestConstants.EN_WIKI);
-        program.setWikiCz(TestConstants.CZ_WIKI);
-        program.setMediaCount(TestConstants.MEDIA);
+        program.setId(CatalogUtils.ID);
+        program.setName(CatalogUtils.NAME);
+        program.setWikiEn(CatalogUtils.EN_WIKI);
+        program.setWikiCz(CatalogUtils.CZ_WIKI);
+        program.setMediaCount(CatalogUtils.MEDIA);
         program.setCrack(true);
         program.setSerialKey(true);
         program.setOtherData("Other data");
-        program.setNote(TestConstants.NOTE);
-        program.setPosition(TestConstants.POSITION);
+        program.setNote(CatalogUtils.NOTE);
+        program.setPosition(CatalogUtils.POSITION);
 
         return program;
     }

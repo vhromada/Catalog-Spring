@@ -26,11 +26,11 @@ public final class SongUtils {
      */
     public static SongFO getSongFO() {
         final SongFO song = new SongFO();
-        song.setId(TestConstants.ID);
-        song.setName(TestConstants.NAME);
+        song.setId(CatalogUtils.ID);
+        song.setName(CatalogUtils.NAME);
         song.setLength(TimeUtils.getTimeFO());
-        song.setNote(TestConstants.NOTE);
-        song.setPosition(TestConstants.POSITION);
+        song.setNote(CatalogUtils.NOTE);
+        song.setPosition(CatalogUtils.POSITION);
 
         return song;
     }
@@ -42,11 +42,11 @@ public final class SongUtils {
      */
     public static SongTO getSongTO() {
         final SongTO song = new SongTO();
-        song.setId(TestConstants.ID);
-        song.setName(TestConstants.NAME);
-        song.setLength(TestConstants.LENGTH);
-        song.setNote(TestConstants.NOTE);
-        song.setPosition(TestConstants.POSITION);
+        song.setId(CatalogUtils.ID);
+        song.setName(CatalogUtils.NAME);
+        song.setLength(CatalogUtils.LENGTH);
+        song.setNote(CatalogUtils.NOTE);
+        song.setPosition(CatalogUtils.POSITION);
 
         return song;
     }

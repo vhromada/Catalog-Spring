@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import cz.vhromada.catalog.facade.to.GenreTO;
+import cz.vhromada.catalog.web.commons.CatalogUtils;
 import cz.vhromada.catalog.web.commons.GenreUtils;
-import cz.vhromada.catalog.web.commons.TestConstants;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
@@ -59,10 +59,10 @@ public class GenreToIntegerConverterTest {
     @Test
     public void testConvertInteger() {
 
-        final GenreTO genre = converter.convert(TestConstants.ID, GenreTO.class);
+        final GenreTO genre = converter.convert(CatalogUtils.ID, GenreTO.class);
 
         assertNotNull(genre);
-        assertEquals(TestConstants.ID, genre.getId());
+        assertEquals(CatalogUtils.ID, genre.getId());
     }
 
     /**

@@ -31,11 +31,24 @@ public class MovieConverterTest {
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with IMDB code.
      */
     @Test
-    public void testConvertMovieFO() {
+    public void testConvertMovieFO_Imdb() {
         final MovieFO movieFO = MovieUtils.getMovieFO();
+
+        final MovieTO movieTO = converter.convert(movieFO, MovieTO.class);
+
+        MovieUtils.assertMovieDeepEquals(movieFO, movieTO);
+    }
+
+    /**
+     * Test method for {@link Converter#convert(Object, Class)} from FO to TO without IMDB code.
+     */
+    @Test
+    public void testConvertMovieFO_NoImdb() {
+        final MovieFO movieFO = MovieUtils.getMovieFO();
+        movieFO.setImdb(false);
 
         final MovieTO movieTO = converter.convert(movieFO, MovieTO.class);
 
@@ -51,15 +64,28 @@ public class MovieConverterTest {
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with IMDB code.
      */
     @Test
-    public void testConvertMovieTO() {
+    public void testConvertMovieTO_Imdb() {
         final MovieTO movieTO = MovieUtils.getMovieTO();
 
         final MovieFO movieFO = converter.convert(movieTO, MovieFO.class);
 
-        MovieUtils.assertMovieDeepEquals(movieFO, movieTO);
+        MovieUtils.assertMovieDeepEquals(movieTO, movieFO);
+    }
+
+    /**
+     * Test method for {@link Converter#convert(Object, Class)} from TO to FO without IMDB code.
+     */
+    @Test
+    public void testConvertMovieTO_NoImdb() {
+        final MovieTO movieTO = MovieUtils.getMovieTO();
+        movieTO.setImdbCode(-1);
+
+        final MovieFO movieFO = converter.convert(movieTO, MovieFO.class);
+
+        MovieUtils.assertMovieDeepEquals(movieTO, movieFO);
     }
 
     /**

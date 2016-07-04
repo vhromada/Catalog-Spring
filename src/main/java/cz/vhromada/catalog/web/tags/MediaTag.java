@@ -7,6 +7,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import cz.vhromada.catalog.commons.Time;
+import cz.vhromada.catalog.facade.to.MediumTO;
 
 /**
  * A class represents tag for media.
@@ -18,14 +19,14 @@ public class MediaTag extends SimpleTagSupport {
     /**
      * Media
      */
-    private List<Integer> media;
+    private List<MediumTO> media;
 
     /**
      * Sets a new value to media.
      *
      * @param media new value
      */
-    public void setMedia(final List<Integer> media) {
+    public void setMedia(final List<MediumTO> media) {
         this.media = media;
     }
 
@@ -43,8 +44,8 @@ public class MediaTag extends SimpleTagSupport {
      */
     private String getMediaAsString() {
         final StringBuilder result = new StringBuilder();
-        for (final Integer medium : media) {
-            result.append(new Time(medium));
+        for (final MediumTO medium : media) {
+            result.append(new Time(medium.getLength()));
             result.append(", ");
         }
 

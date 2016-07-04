@@ -1,10 +1,7 @@
 package cz.vhromada.catalog.web.commons;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import cz.vhromada.catalog.commons.CollectionUtils;
 import cz.vhromada.catalog.facade.to.MediumTO;
@@ -31,23 +28,23 @@ public final class ShowUtils {
      */
     public static ShowFO getShowFO() {
         final MediumTO medium = new MediumTO();
-        medium.setId(TestConstants.ID);
-        medium.setNumber(TestConstants.NUMBER);
-        medium.setLength(TestConstants.LENGTH);
+        medium.setId(CatalogUtils.ID);
+        medium.setNumber(CatalogUtils.NUMBER);
+        medium.setLength(CatalogUtils.LENGTH);
 
         final ShowFO show = new ShowFO();
-        show.setId(TestConstants.ID);
+        show.setId(CatalogUtils.ID);
         show.setCzechName("czName");
         show.setOriginalName("origName");
         show.setCsfd("Csfd");
         show.setImdb(true);
         show.setImdbCode("1000");
-        show.setWikiEn(TestConstants.EN_WIKI);
-        show.setWikiCz(TestConstants.CZ_WIKI);
+        show.setWikiEn(CatalogUtils.EN_WIKI);
+        show.setWikiCz(CatalogUtils.CZ_WIKI);
         show.setPicture("Picture");
-        show.setNote(TestConstants.NOTE);
-        show.setPosition(TestConstants.POSITION);
-        show.setGenres(CollectionUtils.newList(TestConstants.ID));
+        show.setNote(CatalogUtils.NOTE);
+        show.setPosition(CatalogUtils.POSITION);
+        show.setGenres(CollectionUtils.newList(CatalogUtils.ID));
 
         return show;
     }
@@ -59,21 +56,21 @@ public final class ShowUtils {
      */
     public static ShowTO getShowTO() {
         final MediumTO medium = new MediumTO();
-        medium.setId(TestConstants.ID);
-        medium.setNumber(TestConstants.NUMBER);
-        medium.setLength(TestConstants.LENGTH);
+        medium.setId(CatalogUtils.ID);
+        medium.setNumber(CatalogUtils.NUMBER);
+        medium.setLength(CatalogUtils.LENGTH);
 
         final ShowTO show = new ShowTO();
-        show.setId(TestConstants.ID);
+        show.setId(CatalogUtils.ID);
         show.setCzechName("czName");
         show.setOriginalName("origName");
         show.setCsfd("Csfd");
         show.setImdbCode(1000);
-        show.setWikiEn(TestConstants.EN_WIKI);
-        show.setWikiCz(TestConstants.CZ_WIKI);
+        show.setWikiEn(CatalogUtils.EN_WIKI);
+        show.setWikiCz(CatalogUtils.CZ_WIKI);
         show.setPicture("Picture");
-        show.setNote(TestConstants.NOTE);
-        show.setPosition(TestConstants.POSITION);
+        show.setNote(CatalogUtils.NOTE);
+        show.setPosition(CatalogUtils.POSITION);
         show.setGenres(CollectionUtils.newList(GenreUtils.getGenreTO()));
 
         return show;
@@ -92,11 +89,7 @@ public final class ShowUtils {
         assertEquals(expected.getCzechName(), actual.getCzechName());
         assertEquals(expected.getOriginalName(), actual.getOriginalName());
         assertEquals(expected.getCsfd(), actual.getCsfd());
-        if (expected.getImdb()) {
-            assertEquals(expected.getImdbCode(), Integer.toString(actual.getImdbCode()));
-        } else {
-            assertEquals(-1, actual.getImdbCode());
-        }
+        CatalogUtils.assertImdbCodeDeepEquals(expected.getImdb(), expected.getImdbCode(), actual.getImdbCode());
         assertEquals(expected.getWikiEn(), actual.getWikiEn());
         assertEquals(expected.getWikiCz(), actual.getWikiCz());
         assertEquals(expected.getPicture(), actual.getPicture());
@@ -117,14 +110,7 @@ public final class ShowUtils {
         assertEquals(expected.getCzechName(), actual.getCzechName());
         assertEquals(expected.getOriginalName(), actual.getOriginalName());
         assertEquals(expected.getCsfd(), actual.getCsfd());
-        if (expected.getImdbCode() < 1) {
-            assertFalse(actual.getImdb());
-            assertNull(actual.getImdbCode());
-        } else {
-            assertTrue(actual.getImdb());
-            assertNotNull(actual.getImdbCode());
-            assertEquals(Integer.toString(expected.getImdbCode()), actual.getImdbCode());
-        }
+        CatalogUtils.assertImdbDeepEquals(expected.getImdbCode(), actual.getImdb(), actual.getImdbCode());
         assertEquals(expected.getWikiEn(), actual.getWikiEn());
         assertEquals(expected.getWikiCz(), actual.getWikiCz());
         assertEquals(expected.getPicture(), actual.getPicture());

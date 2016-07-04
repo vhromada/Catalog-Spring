@@ -26,11 +26,11 @@ public final class GameUtils {
      */
     public static GameFO getGameFO() {
         final GameFO game = new GameFO();
-        game.setId(TestConstants.ID);
-        game.setName(TestConstants.NAME);
-        game.setWikiEn(TestConstants.EN_WIKI);
-        game.setWikiCz(TestConstants.CZ_WIKI);
-        game.setMediaCount(Integer.toString(TestConstants.MEDIA));
+        game.setId(CatalogUtils.ID);
+        game.setName(CatalogUtils.NAME);
+        game.setWikiEn(CatalogUtils.EN_WIKI);
+        game.setWikiCz(CatalogUtils.CZ_WIKI);
+        game.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
         game.setCrack(true);
         game.setSerialKey(true);
         game.setPatch(true);
@@ -39,8 +39,8 @@ public final class GameUtils {
         game.setEditor(true);
         game.setSaves(true);
         game.setOtherData("Other data");
-        game.setNote(TestConstants.NOTE);
-        game.setPosition(TestConstants.POSITION);
+        game.setNote(CatalogUtils.NOTE);
+        game.setPosition(CatalogUtils.POSITION);
 
         return game;
     }
@@ -52,11 +52,11 @@ public final class GameUtils {
      */
     public static GameTO getGameTO() {
         final GameTO game = new GameTO();
-        game.setId(TestConstants.ID);
-        game.setName(TestConstants.NAME);
-        game.setWikiEn(TestConstants.EN_WIKI);
-        game.setWikiCz(TestConstants.CZ_WIKI);
-        game.setMediaCount(TestConstants.MEDIA);
+        game.setId(CatalogUtils.ID);
+        game.setName(CatalogUtils.NAME);
+        game.setWikiEn(CatalogUtils.EN_WIKI);
+        game.setWikiCz(CatalogUtils.CZ_WIKI);
+        game.setMediaCount(CatalogUtils.MEDIA);
         game.setCrack(true);
         game.setSerialKey(true);
         game.setPatch(true);
@@ -65,8 +65,8 @@ public final class GameUtils {
         game.setEditor(true);
         game.setSaves(true);
         game.setOtherData("Other data");
-        game.setNote(TestConstants.NOTE);
-        game.setPosition(TestConstants.POSITION);
+        game.setNote(CatalogUtils.NOTE);
+        game.setPosition(CatalogUtils.POSITION);
 
         return game;
     }

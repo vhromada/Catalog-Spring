@@ -26,13 +26,13 @@ public final class MusicUtils {
      */
     public static MusicFO getMusicFO() {
         final MusicFO music = new MusicFO();
-        music.setId(TestConstants.ID);
-        music.setName(TestConstants.NAME);
-        music.setWikiEn(TestConstants.EN_WIKI);
-        music.setWikiCz(TestConstants.CZ_WIKI);
-        music.setMediaCount(Integer.toString(TestConstants.MEDIA));
-        music.setNote(TestConstants.NOTE);
-        music.setPosition(TestConstants.POSITION);
+        music.setId(CatalogUtils.ID);
+        music.setName(CatalogUtils.NAME);
+        music.setWikiEn(CatalogUtils.EN_WIKI);
+        music.setWikiCz(CatalogUtils.CZ_WIKI);
+        music.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
+        music.setNote(CatalogUtils.NOTE);
+        music.setPosition(CatalogUtils.POSITION);
 
         return music;
     }
@@ -44,13 +44,13 @@ public final class MusicUtils {
      */
     public static MusicTO getMusicTO() {
         final MusicTO music = new MusicTO();
-        music.setId(TestConstants.ID);
-        music.setName(TestConstants.NAME);
-        music.setWikiEn(TestConstants.EN_WIKI);
-        music.setWikiCz(TestConstants.CZ_WIKI);
-        music.setMediaCount(TestConstants.MEDIA);
-        music.setNote(TestConstants.NOTE);
-        music.setPosition(TestConstants.POSITION);
+        music.setId(CatalogUtils.ID);
+        music.setName(CatalogUtils.NAME);
+        music.setWikiEn(CatalogUtils.EN_WIKI);
+        music.setWikiCz(CatalogUtils.CZ_WIKI);
+        music.setMediaCount(CatalogUtils.MEDIA);
+        music.setNote(CatalogUtils.NOTE);
+        music.setPosition(CatalogUtils.POSITION);
 
         return music;
     }

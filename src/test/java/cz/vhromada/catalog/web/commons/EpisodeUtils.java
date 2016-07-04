@@ -26,12 +26,12 @@ public final class EpisodeUtils {
      */
     public static EpisodeFO getEpisodeFO() {
         final EpisodeFO episode = new EpisodeFO();
-        episode.setId(TestConstants.ID);
-        episode.setNumber(Integer.toString(TestConstants.NUMBER));
-        episode.setName(TestConstants.NAME);
+        episode.setId(CatalogUtils.ID);
+        episode.setNumber(Integer.toString(CatalogUtils.NUMBER));
+        episode.setName(CatalogUtils.NAME);
         episode.setLength(TimeUtils.getTimeFO());
-        episode.setNote(TestConstants.NOTE);
-        episode.setPosition(TestConstants.POSITION);
+        episode.setNote(CatalogUtils.NOTE);
+        episode.setPosition(CatalogUtils.POSITION);
 
         return episode;
     }
@@ -43,12 +43,12 @@ public final class EpisodeUtils {
      */
     public static EpisodeTO getEpisodeTO() {
         final EpisodeTO episode = new EpisodeTO();
-        episode.setId(TestConstants.ID);
-        episode.setNumber(TestConstants.NUMBER);
-        episode.setName(TestConstants.NAME);
-        episode.setLength(TestConstants.LENGTH);
-        episode.setNote(TestConstants.NOTE);
-        episode.setPosition(TestConstants.POSITION);
+        episode.setId(CatalogUtils.ID);
+        episode.setNumber(CatalogUtils.NUMBER);
+        episode.setName(CatalogUtils.NAME);
+        episode.setLength(CatalogUtils.LENGTH);
+        episode.setNote(CatalogUtils.NOTE);
+        episode.setPosition(CatalogUtils.POSITION);
 
         return episode;
     }

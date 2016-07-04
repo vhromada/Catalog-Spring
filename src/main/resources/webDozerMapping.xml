@@ -5,10 +5,10 @@
 
     <configuration>
         <custom-converters>
-            <!--<converter type="cz.vhromada.catalog.web.converters.MovieConverter">-->
-            <!--<class-a>cz.vhromada.catalog.web.fo.MovieFO</class-a>-->
-            <!--<class-b>cz.vhromada.catalog.facade.to.MovieTO</class-b>-->
-            <!--</converter>-->
+            <converter type="cz.vhromada.catalog.web.converters.MovieConverter">
+                <class-a>cz.vhromada.catalog.web.fo.MovieFO</class-a>
+                <class-b>cz.vhromada.catalog.facade.to.MovieTO</class-b>
+            </converter>
             <converter type="cz.vhromada.catalog.web.converters.ShowConverter">
                 <class-a>cz.vhromada.catalog.web.fo.ShowFO</class-a>
                 <class-b>cz.vhromada.catalog.facade.to.ShowTO</class-b>

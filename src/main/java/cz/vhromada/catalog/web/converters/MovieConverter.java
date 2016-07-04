@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.vhromada.catalog.facade.to.GenreTO;
+import cz.vhromada.catalog.facade.to.MediumTO;
 import cz.vhromada.catalog.facade.to.MovieTO;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
@@ -60,7 +61,7 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setYear(Integer.parseInt(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
-//        movie.setMedia(convertMedia(source.getMedia()));
+        movie.setMedia(convertMedia(source.getMedia()));
         movie.setCsfd(source.getCsfd());
         movie.setImdbCode(source.getImdb() ? Integer.parseInt(source.getImdbCode()) : -1);
         movie.setWikiCz(source.getWikiCz());
@@ -79,10 +80,14 @@ public class MovieConverter implements MapperAware, CustomConverter {
      * @param source source
      * @return media
      */
-    private List<Integer> convertMedia(final List<TimeFO> source) {
-        final List<Integer> media = new ArrayList<>();
+    private List<MediumTO> convertMedia(final List<TimeFO> source) {
+        final List<MediumTO> media = new ArrayList<>();
         for (final TimeFO medium : source) {
-            media.add(mapper.map(medium, Integer.class));
+            final MediumTO mediumTO = new MediumTO();
+            mediumTO.setNumber(source.indexOf(medium) + 1);
+            mediumTO.setLength(mapper.map(medium, Integer.class));
+
+            media.add(mediumTO);
         }
 
         return media;
@@ -94,9 +99,9 @@ public class MovieConverter implements MapperAware, CustomConverter {
      * @param source source
      * @return genres
      */
-    private List<GenreTO> convertIdList(final List<String> source) {
+    private List<GenreTO> convertIdList(final List<Integer> source) {
         final List<GenreTO> genres = new ArrayList<>();
-        for (final String id : source) {
+        for (final Integer id : source) {
             genres.add(mapper.map(id, GenreTO.class));
         }
 
@@ -117,7 +122,7 @@ public class MovieConverter implements MapperAware, CustomConverter {
         movie.setYear(Integer.toString(source.getYear()));
         movie.setLanguage(source.getLanguage());
         movie.setSubtitles(source.getSubtitles());
-//        movie.setMedia(convertMediaLength(source.getMedia()));
+        movie.setMedia(convertMediaLength(source.getMedia()));
         movie.setCsfd(source.getCsfd());
         if (source.getImdbCode() < 1) {
             movie.setImdb(false);
@@ -141,10 +146,10 @@ public class MovieConverter implements MapperAware, CustomConverter {
      * @param source source
      * @return media
      */
-    private List<TimeFO> convertMediaLength(final List<Integer> source) {
+    private List<TimeFO> convertMediaLength(final List<MediumTO> source) {
         final List<TimeFO> media = new ArrayList<>();
-        for (final Integer medium : source) {
-            media.add(mapper.map(medium, TimeFO.class));
+        for (final MediumTO medium : source) {
+            media.add(mapper.map(medium.getLength(), TimeFO.class));
         }
 
         return media;
@@ -156,10 +161,10 @@ public class MovieConverter implements MapperAware, CustomConverter {
      * @param source source
      * @return genres
      */
-    private List<String> convertGenres(final List<GenreTO> source) {
-        final List<String> genres = new ArrayList<>();
+    private List<Integer> convertGenres(final List<GenreTO> source) {
+        final List<Integer> genres = new ArrayList<>();
         for (final GenreTO genre : source) {
-            genres.add(mapper.map(genre, String.class));
+            genres.add(mapper.map(genre, Integer.class));
         }
 
         return genres;

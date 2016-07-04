@@ -28,14 +28,14 @@ public final class SeasonUtils {
      */
     public static SeasonFO getSeasonFO() {
         final SeasonFO season = new SeasonFO();
-        season.setId(TestConstants.ID);
-        season.setNumber(Integer.toString(TestConstants.NUMBER));
-        season.setStartYear(Integer.toString(TestConstants.YEAR));
-        season.setEndYear(Integer.toString(TestConstants.YEAR + 1));
+        season.setId(CatalogUtils.ID);
+        season.setNumber(Integer.toString(CatalogUtils.NUMBER));
+        season.setStartYear(Integer.toString(CatalogUtils.YEAR));
+        season.setEndYear(Integer.toString(CatalogUtils.YEAR + 1));
         season.setLanguage(Language.EN);
         season.setSubtitles(CollectionUtils.newList(Language.CZ));
-        season.setNote(TestConstants.NOTE);
-        season.setPosition(TestConstants.POSITION);
+        season.setNote(CatalogUtils.NOTE);
+        season.setPosition(CatalogUtils.POSITION);
 
         return season;
     }
@@ -47,14 +47,14 @@ public final class SeasonUtils {
      */
     public static SeasonTO getSeasonTO() {
         final SeasonTO season = new SeasonTO();
-        season.setId(TestConstants.ID);
-        season.setNumber(TestConstants.NUMBER);
-        season.setStartYear(TestConstants.YEAR);
-        season.setEndYear(TestConstants.YEAR + 1);
+        season.setId(CatalogUtils.ID);
+        season.setNumber(CatalogUtils.NUMBER);
+        season.setStartYear(CatalogUtils.YEAR);
+        season.setEndYear(CatalogUtils.YEAR + 1);
         season.setLanguage(Language.EN);
         season.setSubtitles(CollectionUtils.newList(Language.CZ));
-        season.setNote(TestConstants.NOTE);
-        season.setPosition(TestConstants.POSITION);
+        season.setNote(CatalogUtils.NOTE);
+        season.setPosition(CatalogUtils.POSITION);
 
         return season;
     }

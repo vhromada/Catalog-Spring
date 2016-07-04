@@ -115,7 +115,7 @@ public class MovieFO implements Serializable {
      */
     @NotNull
     @Size(min = 1)
-    private List<String> genres;
+    private List<Integer> genres;
 
     /**
      * Creates a new instance of MovieFO.
@@ -400,7 +400,7 @@ public class MovieFO implements Serializable {
      *
      * @return genres
      */
-    public List<String> getGenres() {
+    public List<Integer> getGenres() {
         return genres;
     }
 
@@ -409,7 +409,7 @@ public class MovieFO implements Serializable {
      *
      * @param genres new value
      */
-    public void setGenres(final List<String> genres) {
+    public void setGenres(final List<Integer> genres) {
         this.genres = genres;
     }
 
@@ -421,8 +421,8 @@ public class MovieFO implements Serializable {
         if (obj == null || !(obj instanceof MovieFO) || id == null) {
             return false;
         }
-        final MovieFO movie = (MovieFO) obj;
-        return id.equals(movie.id);
+
+        return id.equals(((MovieFO) obj).id);
     }
 
     @Override
