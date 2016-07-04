@@ -367,7 +367,7 @@ public class SongController {
     private void validateMusic(final int id) {
         final MusicTO music = new MusicTO();
         music.setId(id);
-        if (musicFacade.getMusic(id) != null) {
+        if (musicFacade.getMusic(id) == null) {
             throw new IllegalRequestException("TO for music doesn't exist.");
         }
     }

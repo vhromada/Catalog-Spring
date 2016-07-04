@@ -42,7 +42,7 @@
                             <a href="http://en.wikipedia.org/wiki/${musicItem.music.wikiEn}">English Wikipedia</a>
                         </c:if>
                     </td>
-                    <td><%--<a href="${pageContext.request.contextPath}/music/${musicItem.music.id}/songs/list">Songs</a>--%></td>
+                    <td><a href="${pageContext.request.contextPath}/music/${musicItem.music.id}/songs/list">Songs</a></td>
                     <td>
                         <c:if test="${music.indexOf(musicItem) > 0}">
                             <a href="${pageContext.request.contextPath}/music/moveUp/${musicItem.music.id}">Move up</a>
