@@ -33,48 +33,48 @@
             <tbody>
             <c:forEach items="${shows}" var="show">
                 <tr>
-                    <td><c:out value="${show.czechName}"/></td>
-                    <td><c:out value="${show.originalName}"/></td>
-                    <td><cat:genres genres="${show.genres}"/></td>
+                    <td><c:out value="${show.show.czechName}"/></td>
+                    <td><c:out value="${show.show.originalName}"/></td>
+                    <td><cat:genres genres="${show.show.genres}"/></td>
                     <td><c:out value="${show.seasonsCount}"/></td>
                     <td><c:out value="${show.episodesCount}"/></td>
                     <td><c:out value="${show.totalLength}"/></td>
-                    <td><c:out value="${show.picture}"/></td>
-                    <td><c:out value="${show.note}"/></td>
+                    <td><c:out value="${show.show.picture}"/></td>
+                    <td><c:out value="${show.show.note}"/></td>
                     <td>
-                        <c:if test="${!empty(show.csfd)}">
-                            <a href="http://www.csfd.cz/film/${show.csfd}">ČSFD</a>
+                        <c:if test="${!empty(show.show.csfd)}">
+                            <a href="http://www.csfd.cz/film/${show.show.csfd}">ČSFD</a>
                         </c:if>
                     </td>
                     <td>
-                        <c:if test="${show.imdbCode > 0}">
-                            <a href="http://www.imdb.com/title/tt${show.imdbCode}">IMDB</a>
+                        <c:if test="${show.show.imdbCode > 0}">
+                            <a href="http://www.imdb.com/title/tt${show.show.imdbCode}">IMDB</a>
                         </c:if>
                     </td>
                     <td>
-                        <c:if test="${!empty(show.wikiCz)}">
-                            <a href="http://cz.wikipedia.org/wiki/${show.wikiCz}">Czech Wikipedia</a>
+                        <c:if test="${!empty(show.show.wikiCz)}">
+                            <a href="http://cz.wikipedia.org/wiki/${show.show.wikiCz}">Czech Wikipedia</a>
                         </c:if>
                     </td>
                     <td>
-                        <c:if test="${!empty(show.wikiEn)}">
-                            <a href="http://en.wikipedia.org/wiki/${show.wikiEn}">English Wikipedia</a>
+                        <c:if test="${!empty(show.show.wikiEn)}">
+                            <a href="http://en.wikipedia.org/wiki/${show.show.wikiEn}">English Wikipedia</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/shows/${show.id}/seasons/list">Seasons</a></td>
+                    <td><a href="${pageContext.request.contextPath}/shows/${show.show.id}/seasons/list">Seasons</a></td>
                     <td>
                         <c:if test="${shows.indexOf(show) > 0}">
-                            <a href="${pageContext.request.contextPath}/shows/moveUp/${show.id}">Move up</a>
+                            <a href="${pageContext.request.contextPath}/shows/moveUp/${show.show.id}">Move up</a>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${shows.indexOf(show) < shows.size() - 1}">
-                            <a href="${pageContext.request.contextPath}/shows/moveDown/${show.id}">Move down</a>
+                            <a href="${pageContext.request.contextPath}/shows/moveDown/${show.show.id}">Move down</a>
                         </c:if>
                     </td>
-                    <td><a href="${pageContext.request.contextPath}/shows/duplicate/${show.id}">Duplicate</a></td>
-                    <td><a href="${pageContext.request.contextPath}/shows/edit/${show.id}">Edit</a></td>
-                    <td><a href="${pageContext.request.contextPath}/shows/remove/${show.id}">Remove</a></td>
+                    <td><a href="${pageContext.request.contextPath}/shows/duplicate/${show.show.id}">Duplicate</a></td>
+                    <td><a href="${pageContext.request.contextPath}/shows/edit/${show.show.id}">Edit</a></td>
+                    <td><a href="${pageContext.request.contextPath}/shows/remove/${show.show.id}">Remove</a></td>
                 </tr>
             </c:forEach>
             </tbody>

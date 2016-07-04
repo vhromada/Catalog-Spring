@@ -102,9 +102,7 @@ public final class ShowUtils {
         assertEquals(expected.getPicture(), actual.getPicture());
         assertEquals(expected.getNote(), actual.getNote());
         assertEquals(expected.getPosition(), actual.getPosition());
-        //TODO vhromada 03.07.2016: test
-//        MediumUtils.assertMediumListDeepEquals(expected.getMedia(), actual.getMedia());
-//        GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
+        GenreUtils.assertGenresDeepEquals(expected.getGenres(), actual.getGenres());
     }
 
     /**
@@ -132,8 +130,6 @@ public final class ShowUtils {
         assertEquals(expected.getPicture(), actual.getPicture());
         assertEquals(expected.getNote(), actual.getNote());
         assertEquals(expected.getPosition(), actual.getPosition());
-        //TODO vhromada 03.07.2016: test
-//        MediumUtils.assertMediumListDeepEquals(expected.getMedia(), actual.getMedia());
-//        GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
+        GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
     }
 }

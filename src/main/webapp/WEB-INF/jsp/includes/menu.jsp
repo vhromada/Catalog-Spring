@@ -7,7 +7,7 @@
 
         <ul class="nav navbar-nav">
             <%--<li><a href="${pageContext.request.contextPath}/movies/list">Movies</a>--%>
-            <%--<li><a href="${pageContext.request.contextPath}/shows/list">Shows</a>--%>
+            <li><a href="${pageContext.request.contextPath}/shows/list">Shows</a>
             <li><a href="${pageContext.request.contextPath}/games/list">Games</a>
             <li><a href="${pageContext.request.contextPath}/music/list">Music</a>
             <li><a href="${pageContext.request.contextPath}/programs/list">Programs</a>

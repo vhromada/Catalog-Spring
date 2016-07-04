@@ -2,6 +2,9 @@ package cz.vhromada.catalog.web.commons;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.List;
 
 import cz.vhromada.catalog.facade.to.GenreTO;
 import cz.vhromada.catalog.web.fo.GenreFO;
@@ -60,4 +63,54 @@ public final class GenreUtils {
         assertEquals(expected.getPosition(), actual.getPosition());
     }
 
+    /**
+     * Asserts genres deep equals.
+     *
+     * @param expected expected list of genres
+     * @param actual   actual list of TO for genre
+     */
+    public static void assertGenresDeepEquals(final List<Integer> expected, final List<GenreTO> actual) {
+        assertNotNull(actual);
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertGenreDeepEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    /**
+     * Asserts genre deep equals.
+     *
+     * @param expected expected genre
+     * @param actual   actual TO for genre
+     */
+    public static void assertGenreDeepEquals(final Integer expected, final GenreTO actual) {
+        assertNotNull(actual);
+        assertEquals(expected, actual.getId());
+        assertNull(actual.getName());
+    }
+
+    /**
+     * Asserts genres deep equals.
+     *
+     * @param expected expected list of TO for genre
+     * @param actual   actual list of genres
+     */
+    public static void assertGenreListDeepEquals(final List<GenreTO> expected, final List<Integer> actual) {
+        assertNotNull(actual);
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertGenreDeepEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    /**
+     * Asserts genre deep equals.
+     *
+     * @param expected expected genre
+     * @param actual   actual TO for genre
+     */
+    public static void assertGenreDeepEquals(final GenreTO expected, final Integer actual) {
+        assertNotNull(actual);
+        assertEquals(expected.getId(), actual);
+    }
 }

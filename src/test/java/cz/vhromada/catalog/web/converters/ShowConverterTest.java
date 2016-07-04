@@ -31,15 +31,28 @@ public class ShowConverterTest {
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with IMDB code.
      */
     @Test
-    public void testConvertShowFO() {
+    public void testConvertShowFO_Imdb() {
         final ShowFO showFO = ShowUtils.getShowFO();
 
         final ShowTO showTO = converter.convert(showFO, ShowTO.class);
 
-        ShowUtils.assertShowDeepEquals(showTO, showFO);
+        ShowUtils.assertShowDeepEquals(showFO, showTO);
+    }
+
+    /**
+     * Test method for {@link Converter#convert(Object, Class)} from FO to TO without IMDB code.
+     */
+    @Test
+    public void testConvertShowFO_NoImdb() {
+        final ShowFO showFO = ShowUtils.getShowFO();
+        showFO.setImdb(false);
+
+        final ShowTO showTO = converter.convert(showFO, ShowTO.class);
+
+        ShowUtils.assertShowDeepEquals(showFO, showTO);
     }
 
     /**
@@ -51,15 +64,28 @@ public class ShowConverterTest {
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with IMDB code.
      */
     @Test
-    public void testConvertShowTO() {
+    public void testConvertShowTO_Imdb() {
         final ShowTO showTO = ShowUtils.getShowTO();
 
         final ShowFO showFO = converter.convert(showTO, ShowFO.class);
 
-        ShowUtils.assertShowDeepEquals(showFO, showTO);
+        ShowUtils.assertShowDeepEquals(showTO, showFO);
+    }
+
+    /**
+     * Test method for {@link Converter#convert(Object, Class)} from TO to FO without IMDB code.
+     */
+    @Test
+    public void testConvertShowTO_NoImdb() {
+        final ShowTO showTO = ShowUtils.getShowTO();
+        showTO.setImdbCode(-1);
+
+        final ShowFO showFO = converter.convert(showTO, ShowFO.class);
+
+        ShowUtils.assertShowDeepEquals(showTO, showFO);
     }
 
     /**
