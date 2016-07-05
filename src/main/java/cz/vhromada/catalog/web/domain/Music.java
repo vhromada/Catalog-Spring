@@ -1,6 +1,7 @@
 package cz.vhromada.catalog.web.domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.catalog.facade.to.MusicTO;
@@ -95,12 +96,12 @@ public class Music implements Serializable {
             return false;
         }
 
-        return music.equals(((Music) obj).music);
+        return Objects.equals(music, ((Music) obj).music);
     }
 
     @Override
     public int hashCode() {
-        return music == null ? 0 : music.hashCode();
+        return Objects.hashCode(music);
     }
 
     @Override

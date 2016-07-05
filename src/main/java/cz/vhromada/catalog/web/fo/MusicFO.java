@@ -1,6 +1,7 @@
 package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -195,7 +196,7 @@ public class MusicFO implements Serializable {
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id.hashCode();
+        return Objects.hashCode(id);
     }
 
     @Override

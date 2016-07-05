@@ -2,6 +2,7 @@ package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -319,7 +320,7 @@ public class ShowFO implements Serializable {
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id.hashCode();
+        return Objects.hashCode(id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cz.vhromada.catalog.web.fo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -149,7 +150,7 @@ public class SongFO implements Serializable {
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id.hashCode();
+        return Objects.hashCode(id);
     }
 
     @Override

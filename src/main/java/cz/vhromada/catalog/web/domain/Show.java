@@ -1,6 +1,7 @@
 package cz.vhromada.catalog.web.domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.catalog.facade.to.ShowTO;
@@ -118,12 +119,12 @@ public class Show implements Serializable {
             return false;
         }
 
-        return show.equals(((Show) obj).show);
+        return Objects.equals(show, ((Show) obj).show);
     }
 
     @Override
     public int hashCode() {
-        return show == null ? 0 : show.hashCode();
+        return Objects.hashCode(show);
     }
 
     @Override

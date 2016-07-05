@@ -3,6 +3,7 @@ package cz.vhromada.catalog.web.fo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -427,7 +428,7 @@ public class MovieFO implements Serializable {
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id.hashCode();
+        return Objects.hashCode(id);
     }
 
     @Override
@@ -437,13 +438,4 @@ public class MovieFO implements Serializable {
                 csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
     }
 
-//    private String mediaCount = "1";
-//
-//    public String getMediaCount() {
-//        return mediaCount;
-//    }
-//
-//    public void setMediaCount(final String mediaCount) {
-//        this.mediaCount = mediaCount;
-//    }
 }

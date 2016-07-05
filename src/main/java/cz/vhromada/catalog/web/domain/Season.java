@@ -1,6 +1,7 @@
 package cz.vhromada.catalog.web.domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import cz.vhromada.catalog.commons.Time;
 import cz.vhromada.catalog.facade.to.SeasonTO;
@@ -95,12 +96,12 @@ public class Season implements Serializable {
             return false;
         }
 
-        return season.equals(((Season) obj).season);
+        return Objects.equals(season, ((Season) obj).season);
     }
 
     @Override
     public int hashCode() {
-        return season == null ? 0 : season.hashCode();
+        return Objects.hashCode(season);
     }
 
     @Override
