@@ -32,11 +32,6 @@ public final class MovieUtils {
      * @return FO for movie
      */
     public static MovieFO getMovieFO() {
-        final MediumTO medium = new MediumTO();
-        medium.setId(CatalogUtils.ID);
-        medium.setNumber(CatalogUtils.NUMBER);
-        medium.setLength(CatalogUtils.LENGTH);
-
         final MovieFO movie = new MovieFO();
         movie.setId(CatalogUtils.ID);
         movie.setCzechName("czName");
