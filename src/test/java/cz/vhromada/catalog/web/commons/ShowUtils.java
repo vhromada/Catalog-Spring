@@ -118,4 +118,5 @@ public final class ShowUtils {
         assertEquals(expected.getPosition(), actual.getPosition());
         GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
     }
+
 }

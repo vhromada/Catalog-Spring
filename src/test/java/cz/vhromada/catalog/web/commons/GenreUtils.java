@@ -113,4 +113,5 @@ public final class GenreUtils {
         assertNotNull(actual);
         assertEquals(expected.getId(), actual);
     }
+
 }
