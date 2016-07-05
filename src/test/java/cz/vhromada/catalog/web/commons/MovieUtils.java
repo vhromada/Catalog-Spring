@@ -51,9 +51,9 @@ public final class MovieUtils {
         movie.setWikiCz(CatalogUtils.CZ_WIKI);
         movie.setPicture("Picture");
         movie.setNote(CatalogUtils.NOTE);
+        movie.setPosition(CatalogUtils.POSITION);
         movie.setMedia(CollectionUtils.newList(TimeUtils.getTimeFO()));
         movie.setGenres(CollectionUtils.newList(CatalogUtils.ID));
-        movie.setPosition(CatalogUtils.POSITION);
 
         return movie;
     }
@@ -82,9 +82,9 @@ public final class MovieUtils {
         movie.setWikiCz(CatalogUtils.CZ_WIKI);
         movie.setPicture("Picture");
         movie.setNote(CatalogUtils.NOTE);
+        movie.setPosition(CatalogUtils.POSITION);
         movie.setMedia(CollectionUtils.newList(medium));
         movie.setGenres(CollectionUtils.newList(GenreUtils.getGenreTO()));
-        movie.setPosition(CatalogUtils.POSITION);
 
         return movie;
     }
