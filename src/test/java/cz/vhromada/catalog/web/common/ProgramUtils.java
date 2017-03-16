@@ -1,9 +1,10 @@
-package cz.vhromada.catalog.web.commons;
+package cz.vhromada.catalog.web.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.ProgramTO;
+import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.web.fo.ProgramFO;
 
 /**
@@ -30,7 +31,7 @@ public final class ProgramUtils {
         program.setName(CatalogUtils.NAME);
         program.setWikiEn(CatalogUtils.EN_WIKI);
         program.setWikiCz(CatalogUtils.CZ_WIKI);
-        program.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
+        program.setMediaCount(CatalogUtils.MEDIA.toString());
         program.setCrack(true);
         program.setSerialKey(true);
         program.setOtherData("Other data");
@@ -41,12 +42,12 @@ public final class ProgramUtils {
     }
 
     /**
-     * Returns TO for program.
+     * Returns program.
      *
-     * @return TO for program
+     * @return program
      */
-    public static ProgramTO getProgramTO() {
-        final ProgramTO program = new ProgramTO();
+    public static Program getProgram() {
+        final Program program = new Program();
         program.setId(CatalogUtils.ID);
         program.setName(CatalogUtils.NAME);
         program.setWikiEn(CatalogUtils.EN_WIKI);
@@ -65,21 +66,20 @@ public final class ProgramUtils {
      * Asserts program deep equals.
      *
      * @param expected expected FO for program
-     * @param actual   actual TO for program
+     * @param actual   actual program
      */
-    public static void assertProgramDeepEquals(final ProgramFO expected, final ProgramTO actual) {
-        assertNotNull(actual);
-        assertNotNull(actual.getMediaCount());
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getWikiEn(), actual.getWikiEn());
-        assertEquals(expected.getWikiCz(), actual.getWikiCz());
-        assertEquals(expected.getMediaCount(), Integer.toString(actual.getMediaCount()));
-        assertEquals(expected.getCrack(), actual.getCrack());
-        assertEquals(expected.getSerialKey(), actual.getSerialKey());
-        assertEquals(expected.getOtherData(), actual.getOtherData());
-        assertEquals(expected.getNote(), actual.getNote());
-        assertEquals(expected.getPosition(), actual.getPosition());
+    public static void assertProgramDeepEquals(final ProgramFO expected, final Program actual) {
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getName(), is(expected.getName()));
+        assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
+        assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
+        assertThat(actual.getMediaCount(), is(Integer.valueOf(expected.getMediaCount())));
+        assertThat(actual.getCrack(), is(expected.getCrack()));
+        assertThat(actual.getSerialKey(), is(expected.getSerialKey()));
+        assertThat(actual.getOtherData(), is(expected.getOtherData()));
+        assertThat(actual.getNote(), is(expected.getNote()));
+        assertThat(actual.getPosition(), is(expected.getPosition()));
     }
 
 }

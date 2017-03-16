@@ -3,15 +3,15 @@ package cz.vhromada.catalog.web.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import cz.vhromada.catalog.commons.Time;
-import cz.vhromada.catalog.facade.to.SeasonTO;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Season;
 
 /**
- * A class represents season.
+ * A class represents season data.
  *
  * @author Vladimir Hromada
  */
-public class Season implements Serializable {
+public class SeasonData implements Serializable {
 
     /**
      * SerialVersionUID
@@ -19,9 +19,9 @@ public class Season implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * TO for season
+     * Season
      */
-    private SeasonTO season;
+    private Season season;
 
     /**
      * Count of episodes
@@ -34,20 +34,20 @@ public class Season implements Serializable {
     private Time totalLength;
 
     /**
-     * Returns TO for season.
+     * Returns season.
      *
-     * @return TO for season
+     * @return season
      */
-    public SeasonTO getSeason() {
+    public Season getSeason() {
         return season;
     }
 
     /**
-     * Sets a new value to TO for season.
+     * Sets a new value to season.
      *
      * @param season new value
      */
-    public void setSeason(final SeasonTO season) {
+    public void setSeason(final Season season) {
         this.season = season;
     }
 
@@ -92,11 +92,11 @@ public class Season implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Season)) {
+        if (!(obj instanceof SeasonData)) {
             return false;
         }
 
-        return Objects.equals(season, ((Season) obj).season);
+        return Objects.equals(season, ((SeasonData) obj).season);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Season implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Season [season=%s, episodesCount=%d, totalLength=%s]", season, episodesCount, totalLength);
+        return String.format("SeasonData [season=%s, episodesCount=%d, totalLength=%s]", season, episodesCount, totalLength);
     }
 
 }

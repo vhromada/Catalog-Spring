@@ -13,7 +13,7 @@
         <put-attribute name="body" value="/WEB-INF/jsp/index.jsp"/>
     </definition>
 
-    <definition name="error" extends="base.definition">
+    <definition name="errors" extends="base.definition">
         <put-attribute name="body" value="/WEB-INF/jsp/errorPage.jsp"/>
     </definition>
 

@@ -5,26 +5,27 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.commons.Time;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Music;
+import cz.vhromada.catalog.entity.Song;
 import cz.vhromada.catalog.facade.MusicFacade;
 import cz.vhromada.catalog.facade.SongFacade;
-import cz.vhromada.catalog.facade.to.MusicTO;
-import cz.vhromada.catalog.facade.to.SongTO;
-import cz.vhromada.catalog.web.domain.Music;
+import cz.vhromada.catalog.web.domain.MusicData;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MusicFO;
 import cz.vhromada.converters.Converter;
-import cz.vhromada.validators.Validators;
+import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller("musicController")
 @RequestMapping("/music")
-public class MusicController {
+public class MusicController extends AbstractResultController {
 
     /**
      * Redirect URL to list
@@ -44,32 +45,32 @@ public class MusicController {
     /**
      * Message for illegal request
      */
-    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for music doesn't exist.";
+    private static final String ILLEGAL_REQUEST_MESSAGE = "Music doesn't exist.";
 
     /**
-     * Model argument
+     * Message for null model
      */
-    private static final String MODEL_ARGUMENT = "Model";
+    private static final String NULL_MODEL_MESSAGE = "Model mustn't be null.";
 
     /**
-     * ID argument
+     * Message for null ID
      */
-    private static final String ID_ARGUMENT = "ID";
+    private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
      * Facade for music
      */
-    private MusicFacade musicFacade;
+    private final MusicFacade musicFacade;
 
     /**
      * Facade for songs
      */
-    private SongFacade songFacade;
+    private final SongFacade songFacade;
 
     /**
      * Converter
      */
-    private Converter converter;
+    private final Converter converter;
 
     /**
      * Creates a new instance of MusicController.
@@ -84,10 +85,10 @@ public class MusicController {
     @Autowired
     public MusicController(final MusicFacade musicFacade,
             final SongFacade songFacade,
-            @Qualifier("webDozerConverter") final Converter converter) {
-        Validators.validateArgumentNotNull(musicFacade, "Facade for music");
-        Validators.validateArgumentNotNull(songFacade, "Facade for songs");
-        Validators.validateArgumentNotNull(converter, "converter");
+            final Converter converter) {
+        Assert.notNull(musicFacade, "Facade for music mustn't be null.");
+        Assert.notNull(songFacade, "Facade for songs mustn't be null.");
+        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.musicFacade = musicFacade;
         this.songFacade = songFacade;
@@ -99,9 +100,9 @@ public class MusicController {
      *
      * @return view for redirect to page with list of music
      */
-    @RequestMapping(value = "new", method = RequestMethod.GET)
+    @GetMapping("/new")
     public String processNew() {
-        musicFacade.newData();
+        processResults(musicFacade.newData());
 
         return LIST_REDIRECT_URL;
     }
@@ -113,29 +114,37 @@ public class MusicController {
      * @return view for page with list of music
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
+    @GetMapping(value = { "", "/", "/list" })
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        final List<Music> musicList = new ArrayList<>();
-        for (final MusicTO musicTO : musicFacade.getMusic()) {
-            final Music music = new Music();
-            music.setMusic(musicTO);
+        final Result<List<Music>> musicResult = musicFacade.getAll();
+        final Result<Integer> mediaCountResult = musicFacade.getTotalMediaCount();
+        final Result<Integer> songsCountResult = musicFacade.getSongsCount();
+        final Result<Time> totalLengthResult = musicFacade.getTotalLength();
+        processResults(musicResult, mediaCountResult, songsCountResult, totalLengthResult);
+
+        final List<MusicData> musicDataList = new ArrayList<>();
+        for (final Music music : musicResult.getData()) {
+            final MusicData musicData = new MusicData();
+            musicData.setMusic(music);
             int count = 0;
             int length = 0;
-            for (final SongTO song : songFacade.findSongsByMusic(musicTO)) {
+            final Result<List<Song>> songsResult = songFacade.find(music);
+            processResults(songsCountResult);
+            for (final Song song : songsResult.getData()) {
                 count++;
                 length += song.getLength();
             }
-            music.setSongsCount(count);
-            music.setTotalLength(new Time(length));
-            musicList.add(music);
+            musicData.setSongsCount(count);
+            musicData.setTotalLength(new Time(length));
+            musicDataList.add(musicData);
         }
 
-        model.addAttribute("music", musicList);
-        model.addAttribute("mediaCount", musicFacade.getTotalMediaCount());
-        model.addAttribute("songsCount", musicFacade.getSongsCount());
-        model.addAttribute("totalLength", musicFacade.getTotalLength());
+        model.addAttribute("music", musicDataList);
+        model.addAttribute("mediaCount", mediaCountResult.getData());
+        model.addAttribute("songsCount", songsCountResult.getData());
+        model.addAttribute("totalLength", totalLengthResult.getData());
         model.addAttribute("title", "Music");
 
         return "musicList";
@@ -148,9 +157,9 @@ public class MusicController {
      * @return view for page for adding music
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @GetMapping("/add")
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
         return createFormView(model, new MusicFO(), "Add music", "musicAdd");
     }
@@ -166,21 +175,21 @@ public class MusicController {
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for music is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
+     *                                                               or ID isn't null
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @PostMapping("/add")
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("music") @Valid final MusicFO music, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(music, "FO for music");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(music.getId(), ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(music, "FO for music mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.isNull(music.getId(), "ID must be null.");
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
                 return createFormView(model, music, "Add music", "musicAdd");
             }
-            musicFacade.add(converter.convert(music, MusicTO.class));
+            processResults(musicFacade.add(converter.convert(model, cz.vhromada.catalog.entity.Music.class)));
         }
 
         return LIST_REDIRECT_URL;
@@ -196,13 +205,15 @@ public class MusicController {
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for music doesn't exist
      */
-    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
 
-        final MusicTO music = musicFacade.getMusic(id);
+        final Result<Music> result = musicFacade.get(id);
+        processResults(result);
 
+        final Music music = result.getData();
         if (music != null) {
             return createFormView(model, converter.convert(music, MusicFO.class), "Edit music", "musicEdit");
         } else {
@@ -221,28 +232,22 @@ public class MusicController {
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for music is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
+     *                                                               or ID is null
      * @throws IllegalRequestException                               if TO for music doesn't exist
      */
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    @PostMapping("/edit")
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("music") @Valid final MusicFO music, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(music, "FO for music");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(music.getId(), ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(music, "FO for music mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.notNull(music.getId(), NULL_ID_MESSAGE);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
                 return createFormView(model, music, "Edit music", "musicEdit");
             }
-
-            final MusicTO musicTO = converter.convert(music, MusicTO.class);
-            if (musicFacade.getMusic(musicTO.getId()) != null) {
-                musicFacade.update(musicTO);
-            } else {
-                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-            }
+            processResults(musicFacade.update(processMusic(converter.convert(music, Music.class))));
         }
 
         return LIST_REDIRECT_URL;
@@ -254,19 +259,11 @@ public class MusicController {
      * @param id ID of duplicating music
      * @return view for redirect to page with list of music
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for music doesn't exist
+     * @throws IllegalRequestException  if music doesn't exist
      */
-    @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
+    @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MusicTO music = new MusicTO();
-        music.setId(id);
-        if (musicFacade.getMusic(id) != null) {
-            musicFacade.duplicate(music);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(musicFacade.duplicate(getMusic(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -277,19 +274,11 @@ public class MusicController {
      * @param id ID of removing music
      * @return view for redirect to page with list of music
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for music doesn't exist
+     * @throws IllegalRequestException  if music doesn't exist
      */
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
+    @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MusicTO music = new MusicTO();
-        music.setId(id);
-        if (musicFacade.getMusic(id) != null) {
-            musicFacade.remove(music);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(musicFacade.remove(getMusic(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -300,19 +289,11 @@ public class MusicController {
      * @param id ID of moving music
      * @return view for redirect to page with list of music
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for music doesn't exist
+     * @throws IllegalRequestException  if music doesn't exist
      */
-    @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MusicTO music = new MusicTO();
-        music.setId(id);
-        if (musicFacade.getMusic(id) != null) {
-            musicFacade.moveUp(music);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(musicFacade.moveUp(getMusic(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -323,19 +304,11 @@ public class MusicController {
      * @param id ID of moving music
      * @return view for redirect to page with list of music
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for music doesn't exist
+     * @throws IllegalRequestException  if music doesn't exist
      */
-    @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MusicTO music = new MusicTO();
-        music.setId(id);
-        if (musicFacade.getMusic(id) != null) {
-            musicFacade.moveDown(music);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(musicFacade.moveDown(getMusic(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -345,9 +318,9 @@ public class MusicController {
      *
      * @return view for redirect to page with list of music
      */
-    @RequestMapping(value = "update", method = RequestMethod.GET)
+    @GetMapping("/update")
     public String processUpdatePositions() {
-        musicFacade.updatePositions();
+        processResults(musicFacade.updatePositions());
 
         return LIST_REDIRECT_URL;
     }
@@ -366,6 +339,41 @@ public class MusicController {
         model.addAttribute("title", title);
 
         return view;
+    }
+
+    /**
+     * Returns music with ID.
+     *
+     * @param id ID
+     * @return music with ID
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if music doesn't exist
+     */
+    private Music getMusic(final Integer id) {
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Music music = new Music();
+        music.setId(id);
+
+        return processMusic(music);
+    }
+
+    /**
+     * Returns processed music.
+     *
+     * @param music for processing
+     * @return processed music
+     * @throws IllegalRequestException if music doesn't exist
+     */
+    private Music processMusic(final Music music) {
+        final Result<Music> musicResult = musicFacade.get(music.getId());
+        processResults(musicResult);
+
+        if (musicResult.getData() != null) {
+            return music;
+        }
+
+        throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
     }
 
 }

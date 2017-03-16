@@ -1,9 +1,10 @@
-package cz.vhromada.catalog.web.commons;
+package cz.vhromada.catalog.web.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.commons.Time;
+import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.web.fo.TimeFO;
 
 /**
@@ -36,25 +37,25 @@ public final class TimeUtils {
     /**
      * Asserts time deep equals.
      *
-     * @param expected expected TO for time
+     * @param expected expected time
      * @param actual   actual length
      */
     public static void assertTimeDeepEquals(final TimeFO expected, final Integer actual) {
-        assertNotNull(actual);
+        assertThat(actual, is(notNullValue()));
         assertTimeDeepEquals(expected, new Time(actual));
     }
 
     /**
      * Asserts time deep equals.
      *
-     * @param expected expected TO for time
+     * @param expected expected time
      * @param actual   actual length
      */
     public static void assertTimeDeepEquals(final TimeFO expected, final Time actual) {
-        assertNotNull(actual);
-        assertEquals(expected.getHours(), Integer.toString(actual.getData(Time.TimeData.HOUR)));
-        assertEquals(expected.getMinutes(), Integer.toString(actual.getData(Time.TimeData.MINUTE)));
-        assertEquals(expected.getSeconds(), Integer.toString(actual.getData(Time.TimeData.SECOND)));
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual.getData(Time.TimeData.HOUR), is(Integer.valueOf(expected.getHours())));
+        assertThat(actual.getData(Time.TimeData.MINUTE), is(Integer.valueOf(expected.getMinutes())));
+        assertThat(actual.getData(Time.TimeData.SECOND), is(Integer.valueOf(expected.getSeconds())));
     }
 
 }

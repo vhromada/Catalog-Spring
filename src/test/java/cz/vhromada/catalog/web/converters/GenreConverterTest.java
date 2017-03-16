@@ -1,73 +1,73 @@
 package cz.vhromada.catalog.web.converters;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.GenreTO;
-import cz.vhromada.catalog.web.commons.GenreUtils;
+import cz.vhromada.catalog.entity.Genre;
+import cz.vhromada.catalog.web.common.GenreUtils;
 import cz.vhromada.catalog.web.fo.GenreFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link GenreFO} to {@link GenreTO}.
+ * A class represents test for converter from {@link GenreFO} to {@link Genre}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:webDozerMappingContext.xml")
+@ContextConfiguration(classes = ConverterConfiguration.class)
 public class GenreConverterTest {
 
     /**
      * Instance of {@link Converter}
      */
     @Autowired
-    @Qualifier("webDozerConverter")
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity.
      */
     @Test
-    public void testConvertGenreFO() {
+    public void convertGenreFO() {
         final GenreFO genreFO = GenreUtils.getGenreFO();
 
-        final GenreTO genreTO = converter.convert(genreFO, GenreTO.class);
+        final Genre genre = converter.convert(genreFO, Genre.class);
 
-        GenreUtils.assertGenreDeepEquals(genreFO, genreTO);
+        GenreUtils.assertGenreDeepEquals(genreFO, genre);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for genre.
      */
     @Test
-    public void testConvertGenreFO_NullArgument() {
-        assertNull(converter.convert(null, GenreTO.class));
+    public void convertGenreFO_NullGenreFO() {
+        assertThat(converter.convert(null, Genre.class), is(nullValue()));
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO.
      */
     @Test
-    public void testConvertGenreTO() {
-        final GenreTO genreTO = GenreUtils.getGenreTO();
+    public void convertGenre() {
+        final Genre genre = GenreUtils.getGenre();
 
-        final GenreFO genreFO = converter.convert(genreTO, GenreFO.class);
+        final GenreFO genreFO = converter.convert(genre, GenreFO.class);
 
-        GenreUtils.assertGenreDeepEquals(genreFO, genreTO);
+        GenreUtils.assertGenreDeepEquals(genreFO, genre);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with null genre.
      */
     @Test
-    public void testConvertGenreTO_NullArgument() {
-        assertNull(converter.convert(null, GenreFO.class));
+    public void convertGenre_NullGenre() {
+        assertThat(converter.convert(null, GenreFO.class), is(nullValue()));
     }
 
 }

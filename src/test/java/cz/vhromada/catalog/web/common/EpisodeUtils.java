@@ -1,9 +1,10 @@
-package cz.vhromada.catalog.web.commons;
+package cz.vhromada.catalog.web.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.EpisodeTO;
+import cz.vhromada.catalog.entity.Episode;
 import cz.vhromada.catalog.web.fo.EpisodeFO;
 
 /**
@@ -27,7 +28,7 @@ public final class EpisodeUtils {
     public static EpisodeFO getEpisodeFO() {
         final EpisodeFO episode = new EpisodeFO();
         episode.setId(CatalogUtils.ID);
-        episode.setNumber(Integer.toString(CatalogUtils.NUMBER));
+        episode.setNumber(CatalogUtils.NUMBER.toString());
         episode.setName(CatalogUtils.NAME);
         episode.setLength(TimeUtils.getTimeFO());
         episode.setNote(CatalogUtils.NOTE);
@@ -37,12 +38,12 @@ public final class EpisodeUtils {
     }
 
     /**
-     * Returns TO for episode.
+     * Returns episode.
      *
-     * @return TO for episode
+     * @return episode
      */
-    public static EpisodeTO getEpisodeTO() {
-        final EpisodeTO episode = new EpisodeTO();
+    public static Episode getEpisode() {
+        final Episode episode = new Episode();
         episode.setId(CatalogUtils.ID);
         episode.setNumber(CatalogUtils.NUMBER);
         episode.setName(CatalogUtils.NAME);
@@ -57,18 +58,16 @@ public final class EpisodeUtils {
      * Asserts episode deep equals.
      *
      * @param expected expected FO for episode
-     * @param actual   actual TO for episode
+     * @param actual   actual episode
      */
-    public static void assertEpisodeDeepEquals(final EpisodeFO expected, final EpisodeTO actual) {
-        assertNotNull(actual);
-        assertNotNull(actual.getNumber());
-        assertNotNull(actual.getLength());
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getNumber(), Integer.toString(actual.getNumber()));
-        assertEquals(expected.getName(), actual.getName());
+    public static void assertEpisodeDeepEquals(final EpisodeFO expected, final Episode actual) {
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getNumber(), is(Integer.valueOf(expected.getNumber())));
+        assertThat(actual.getName(), is(expected.getName()));
         TimeUtils.assertTimeDeepEquals(expected.getLength(), actual.getLength());
-        assertEquals(expected.getNote(), actual.getNote());
-        assertEquals(expected.getPosition(), actual.getPosition());
+        assertThat(actual.getNote(), is(expected.getNote()));
+        assertThat(actual.getPosition(), is(expected.getPosition()));
     }
 
 }

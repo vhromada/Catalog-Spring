@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.commons.Language;
+import cz.vhromada.catalog.common.Language;
 
 /**
  * A class represents tag for languages.
@@ -30,7 +30,6 @@ public class LanguagesTag extends SimpleTagSupport {
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getLanguagesAsString());

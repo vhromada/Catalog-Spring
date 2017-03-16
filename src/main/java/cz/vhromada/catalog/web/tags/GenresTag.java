@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.facade.to.GenreTO;
+import cz.vhromada.catalog.entity.Genre;
 
 /**
  * A class represents tag for genres.
@@ -18,19 +18,18 @@ public class GenresTag extends SimpleTagSupport {
     /**
      * Genres
      */
-    private List<GenreTO> genres;
+    private List<Genre> genres;
 
     /**
      * Sets a new value to genres.
      *
      * @param genres new value
      */
-    public void setGenres(final List<GenreTO> genres) {
+    public void setGenres(final List<Genre> genres) {
         this.genres = genres;
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getGenresAsString());
@@ -43,7 +42,7 @@ public class GenresTag extends SimpleTagSupport {
      */
     private String getGenresAsString() {
         final StringBuilder result = new StringBuilder();
-        for (final GenreTO genre : genres) {
+        for (final Genre genre : genres) {
             result.append(genre.getName());
             result.append(", ");
         }

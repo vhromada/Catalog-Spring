@@ -8,26 +8,28 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.commons.Language;
+import cz.vhromada.catalog.common.Language;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Genre;
+import cz.vhromada.catalog.entity.Movie;
 import cz.vhromada.catalog.facade.GenreFacade;
 import cz.vhromada.catalog.facade.MovieFacade;
-import cz.vhromada.catalog.facade.to.GenreTO;
-import cz.vhromada.catalog.facade.to.MovieTO;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
 import cz.vhromada.converters.Converter;
-import cz.vhromada.validators.Validators;
+import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * A class represents controller for movies.
@@ -36,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller("movieController")
 @RequestMapping("/movies")
-public class MovieController {
+public class MovieController extends AbstractResultController {
 
     /**
      * Redirect URL to list
@@ -46,17 +48,17 @@ public class MovieController {
     /**
      * Message for illegal request
      */
-    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for movie doesn't exist.";
+    private static final String ILLEGAL_REQUEST_MESSAGE = "Movie doesn't exist.";
 
     /**
-     * Model argument
+     * Message for null model
      */
-    private static final String MODEL_ARGUMENT = "Model";
+    private static final String NULL_MODEL_MESSAGE = "Model mustn't be null.";
 
     /**
-     * ID argument
+     * Message for null ID
      */
-    private static final String ID_ARGUMENT = "ID";
+    private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
      * Button parameter value
@@ -66,17 +68,17 @@ public class MovieController {
     /**
      * Facade for movies
      */
-    private MovieFacade movieFacade;
+    private final MovieFacade movieFacade;
 
     /**
      * Facade for genres
      */
-    private GenreFacade genreFacade;
+    private final GenreFacade genreFacade;
 
     /**
      * Converter
      */
-    private Converter converter;
+    private final Converter converter;
 
     /**
      * Creates a new instance of MovieController.
@@ -91,10 +93,10 @@ public class MovieController {
     @Autowired
     public MovieController(final MovieFacade movieFacade,
             final GenreFacade genreFacade,
-            @Qualifier("webDozerConverter") final Converter converter) {
-        Validators.validateArgumentNotNull(movieFacade, "Facade for movies");
-        Validators.validateArgumentNotNull(genreFacade, "Facade for genres");
-        Validators.validateArgumentNotNull(converter, "converter");
+            final Converter converter) {
+        Assert.notNull(movieFacade, "Facade for movies mustn't be null.");
+        Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
+        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.movieFacade = movieFacade;
         this.genreFacade = genreFacade;
@@ -106,7 +108,7 @@ public class MovieController {
      *
      * @return view for redirect to page with list of movies
      */
-    @RequestMapping(value = "new", method = RequestMethod.GET)
+    @GetMapping("/new")
     public String processNew() {
         movieFacade.newData();
 
@@ -120,13 +122,18 @@ public class MovieController {
      * @return view for page with list of movies
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "", "/", "/list" })
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        model.addAttribute("movies", new ArrayList<>(movieFacade.getMovies()));
-        model.addAttribute("mediaCount", movieFacade.getTotalMediaCount());
-        model.addAttribute("totalLength", movieFacade.getTotalLength());
+        final Result<List<Movie>> moviesResult = movieFacade.getAll();
+        final Result<Integer> mediaCountResult = movieFacade.getTotalMediaCount();
+        final Result<Time> totalLengthResult = movieFacade.getTotalLength();
+        processResults(moviesResult, mediaCountResult, totalLengthResult);
+
+        model.addAttribute("movies", mediaCountResult.getData());
+        model.addAttribute("mediaCount", mediaCountResult.getData());
+        model.addAttribute("totalLength", totalLengthResult.getData());
         model.addAttribute("title", "Movies");
 
         return "moviesList";
@@ -139,9 +146,9 @@ public class MovieController {
      * @return view for page for adding movie
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @GetMapping("/add")
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
         return createAddFormView(model, new MovieFO());
     }
@@ -150,7 +157,7 @@ public class MovieController {
      * Process adding movie.
      *
      * @param model   model
-     * @param movie   FO for movie
+     * @param movieFO   FO for movie
      * @param errors  errors
      * @param request HTTP request
      * @return view for redirect to page with list of movies (no errors) or view for page for adding movie (errors)
@@ -158,39 +165,39 @@ public class MovieController {
      *                                                               or FO for movie is null
      *                                                               or errors are null
      *                                                               or HTTP request is null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
+     *                                                               or ID isn't null
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAdd(final Model model, @ModelAttribute("movie") @Valid final MovieFO movie, final Errors errors, final HttpServletRequest request) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(movie, "FO for movie");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateArgumentNotNull(request, "Request");
-        Validators.validateNull(movie.getId(), ID_ARGUMENT);
+    @PostMapping("/add")
+    public String processAdd(final Model model, @ModelAttribute("movie") @Valid final MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(movieFO, "FO for movie mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.notNull(request, "Request mustn't be null.");
+        Assert.isNull(movieFO.getId(), "ID must be null.");
 
         if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("create"))) {
             if (errors.hasErrors()) {
-                return createAddFormView(model, movie);
+                return createAddFormView(model, movieFO);
             }
-            final MovieTO movieTO = converter.convert(movie, MovieTO.class);
-            if (movieTO.getSubtitles() == null) {
-                movieTO.setSubtitles(new ArrayList<>());
+            final Movie movie = converter.convert(movieFO, Movie.class);
+            if (movie.getSubtitles() == null) {
+                movie.setSubtitles(new ArrayList<>());
             }
-            movieTO.setGenres(getGenres(movieTO.getGenres()));
-            movieFacade.add(movieTO);
+            movie.setGenres(getGenres(movie.getGenres()));
+            processResults(movieFacade.add(movie));
         }
 
         if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("add"))) {
-            movie.getMedia().add(new TimeFO());
+            movieFO.getMedia().add(new TimeFO());
 
-            return createAddFormView(model, movie);
+            return createAddFormView(model, movieFO);
         }
 
         final Integer index = getRemoveIndex(request);
         if (index != null) {
-            movie.getMedia().remove(index.intValue());
+            movieFO.getMedia().remove(index.intValue());
 
-            return createAddFormView(model, movie);
+            return createAddFormView(model, movieFO);
         }
 
         return LIST_REDIRECT_URL;
@@ -206,13 +213,15 @@ public class MovieController {
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for movie doesn't exist
      */
-    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
 
-        final MovieTO movie = movieFacade.getMovie(id);
+        final Result<Movie> result = movieFacade.get(id);
+        processResults(result);
 
+        final Movie movie = result.getData();
         if (movie != null) {
             return createEditFormView(model, converter.convert(movie, MovieFO.class));
         } else {
@@ -224,7 +233,7 @@ public class MovieController {
      * Process editing movie.
      *
      * @param model   model
-     * @param movie   FO for movie
+     * @param movieFO   FO for movie
      * @param errors  errors
      * @param request HTTP request
      * @return view for redirect to page with list of movies (no errors) or view for page for editing movie (errors)
@@ -232,45 +241,41 @@ public class MovieController {
      *                                                               or FO for movie is null
      *                                                               or errors are null
      *                                                               or HTTP request is null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
+     *                                                               or ID is null
      * @throws IllegalRequestException                               if TO for movie doesn't exist
      */
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
-    public String processEdit(final Model model, @ModelAttribute("movie") @Valid final MovieFO movie, final Errors errors, final HttpServletRequest request) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(movie, "FO for movie");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateArgumentNotNull(request, "Request");
-        Validators.validateNotNull(movie.getId(), ID_ARGUMENT);
+    @PostMapping("/edit")
+    public String processEdit(final Model model, @ModelAttribute("movie") @Valid final MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(movieFO, "FO for movie mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.notNull(request, "Request mustn't be null.");
+        Assert.notNull(movieFO.getId(), NULL_ID_MESSAGE);
 
         if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("create"))) {
             if (errors.hasErrors()) {
-                return createEditFormView(model, movie);
+                return createEditFormView(model, movieFO);
             }
 
-            final MovieTO movieTO = converter.convert(movie, MovieTO.class);
-            if (movieFacade.getMovie(movieTO.getId()) != null) {
-                if (movieTO.getSubtitles() == null) {
-                    movieTO.setSubtitles(new ArrayList<>());
-                }
-                movieTO.setGenres(getGenres(movieTO.getGenres()));
-                movieFacade.update(movieTO);
-            } else {
-                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+            final Movie movie = processMovie(converter.convert(movieFO, Movie.class));
+            if (movie.getSubtitles() == null) {
+                movie.setSubtitles(new ArrayList<>());
             }
+            movie.setGenres(getGenres(movie.getGenres()));
+            processResults(movieFacade.update(movie));
         }
 
         if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("add"))) {
-            movie.getMedia().add(new TimeFO());
+            movieFO.getMedia().add(new TimeFO());
 
-            return createEditFormView(model, movie);
+            return createEditFormView(model, movieFO);
         }
 
         final Integer index = getRemoveIndex(request);
         if (index != null) {
-            movie.getMedia().remove(index.intValue());
+            movieFO.getMedia().remove(index.intValue());
 
-            return createEditFormView(model, movie);
+            return createEditFormView(model, movieFO);
         }
 
         return LIST_REDIRECT_URL;
@@ -284,17 +289,9 @@ public class MovieController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for movie doesn't exist
      */
-    @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
+    @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MovieTO movie = new MovieTO();
-        movie.setId(id);
-        if (movieFacade.getMovie(id) != null) {
-            movieFacade.duplicate(movie);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(movieFacade.duplicate(getMovie(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -307,17 +304,9 @@ public class MovieController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for movie doesn't exist
      */
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
+    @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MovieTO movie = new MovieTO();
-        movie.setId(id);
-        if (movieFacade.getMovie(id) != null) {
-            movieFacade.remove(movie);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(movieFacade.remove(getMovie(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -330,17 +319,9 @@ public class MovieController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for movie doesn't exist
      */
-    @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MovieTO movie = new MovieTO();
-        movie.setId(id);
-        if (movieFacade.getMovie(id) != null) {
-            movieFacade.moveUp(movie);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(movieFacade.moveUp(getMovie(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -353,17 +334,9 @@ public class MovieController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for movie doesn't exist
      */
-    @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final MovieTO movie = new MovieTO();
-        movie.setId(id);
-        if (movieFacade.getMovie(id) != null) {
-            movieFacade.moveDown(movie);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(movieFacade.moveDown(getMovie(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -373,11 +346,31 @@ public class MovieController {
      *
      * @return view for redirect to page with list of movies
      */
-    @RequestMapping(value = "update", method = RequestMethod.GET)
+    @GetMapping("/update")
     public String processUpdatePositions() {
-        movieFacade.updatePositions();
+        processResults(movieFacade.updatePositions());
 
         return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Returns index of removing media.
+     *
+     * @param request HTTP request
+     * @return index of removing media
+     */
+    private static Integer getRemoveIndex(final HttpServletRequest request) {
+        Integer index = null;
+        for (final Enumeration<String> names = request.getParameterNames(); names.hasMoreElements() && index == null; ) {
+            final String name = names.nextElement();
+            if (name.startsWith("remove")) {
+                if (BUTTON_PARAMETER_VALUE.equals(request.getParameter(name))) {
+                    index = Integer.parseInt(name.substring(6));
+                }
+            }
+        }
+
+        return index;
     }
 
     /**
@@ -390,11 +383,14 @@ public class MovieController {
      * @return page's view with form
      */
     private String createFormView(final Model model, final MovieFO movie, final String title, final String view) {
+        final Result<List<Genre>> result = genreFacade.getAll();
+        processResults(result);
+
         model.addAttribute("movie", movie);
         model.addAttribute("title", title);
         model.addAttribute("languages", Language.values());
         model.addAttribute("subtitles", new Language[]{ Language.CZ, Language.EN });
-        model.addAttribute("genres", genreFacade.getGenres());
+        model.addAttribute("genres", result.getData());
 
         return view;
     }
@@ -422,33 +418,53 @@ public class MovieController {
     }
 
     /**
+     * Returns movie with ID.
+     *
+     * @param id ID
+     * @return movie with ID
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if movie doesn't exist
+     */
+    private Movie getMovie(final Integer id) {
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Movie movie = new Movie();
+        movie.setId(id);
+
+        return processMovie(movie);
+    }
+
+    /**
+     * Returns processed movie.
+     *
+     * @param movie for processing
+     * @return processed movie
+     * @throws IllegalRequestException if movie doesn't exist
+     */
+    private Movie processMovie(final Movie movie) {
+        final Result<Movie> movieResult = movieFacade.get(movie.getId());
+        processResults(movieResult);
+
+        if (movieResult.getData() != null) {
+            return movie;
+        }
+
+        throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+    }
+
+    /**
      * Returns genres.
      *
      * @param source list of genres
      * @return genres
      */
-    private List<GenreTO> getGenres(final List<GenreTO> source) {
-        return source.stream().map(genre -> genreFacade.getGenre(genre.getId())).collect(Collectors.toList());
-    }
+    private List<Genre> getGenres(final List<Genre> source) {
+        return source.stream().map(genre -> {
+            final Result<Genre> result = genreFacade.get(genre.getId());
+            processResults(result);
 
-    /**
-     * Returns index of removing media.
-     *
-     * @param request HTTP request
-     * @return index of removing media
-     */
-    private static Integer getRemoveIndex(final HttpServletRequest request) {
-        Integer index = null;
-        for (final Enumeration<String> names = request.getParameterNames(); names.hasMoreElements() && index == null; ) {
-            final String name = names.nextElement();
-            if (name.startsWith("remove")) {
-                if (BUTTON_PARAMETER_VALUE.equals(request.getParameter(name))) {
-                    index = Integer.parseInt(name.substring(6));
-                }
-            }
-        }
-
-        return index;
+            return result.getData();
+        }).collect(Collectors.toList());
     }
 
 }

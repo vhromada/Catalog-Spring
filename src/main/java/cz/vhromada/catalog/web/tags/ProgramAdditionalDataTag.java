@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.facade.to.ProgramTO;
+import cz.vhromada.catalog.entity.Program;
 
 /**
  * A class represents tag for program's additional data.
@@ -15,21 +15,20 @@ import cz.vhromada.catalog.facade.to.ProgramTO;
 public class ProgramAdditionalDataTag extends SimpleTagSupport {
 
     /**
-     * TO for program
+     * Program
      */
-    private ProgramTO program;
+    private Program program;
 
     /**
-     * Sets a new value to TO for program
+     * Sets a new value to program
      *
      * @param program new value
      */
-    public void setProgram(final ProgramTO program) {
+    public void setProgram(final Program program) {
         this.program = program;
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getAdditionalData());

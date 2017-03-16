@@ -1,73 +1,73 @@
 package cz.vhromada.catalog.web.converters;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.GameTO;
-import cz.vhromada.catalog.web.commons.GameUtils;
+import cz.vhromada.catalog.entity.Game;
+import cz.vhromada.catalog.web.common.GameUtils;
 import cz.vhromada.catalog.web.fo.GameFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link GameFO} to {@link GameTO}.
+ * A class represents test for converter from {@link GameFO} to {@link Game}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:webDozerMappingContext.xml")
+@ContextConfiguration(classes = ConverterConfiguration.class)
 public class GameConverterTest {
 
     /**
      * Instance of {@link Converter}
      */
     @Autowired
-    @Qualifier("webDozerConverter")
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity.
      */
     @Test
-    public void testConvertGameFO() {
+    public void convertGameFO() {
         final GameFO gameFO = GameUtils.getGameFO();
 
-        final GameTO gameTO = converter.convert(gameFO, GameTO.class);
+        final Game game = converter.convert(gameFO, Game.class);
 
-        GameUtils.assertGameDeepEquals(gameFO, gameTO);
+        GameUtils.assertGameDeepEquals(gameFO, game);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for game.
      */
     @Test
-    public void testConvertGameFO_NullArgument() {
-        assertNull(converter.convert(null, GameTO.class));
+    public void convertGameFO_NullGameFO() {
+        assertThat(converter.convert(null, Game.class), is(nullValue()));
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO.
      */
     @Test
-    public void testConvertGameTO() {
-        final GameTO gameTO = GameUtils.getGameTO();
+    public void convertGame() {
+        final Game game = GameUtils.getGame();
 
-        final GameFO gameFO = converter.convert(gameTO, GameFO.class);
+        final GameFO gameFO = converter.convert(game, GameFO.class);
 
-        GameUtils.assertGameDeepEquals(gameFO, gameTO);
+        GameUtils.assertGameDeepEquals(gameFO, game);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with null game.
      */
     @Test
-    public void testConvertGameTO_NullArgument() {
-        assertNull(converter.convert(null, GameFO.class));
+    public void convertGame_NullGame() {
+        assertThat(converter.convert(null, GameFO.class), is(nullValue()));
     }
 
 }

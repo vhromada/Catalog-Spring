@@ -1,7 +1,7 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cat" uri="/WEB-INF/catalog.tld" %>
-<jsp:useBean id="episodes" type="java.util.List<cz.vhromada.catalog.facade.to.EpisodeTO>" scope="request"/>
+<jsp:useBean id="episodes" type="java.util.List<cz.vhromada.catalog.entity.Episode>" scope="request"/>
 <jsp:useBean id="show" type="java.lang.Integer" scope="request"/>
 <jsp:useBean id="season" type="java.lang.Integer" scope="request"/>
 <c:choose>

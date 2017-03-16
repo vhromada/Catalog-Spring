@@ -1,73 +1,73 @@
 package cz.vhromada.catalog.web.converters;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.ProgramTO;
-import cz.vhromada.catalog.web.commons.ProgramUtils;
+import cz.vhromada.catalog.entity.Program;
+import cz.vhromada.catalog.web.common.ProgramUtils;
 import cz.vhromada.catalog.web.fo.ProgramFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link ProgramFO} to {@link ProgramTO}.
+ * A class represents test for converter from {@link ProgramFO} to {@link Program}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:webDozerMappingContext.xml")
+@ContextConfiguration(classes = ConverterConfiguration.class)
 public class ProgramConverterTest {
 
     /**
      * Instance of {@link Converter}
      */
     @Autowired
-    @Qualifier("webDozerConverter")
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity.
      */
     @Test
-    public void testConvertProgramFO() {
+    public void convertProgramFO() {
         final ProgramFO programFO = ProgramUtils.getProgramFO();
 
-        final ProgramTO programTO = converter.convert(programFO, ProgramTO.class);
+        final Program program = converter.convert(programFO, Program.class);
 
-        ProgramUtils.assertProgramDeepEquals(programFO, programTO);
+        ProgramUtils.assertProgramDeepEquals(programFO, program);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for program.
      */
     @Test
-    public void testConvertProgramFO_NullArgument() {
-        assertNull(converter.convert(null, ProgramTO.class));
+    public void convertProgramFO_NullProgramFO() {
+        assertThat(converter.convert(null, Program.class), is(nullValue()));
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO.
      */
     @Test
-    public void testConvertProgramTO() {
-        final ProgramTO programTO = ProgramUtils.getProgramTO();
+    public void convertProgram() {
+        final Program program = ProgramUtils.getProgram();
 
-        final ProgramFO programFO = converter.convert(programTO, ProgramFO.class);
+        final ProgramFO programFO = converter.convert(program, ProgramFO.class);
 
-        ProgramUtils.assertProgramDeepEquals(programFO, programTO);
+        ProgramUtils.assertProgramDeepEquals(programFO, program);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with null program.
      */
     @Test
-    public void testConvertProgramTO_NullArgument() {
-        assertNull(converter.convert(null, ProgramFO.class));
+    public void convertProgram_NullProgram() {
+        assertThat(converter.convert(null, ProgramFO.class), is(nullValue()));
     }
 
 }

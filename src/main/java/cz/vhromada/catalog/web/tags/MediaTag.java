@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.commons.Time;
-import cz.vhromada.catalog.facade.to.MediumTO;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Medium;
 
 /**
  * A class represents tag for media.
@@ -19,19 +19,18 @@ public class MediaTag extends SimpleTagSupport {
     /**
      * Media
      */
-    private List<MediumTO> media;
+    private List<Medium> media;
 
     /**
      * Sets a new value to media.
      *
      * @param media new value
      */
-    public void setMedia(final List<MediumTO> media) {
+    public void setMedia(final List<Medium> media) {
         this.media = media;
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getMediaAsString());
@@ -44,7 +43,7 @@ public class MediaTag extends SimpleTagSupport {
      */
     private String getMediaAsString() {
         final StringBuilder result = new StringBuilder();
-        for (final MediumTO medium : media) {
+        for (final Medium medium : media) {
             result.append(new Time(medium.getLength()));
             result.append(", ");
         }

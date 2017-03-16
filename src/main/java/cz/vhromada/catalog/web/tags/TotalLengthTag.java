@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.commons.Time;
-import cz.vhromada.catalog.facade.to.MediumTO;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Medium;
 
 /**
  * A class represents tag for total length.
@@ -19,19 +19,18 @@ public class TotalLengthTag extends SimpleTagSupport {
     /**
      * Media
      */
-    private List<MediumTO> media;
+    private List<Medium> media;
 
     /**
      * Sets a new value to media.
      *
      * @param media new value
      */
-    public void setMedia(final List<MediumTO> media) {
+    public void setMedia(final List<Medium> media) {
         this.media = media;
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getTotalLength().toString());
@@ -44,7 +43,7 @@ public class TotalLengthTag extends SimpleTagSupport {
      */
     private Time getTotalLength() {
         int totalLength = 0;
-        for (final MediumTO medium : media) {
+        for (final Medium medium : media) {
             totalLength += medium.getLength();
         }
 

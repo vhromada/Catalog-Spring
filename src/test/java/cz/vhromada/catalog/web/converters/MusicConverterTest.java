@@ -1,73 +1,73 @@
 package cz.vhromada.catalog.web.converters;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.MusicTO;
-import cz.vhromada.catalog.web.commons.MusicUtils;
+import cz.vhromada.catalog.entity.Music;
+import cz.vhromada.catalog.web.common.MusicUtils;
 import cz.vhromada.catalog.web.fo.MusicFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link MusicFO} to {@link MusicTO}.
+ * A class represents test for converter from {@link MusicFO} to {@link Music}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:webDozerMappingContext.xml")
+@ContextConfiguration(classes = ConverterConfiguration.class)
 public class MusicConverterTest {
 
     /**
      * Instance of {@link Converter}
      */
     @Autowired
-    @Qualifier("webDozerConverter")
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity.
      */
     @Test
-    public void testConvertMusicFO() {
+    public void convertMusicFO() {
         final MusicFO musicFO = MusicUtils.getMusicFO();
 
-        final MusicTO musicTO = converter.convert(musicFO, MusicTO.class);
+        final Music music = converter.convert(musicFO, Music.class);
 
-        MusicUtils.assertMusicDeepEquals(musicFO, musicTO);
+        MusicUtils.assertMusicDeepEquals(musicFO, music);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for music.
      */
     @Test
-    public void testConvertMusicFO_NullArgument() {
-        assertNull(converter.convert(null, MusicTO.class));
+    public void convertMusicFO_NullMusicFO() {
+        assertThat(converter.convert(null, Music.class), is(nullValue()));
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO.
      */
     @Test
-    public void testConvertMusicTO() {
-        final MusicTO musicTO = MusicUtils.getMusicTO();
+    public void convertMusic() {
+        final Music music = MusicUtils.getMusic();
 
-        final MusicFO musicFO = converter.convert(musicTO, MusicFO.class);
+        final MusicFO musicFO = converter.convert(music, MusicFO.class);
 
-        MusicUtils.assertMusicDeepEquals(musicFO, musicTO);
+        MusicUtils.assertMusicDeepEquals(musicFO, music);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with null music.
      */
     @Test
-    public void testConvertMusicTO_NullArgument() {
-        assertNull(converter.convert(null, MusicFO.class));
+    public void convertMusic_NullMusic() {
+        assertThat(converter.convert(null, MusicFO.class), is(nullValue()));
     }
 
 }

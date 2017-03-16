@@ -3,7 +3,7 @@ package cz.vhromada.catalog.web.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import cz.vhromada.catalog.commons.Constants;
+import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.fo.SeasonFO;
 import cz.vhromada.catalog.web.validator.constraints.Years;
 
@@ -25,14 +25,12 @@ public class YearsValidator implements ConstraintValidator<Years, SeasonFO> {
     private int maxDate;
 
     @Override
-    @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
     public void initialize(final Years years) {
         minDate = Constants.MIN_YEAR;
         maxDate = Constants.CURRENT_YEAR;
     }
 
     @Override
-    @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
     public boolean isValid(final SeasonFO value, final ConstraintValidatorContext constraintValidatorContext) {
         if (value == null) {
             return true;

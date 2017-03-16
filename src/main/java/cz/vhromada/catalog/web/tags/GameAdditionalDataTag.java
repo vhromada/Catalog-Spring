@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import cz.vhromada.catalog.facade.to.GameTO;
+import cz.vhromada.catalog.entity.Game;
 
 /**
  * A class represents tag for game's additional data.
@@ -15,21 +15,20 @@ import cz.vhromada.catalog.facade.to.GameTO;
 public class GameAdditionalDataTag extends SimpleTagSupport {
 
     /**
-     * TO for game
+     * Game
      */
-    private GameTO game;
+    private Game game;
 
     /**
-     * Sets a new value to TO for game
+     * Sets a new value to game
      *
      * @param game new value
      */
-    public void setGame(final GameTO game) {
+    public void setGame(final Game game) {
         this.game = game;
     }
 
     @Override
-    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getAdditionalData());

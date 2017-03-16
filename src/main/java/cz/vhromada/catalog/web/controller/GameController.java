@@ -1,25 +1,26 @@
 package cz.vhromada.catalog.web.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import cz.vhromada.catalog.entity.Game;
 import cz.vhromada.catalog.facade.GameFacade;
-import cz.vhromada.catalog.facade.to.GameTO;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.GameFO;
 import cz.vhromada.converters.Converter;
-import cz.vhromada.validators.Validators;
+import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller("gameController")
 @RequestMapping("/games")
-public class GameController {
+public class GameController extends AbstractResultController {
 
     /**
      * Redirect URL to list
@@ -39,27 +40,27 @@ public class GameController {
     /**
      * Message for illegal request
      */
-    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for game doesn't exist.";
+    private static final String ILLEGAL_REQUEST_MESSAGE = "Game doesn't exist.";
 
     /**
-     * Model argument
+     * Message for null model
      */
-    private static final String MODEL_ARGUMENT = "Model";
+    private static final String NULL_MODEL_MESSAGE = "Model mustn't be null.";
 
     /**
-     * ID argument
+     * Message for null ID
      */
-    private static final String ID_ARGUMENT = "ID";
+    private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
      * Facade for games
      */
-    private GameFacade gameFacade;
+    private final GameFacade gameFacade;
 
     /**
      * Converter
      */
-    private Converter converter;
+    private final Converter converter;
 
     /**
      * Creates a new instance of GameController.
@@ -71,9 +72,9 @@ public class GameController {
      */
     @Autowired
     public GameController(final GameFacade gameFacade,
-            @Qualifier("webDozerConverter") final Converter converter) {
-        Validators.validateArgumentNotNull(gameFacade, "Facade for games");
-        Validators.validateArgumentNotNull(converter, "converter");
+            final Converter converter) {
+        Assert.notNull(gameFacade, "Facade for games mustn't be null.");
+        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.gameFacade = gameFacade;
         this.converter = converter;
@@ -84,9 +85,9 @@ public class GameController {
      *
      * @return view for redirect to page with list of games
      */
-    @RequestMapping(value = "new", method = RequestMethod.GET)
+    @GetMapping("/new")
     public String processNew() {
-        gameFacade.newData();
+        processResults(gameFacade.newData());
 
         return LIST_REDIRECT_URL;
     }
@@ -98,12 +99,16 @@ public class GameController {
      * @return view for page with list of games
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
+    @GetMapping(value = { "", "/", "/list" })
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        model.addAttribute("games", new ArrayList<>(gameFacade.getGames()));
-        model.addAttribute("mediaCount", gameFacade.getTotalMediaCount());
+        final Result<List<Game>> gamesResult = gameFacade.getAll();
+        final Result<Integer> mediaCountResult = gameFacade.getTotalMediaCount();
+        processResults(gamesResult, mediaCountResult);
+
+        model.addAttribute("games", gamesResult.getData());
+        model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("title", "Games");
 
         return "gamesList";
@@ -116,9 +121,9 @@ public class GameController {
      * @return view for page for adding game
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @GetMapping("/add")
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
         return createFormView(model, new GameFO(), "Add game", "gamesAdd");
     }
@@ -134,21 +139,21 @@ public class GameController {
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for game is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
+     *                                                               or ID isn't null
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @PostMapping("/add")
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(game, "FO for game");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(game.getId(), ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(game, "FO for game mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.isNull(game.getId(), "ID must be null.");
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
                 return createFormView(model, game, "Add game", "gamesAdd");
             }
-            gameFacade.add(converter.convert(game, GameTO.class));
+            processResults(gameFacade.add(converter.convert(game, Game.class)));
         }
 
         return LIST_REDIRECT_URL;
@@ -162,15 +167,17 @@ public class GameController {
      * @return view for page for editing game
      * @throws IllegalArgumentException if model is null
      *                                  or ID is null
-     * @throws IllegalRequestException  if TO for game doesn't exist
+     * @throws IllegalRequestException  if game doesn't exist
      */
-    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
 
-        final GameTO game = gameFacade.getGame(id);
+        final Result<Game> result = gameFacade.get(id);
+        processResults(result);
 
+        final Game game = result.getData();
         if (game != null) {
             return createFormView(model, converter.convert(game, GameFO.class), "Edit game", "gamesEdit");
         } else {
@@ -183,34 +190,28 @@ public class GameController {
      *
      * @param model        model
      * @param createButton button create
-     * @param game         FO for game
+     * @param game       FO for game
      * @param errors       errors
      * @return view for redirect to page with list of games (no errors) or view for page for editing game (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for game is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
-     * @throws IllegalRequestException                               if TO for game doesn't exist
+     *                                                               or ID is null
+     * @throws IllegalRequestException                               if game doesn't exist
      */
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    @PostMapping("/edit")
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(game, "FO for game");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(game.getId(), ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(game, "FO for game mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.notNull(game.getId(), NULL_ID_MESSAGE);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
                 return createFormView(model, game, "Edit game", "gamesEdit");
             }
-
-            final GameTO gameTO = converter.convert(game, GameTO.class);
-            if (gameFacade.getGame(gameTO.getId()) != null) {
-                gameFacade.update(gameTO);
-            } else {
-                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-            }
+            processResults(gameFacade.update(processGame(converter.convert(game, Game.class))));
         }
 
         return LIST_REDIRECT_URL;
@@ -222,19 +223,11 @@ public class GameController {
      * @param id ID of duplicating game
      * @return view for redirect to page with list of games
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for game doesn't exist
+     * @throws IllegalRequestException  if game doesn't exist
      */
-    @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
+    @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final GameTO game = new GameTO();
-        game.setId(id);
-        if (gameFacade.getGame(id) != null) {
-            gameFacade.duplicate(game);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(gameFacade.duplicate(getGame(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -245,19 +238,11 @@ public class GameController {
      * @param id ID of removing game
      * @return view for redirect to page with list of games
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for game doesn't exist
+     * @throws IllegalRequestException  if game doesn't exist
      */
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
+    @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final GameTO game = new GameTO();
-        game.setId(id);
-        if (gameFacade.getGame(id) != null) {
-            gameFacade.remove(game);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(gameFacade.remove(getGame(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -268,19 +253,11 @@ public class GameController {
      * @param id ID of moving game
      * @return view for redirect to page with list of games
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for game doesn't exist
+     * @throws IllegalRequestException  if game doesn't exist
      */
-    @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final GameTO game = new GameTO();
-        game.setId(id);
-        if (gameFacade.getGame(id) != null) {
-            gameFacade.moveUp(game);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(gameFacade.moveUp(getGame(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -291,19 +268,11 @@ public class GameController {
      * @param id ID of moving game
      * @return view for redirect to page with list of games
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for game doesn't exist
+     * @throws IllegalRequestException  if game doesn't exist
      */
-    @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final GameTO game = new GameTO();
-        game.setId(id);
-        if (gameFacade.getGame(id) != null) {
-            gameFacade.moveDown(game);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(gameFacade.moveDown(getGame(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -313,9 +282,9 @@ public class GameController {
      *
      * @return view for redirect to page with list of games
      */
-    @RequestMapping(value = "update", method = RequestMethod.GET)
+    @GetMapping("/update")
     public String processUpdatePositions() {
-        gameFacade.updatePositions();
+        processResults(gameFacade.updatePositions());
 
         return LIST_REDIRECT_URL;
     }
@@ -334,6 +303,41 @@ public class GameController {
         model.addAttribute("title", title);
 
         return view;
+    }
+
+    /**
+     * Returns game with ID.
+     *
+     * @param id ID
+     * @return game with ID
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if game doesn't exist
+     */
+    private Game getGame(final Integer id) {
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Game game = new Game();
+        game.setId(id);
+
+        return processGame(game);
+    }
+
+    /**
+     * Returns processed game.
+     *
+     * @param game for processing
+     * @return processed game
+     * @throws IllegalRequestException if game doesn't exist
+     */
+    private Game processGame(final Game game) {
+        final Result<Game> gameResult = gameFacade.get(game.getId());
+        processResults(gameResult);
+
+        if (gameResult.getData() != null) {
+            return game;
+        }
+
+        throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
     }
 
 }

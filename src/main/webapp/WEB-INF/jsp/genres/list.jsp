@@ -1,6 +1,6 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="genres" type="java.util.List<cz.vhromada.catalog.facade.to.GenreTO>" scope="request"/>
+<jsp:useBean id="genres" type="java.util.List<cz.vhromada.catalog.entity.Genre>" scope="request"/>
 <c:choose>
     <c:when test="${not empty genres}">
         <table class="table table-hover">

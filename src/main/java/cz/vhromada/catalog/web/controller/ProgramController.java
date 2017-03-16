@@ -1,25 +1,26 @@
 package cz.vhromada.catalog.web.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.facade.ProgramFacade;
-import cz.vhromada.catalog.facade.to.ProgramTO;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ProgramFO;
 import cz.vhromada.converters.Converter;
-import cz.vhromada.validators.Validators;
+import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller("programController")
 @RequestMapping("/programs")
-public class ProgramController {
+public class ProgramController extends AbstractResultController {
 
     /**
      * Redirect URL to list
@@ -39,41 +40,41 @@ public class ProgramController {
     /**
      * Message for illegal request
      */
-    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for program doesn't exist.";
+    private static final String ILLEGAL_REQUEST_MESSAGE = "Program doesn't exist.";
 
     /**
-     * Model argument
+     * Message for null model
      */
-    private static final String MODEL_ARGUMENT = "Model";
+    private static final String NULL_MODEL_MESSAGE = "Model mustn't be null.";
 
     /**
-     * ID argument
+     * Message for null ID
      */
-    private static final String ID_ARGUMENT = "ID";
+    private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
      * Facade for programs
      */
-    private ProgramFacade programFacade;
+    private final ProgramFacade programFacade;
 
     /**
      * Converter
      */
-    private Converter converter;
+    private final Converter converter;
 
     /**
      * Creates a new instance of ProgramController.
      *
      * @param programFacade facade for programs
-     * @param converter     converter
+     * @param converter  converter
      * @throws IllegalArgumentException if facade for programs is null
      *                                  or converter is null
      */
     @Autowired
     public ProgramController(final ProgramFacade programFacade,
-            @Qualifier("webDozerConverter") final Converter converter) {
-        Validators.validateArgumentNotNull(programFacade, "Facade for programs");
-        Validators.validateArgumentNotNull(converter, "converter");
+            final Converter converter) {
+        Assert.notNull(programFacade, "Facade for programs mustn't be null.");
+        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.programFacade = programFacade;
         this.converter = converter;
@@ -84,9 +85,9 @@ public class ProgramController {
      *
      * @return view for redirect to page with list of programs
      */
-    @RequestMapping(value = "new", method = RequestMethod.GET)
+    @GetMapping("/new")
     public String processNew() {
-        programFacade.newData();
+        processResults(programFacade.newData());
 
         return LIST_REDIRECT_URL;
     }
@@ -98,12 +99,16 @@ public class ProgramController {
      * @return view for page with list of programs
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
+    @GetMapping(value = { "", "/", "/list" })
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        model.addAttribute("programs", new ArrayList<>(programFacade.getPrograms()));
-        model.addAttribute("mediaCount", programFacade.getTotalMediaCount());
+        final Result<List<Program>> programsResult = programFacade.getAll();
+        final Result<Integer> mediaCountResult = programFacade.getTotalMediaCount();
+        processResults(programsResult, mediaCountResult);
+
+        model.addAttribute("programs", programsResult.getData());
+        model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("title", "Programs");
 
         return "programsList";
@@ -116,9 +121,9 @@ public class ProgramController {
      * @return view for page for adding program
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @GetMapping("/add")
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
         return createFormView(model, new ProgramFO(), "Add program", "programsAdd");
     }
@@ -128,27 +133,27 @@ public class ProgramController {
      *
      * @param model        model
      * @param createButton button create
-     * @param program      FO for program
+     * @param program         FO for program
      * @param errors       errors
      * @return view for redirect to page with list of programs (no errors) or view for page for adding program (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for program is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
+     *                                                               or ID isn't null
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @PostMapping("/add")
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(program, "FO for program");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(program.getId(), ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(program, "FO for program mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.isNull(program.getId(), "ID must be null.");
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
                 return createFormView(model, program, "Add program", "programsAdd");
             }
-            programFacade.add(converter.convert(program, ProgramTO.class));
+            processResults(programFacade.add(converter.convert(program, Program.class)));
         }
 
         return LIST_REDIRECT_URL;
@@ -162,15 +167,17 @@ public class ProgramController {
      * @return view for page for editing program
      * @throws IllegalArgumentException if model is null
      *                                  or ID is null
-     * @throws IllegalRequestException  if TO for program doesn't exist
+     * @throws IllegalRequestException  if program doesn't exist
      */
-    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
 
-        final ProgramTO program = programFacade.getProgram(id);
+        final Result<Program> result = programFacade.get(id);
+        processResults(result);
 
+        final Program program = result.getData();
         if (program != null) {
             return createFormView(model, converter.convert(program, ProgramFO.class), "Edit program", "programsEdit");
         } else {
@@ -189,28 +196,22 @@ public class ProgramController {
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for program is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
-     * @throws IllegalRequestException                               if TO for program doesn't exist
+     *                                                               or ID is null
+     * @throws IllegalRequestException                               if program doesn't exist
      */
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    @PostMapping("/edit")
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
             @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(program, "FO for program");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(program.getId(), ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(program, "FO for program mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.notNull(program.getId(), NULL_ID_MESSAGE);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
                 return createFormView(model, program, "Edit program", "programsEdit");
             }
-
-            final ProgramTO programTO = converter.convert(program, ProgramTO.class);
-            if (programFacade.getProgram(programTO.getId()) != null) {
-                programFacade.update(programTO);
-            } else {
-                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-            }
+            processResults(programFacade.update(processProgram(converter.convert(program, Program.class))));
         }
 
         return LIST_REDIRECT_URL;
@@ -222,19 +223,11 @@ public class ProgramController {
      * @param id ID of duplicating program
      * @return view for redirect to page with list of programs
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for program doesn't exist
+     * @throws IllegalRequestException  if program doesn't exist
      */
-    @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
+    @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ProgramTO program = new ProgramTO();
-        program.setId(id);
-        if (programFacade.getProgram(id) != null) {
-            programFacade.duplicate(program);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(programFacade.duplicate(getProgram(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -245,19 +238,11 @@ public class ProgramController {
      * @param id ID of removing program
      * @return view for redirect to page with list of programs
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for program doesn't exist
+     * @throws IllegalRequestException  if program doesn't exist
      */
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
+    @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ProgramTO program = new ProgramTO();
-        program.setId(id);
-        if (programFacade.getProgram(id) != null) {
-            programFacade.remove(program);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(programFacade.remove(getProgram(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -268,19 +253,11 @@ public class ProgramController {
      * @param id ID of moving program
      * @return view for redirect to page with list of programs
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for program doesn't exist
+     * @throws IllegalRequestException  if program doesn't exist
      */
-    @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ProgramTO program = new ProgramTO();
-        program.setId(id);
-        if (programFacade.getProgram(id) != null) {
-            programFacade.moveUp(program);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(programFacade.moveUp(getProgram(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -291,19 +268,11 @@ public class ProgramController {
      * @param id ID of moving program
      * @return view for redirect to page with list of programs
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for program doesn't exist
+     * @throws IllegalRequestException  if program doesn't exist
      */
-    @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ProgramTO program = new ProgramTO();
-        program.setId(id);
-        if (programFacade.getProgram(id) != null) {
-            programFacade.moveDown(program);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(programFacade.moveDown(getProgram(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -313,9 +282,9 @@ public class ProgramController {
      *
      * @return view for redirect to page with list of programs
      */
-    @RequestMapping(value = "update", method = RequestMethod.GET)
+    @GetMapping("/update")
     public String processUpdatePositions() {
-        programFacade.updatePositions();
+        processResults(programFacade.updatePositions());
 
         return LIST_REDIRECT_URL;
     }
@@ -323,10 +292,10 @@ public class ProgramController {
     /**
      * Returns page's view with form.
      *
-     * @param model   model
-     * @param program FO for program
-     * @param title   page's title
-     * @param view    returning view
+     * @param model model
+     * @param program  FO for program
+     * @param title page's title
+     * @param view  returning view
      * @return page's view with form
      */
     private static String createFormView(final Model model, final ProgramFO program, final String title, final String view) {
@@ -334,6 +303,41 @@ public class ProgramController {
         model.addAttribute("title", title);
 
         return view;
+    }
+
+    /**
+     * Returns program with ID.
+     *
+     * @param id ID
+     * @return program with ID
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if program doesn't exist
+     */
+    private Program getProgram(final Integer id) {
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Program program = new Program();
+        program.setId(id);
+
+        return processProgram(program);
+    }
+
+    /**
+     * Returns processed program.
+     *
+     * @param program for processing
+     * @return processed program
+     * @throws IllegalRequestException if program doesn't exist
+     */
+    private Program processProgram(final Program program) {
+        final Result<Program> programResult = programFacade.get(program.getId());
+        processResults(programResult);
+
+        if (programResult.getData() != null) {
+            return program;
+        }
+
+        throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
     }
 
 }

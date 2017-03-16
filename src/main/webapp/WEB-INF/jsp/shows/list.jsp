@@ -4,7 +4,7 @@
 <jsp:useBean id="shows" type="java.util.List<cz.vhromada.catalog.web.domain.Show>" scope="request"/>
 <jsp:useBean id="seasonsCount" type="java.lang.Integer" scope="request"/>
 <jsp:useBean id="episodesCount" type="java.lang.Integer" scope="request"/>
-<jsp:useBean id="totalLength" type="cz.vhromada.catalog.commons.Time" scope="request"/>
+<jsp:useBean id="totalLength" type="cz.vhromada.catalog.common.Time" scope="request"/>
 <c:choose>
     <c:when test="${not empty shows}">
         <table class="table table-hover">

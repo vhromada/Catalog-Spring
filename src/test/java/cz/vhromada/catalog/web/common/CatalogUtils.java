@@ -1,9 +1,8 @@
-package cz.vhromada.catalog.web.commons;
+package cz.vhromada.catalog.web.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * A class represents utility class for tests.
@@ -77,9 +76,9 @@ public final class CatalogUtils {
      */
     public static void assertImdbCodeDeepEquals(final boolean expectedImdb, final String expectedImdbCode, final int actualImdbCode) {
         if (expectedImdb) {
-            assertEquals(expectedImdbCode, Integer.toString(actualImdbCode));
+            assertThat(actualImdbCode, is(Integer.valueOf(expectedImdbCode)));
         } else {
-            assertEquals(-1, actualImdbCode);
+            assertThat(actualImdbCode, is(-1));
         }
     }
 
@@ -92,11 +91,11 @@ public final class CatalogUtils {
      */
     public static void assertImdbDeepEquals(final int expectedImdbCode, final boolean actualImdb, final String actualImdbCode) {
         if (expectedImdbCode < 1) {
-            assertFalse(actualImdb);
-            assertNull(actualImdbCode);
+            assertThat(actualImdb, is(false));
+            assertThat(actualImdbCode, is(nullValue()));
         } else {
-            assertTrue(actualImdb);
-            assertEquals(Integer.toString(expectedImdbCode), actualImdbCode);
+            assertThat(actualImdb, is(true));
+            assertThat(actualImdbCode, is(Integer.toString(expectedImdbCode)));
         }
     }
 

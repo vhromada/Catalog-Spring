@@ -3,15 +3,15 @@ package cz.vhromada.catalog.web.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import cz.vhromada.catalog.commons.Time;
-import cz.vhromada.catalog.facade.to.MusicTO;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Music;
 
 /**
- * A class represents music.
+ * A class represents music data.
  *
  * @author Vladimir Hromada
  */
-public class Music implements Serializable {
+public class MusicData implements Serializable {
 
     /**
      * SerialVersionUID
@@ -19,9 +19,9 @@ public class Music implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * TO for music
+     * Music
      */
-    private MusicTO music;
+    private Music music;
 
     /**
      * Count of songs
@@ -34,20 +34,20 @@ public class Music implements Serializable {
     private Time totalLength;
 
     /**
-     * Returns TO for music.
+     * Returns music.
      *
-     * @return TO for music
+     * @return music
      */
-    public MusicTO getMusic() {
+    public Music getMusic() {
         return music;
     }
 
     /**
-     * Sets a new value to TO for music.
+     * Sets a new value to music.
      *
      * @param music new value
      */
-    public void setMusic(final MusicTO music) {
+    public void setMusic(final Music music) {
         this.music = music;
     }
 
@@ -92,11 +92,11 @@ public class Music implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Music)) {
+        if (!(obj instanceof MusicData)) {
             return false;
         }
 
-        return Objects.equals(music, ((Music) obj).music);
+        return Objects.equals(music, ((MusicData) obj).music);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Music implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Music [music=%s, songsCount=%d, totalLength=%s]", music, songsCount, totalLength);
+        return String.format("MusicData [music=%s, songsCount=%d, totalLength=%s]", music, songsCount, totalLength);
     }
 
 }

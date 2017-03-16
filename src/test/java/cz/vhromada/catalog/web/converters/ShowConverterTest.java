@@ -2,97 +2,95 @@ package cz.vhromada.catalog.web.converters;
 
 import static org.junit.Assert.assertNull;
 
-import cz.vhromada.catalog.facade.to.ShowTO;
-import cz.vhromada.catalog.web.commons.ShowUtils;
+import cz.vhromada.catalog.entity.Show;
+import cz.vhromada.catalog.web.common.ShowUtils;
 import cz.vhromada.catalog.web.fo.ShowFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link ShowFO} to {@link ShowTO}.
+ * A class represents test for converter from {@link ShowFO} to {@link Show}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:webDozerMappingContext.xml")
+@ContextConfiguration(classes = ConverterConfiguration.class)
 public class ShowConverterTest {
 
     /**
      * Instance of {@link Converter}
      */
     @Autowired
-    @Qualifier("webDozerConverter")
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with IMDB code.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with IMDB code.
      */
     @Test
-    public void testConvertShowFO_Imdb() {
+    public void convertShowFO_Imdb() {
         final ShowFO showFO = ShowUtils.getShowFO();
 
-        final ShowTO showTO = converter.convert(showFO, ShowTO.class);
+        final Show show = converter.convert(showFO, Show.class);
 
-        ShowUtils.assertShowDeepEquals(showFO, showTO);
+        ShowUtils.assertShowDeepEquals(showFO, show);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO without IMDB code.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity without IMDB code.
      */
     @Test
-    public void testConvertShowFO_NoImdb() {
+    public void convertShowFO_NoImdb() {
         final ShowFO showFO = ShowUtils.getShowFO();
         showFO.setImdb(false);
 
-        final ShowTO showTO = converter.convert(showFO, ShowTO.class);
+        final Show show = converter.convert(showFO, Show.class);
 
-        ShowUtils.assertShowDeepEquals(showFO, showTO);
+        ShowUtils.assertShowDeepEquals(showFO, show);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for show.
      */
     @Test
-    public void testConvertShowFO_NullArgument() {
-        assertNull(converter.convert(null, ShowTO.class));
+    public void convertShowFO_NullShowFO() {
+        assertNull(converter.convert(null, Show.class));
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with IMDB code.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with IMDB code.
      */
     @Test
-    public void testConvertShowTO_Imdb() {
-        final ShowTO showTO = ShowUtils.getShowTO();
+    public void convertShow_Imdb() {
+        final Show show = ShowUtils.getShow();
 
-        final ShowFO showFO = converter.convert(showTO, ShowFO.class);
+        final ShowFO showFO = converter.convert(show, ShowFO.class);
 
-        ShowUtils.assertShowDeepEquals(showTO, showFO);
+        ShowUtils.assertShowDeepEquals(show, showFO);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO without IMDB code.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO without IMDB code.
      */
     @Test
-    public void testConvertShowTO_NoImdb() {
-        final ShowTO showTO = ShowUtils.getShowTO();
-        showTO.setImdbCode(-1);
+    public void convertShow_NoImdb() {
+        final Show show = ShowUtils.getShow();
+        show.setImdbCode(-1);
 
-        final ShowFO showFO = converter.convert(showTO, ShowFO.class);
+        final ShowFO showFO = converter.convert(show, ShowFO.class);
 
-        ShowUtils.assertShowDeepEquals(showTO, showFO);
+        ShowUtils.assertShowDeepEquals(show, showFO);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with entity.
      */
     @Test
-    public void testConvertShowTO_NullArgument() {
+    public void convertShow_NullEntity() {
         assertNull(converter.convert(null, ShowFO.class));
     }
 

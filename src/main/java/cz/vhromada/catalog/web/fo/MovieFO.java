@@ -9,8 +9,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import cz.vhromada.catalog.commons.Constants;
-import cz.vhromada.catalog.commons.Language;
+import cz.vhromada.catalog.common.Language;
+import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.DateRange;
 import cz.vhromada.catalog.web.validator.constraints.Imdb;
 import cz.vhromada.catalog.web.validator.constraints.ImdbCode;

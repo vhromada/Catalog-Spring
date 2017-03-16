@@ -3,7 +3,7 @@ package cz.vhromada.catalog.web.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import cz.vhromada.catalog.commons.Constants;
+import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.ImdbCode;
 
 /**
@@ -24,14 +24,12 @@ public class ImdbCodeValidator implements ConstraintValidator<ImdbCode, String> 
     private int maxImdb;
 
     @Override
-    @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
     public void initialize(final ImdbCode imdbCode) {
         minImdb = 1;
         maxImdb = Constants.MAX_IMDB_CODE;
     }
 
     @Override
-    @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
     public boolean isValid(final String imdbCode, final ConstraintValidatorContext constraintValidatorContext) {
         if (imdbCode == null) {
             return true;

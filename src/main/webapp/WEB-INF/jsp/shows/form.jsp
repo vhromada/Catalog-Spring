@@ -1,8 +1,7 @@
-<%--suppress XmlDuplicatedId --%>
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<jsp:useBean id="genres" type="java.util.List<cz.vhromada.catalog.facade.to.GenreTO>" scope="request"/>
+<jsp:useBean id="genres" type="java.util.List<cz.vhromada.catalog.entity.Genre>" scope="request"/>
 <div class="form-group">
     <label class="col-sm-2 control-label" for="czechName">Czech name</label>
 

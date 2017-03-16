@@ -1,9 +1,9 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean id="music" type="java.util.List<cz.vhromada.catalog.web.domain.Music>" scope="request"/>
+<jsp:useBean id="music" type="java.util.List<cz.vhromada.catalog.web.domain.MusicData>" scope="request"/>
 <jsp:useBean id="mediaCount" type="java.lang.Integer" scope="request"/>
 <jsp:useBean id="songsCount" type="java.lang.Integer" scope="request"/>
-<jsp:useBean id="totalLength" type="cz.vhromada.catalog.commons.Time" scope="request"/>
+<jsp:useBean id="totalLength" type="cz.vhromada.catalog.common.Time" scope="request"/>
 <c:choose>
     <c:when test="${not empty music}">
         <table class="table table-hover">

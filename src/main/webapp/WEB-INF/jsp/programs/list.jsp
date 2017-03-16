@@ -1,7 +1,7 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cat" uri="/WEB-INF/catalog.tld" %>
-<jsp:useBean id="programs" type="java.util.List<cz.vhromada.catalog.facade.to.ProgramTO>" scope="request"/>
+<jsp:useBean id="programs" type="java.util.List<cz.vhromada.catalog.entity.Program>" scope="request"/>
 <jsp:useBean id="mediaCount" type="java.lang.Integer" scope="request"/>
 <c:choose>
     <c:when test="${not empty programs}">

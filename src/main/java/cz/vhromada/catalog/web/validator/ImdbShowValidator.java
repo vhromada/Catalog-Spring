@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import cz.vhromada.catalog.web.fo.ShowFO;
 import cz.vhromada.catalog.web.validator.constraints.Imdb;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * A class represents show validator for IMDB code constraint.
@@ -16,12 +16,10 @@ import org.apache.commons.lang3.StringUtils;
 public class ImdbShowValidator implements ConstraintValidator<Imdb, ShowFO> {
 
     @Override
-    @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
     public void initialize(final Imdb imdb) {
     }
 
     @Override
-    @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
     public boolean isValid(final ShowFO show, final ConstraintValidatorContext constraintValidatorContext) {
         if (show == null) {
             return false;
@@ -30,7 +28,7 @@ public class ImdbShowValidator implements ConstraintValidator<Imdb, ShowFO> {
             return true;
         }
 
-        return StringUtils.isNotEmpty(show.getImdbCode());
+        return !StringUtils.isEmpty(show.getImdbCode());
     }
 
 }

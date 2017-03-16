@@ -1,11 +1,12 @@
-package cz.vhromada.catalog.web.commons;
+package cz.vhromada.catalog.web.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.commons.CollectionUtils;
-import cz.vhromada.catalog.facade.to.MediumTO;
-import cz.vhromada.catalog.facade.to.ShowTO;
+import cz.vhromada.catalog.entity.Medium;
+import cz.vhromada.catalog.entity.Show;
+import cz.vhromada.catalog.utils.CollectionUtils;
 import cz.vhromada.catalog.web.fo.ShowFO;
 
 /**
@@ -27,7 +28,7 @@ public final class ShowUtils {
      * @return FO for show
      */
     public static ShowFO getShowFO() {
-        final MediumTO medium = new MediumTO();
+        final Medium medium = new Medium();
         medium.setId(CatalogUtils.ID);
         medium.setNumber(CatalogUtils.NUMBER);
         medium.setLength(CatalogUtils.LENGTH);
@@ -50,17 +51,17 @@ public final class ShowUtils {
     }
 
     /**
-     * Returns TO for show.
+     * Returns show.
      *
-     * @return TO for show
+     * @return show
      */
-    public static ShowTO getShowTO() {
-        final MediumTO medium = new MediumTO();
+    public static Show getShow() {
+        final Medium medium = new Medium();
         medium.setId(CatalogUtils.ID);
         medium.setNumber(CatalogUtils.NUMBER);
         medium.setLength(CatalogUtils.LENGTH);
 
-        final ShowTO show = new ShowTO();
+        final Show show = new Show();
         show.setId(CatalogUtils.ID);
         show.setCzechName("czName");
         show.setOriginalName("origName");
@@ -71,7 +72,7 @@ public final class ShowUtils {
         show.setPicture("Picture");
         show.setNote(CatalogUtils.NOTE);
         show.setPosition(CatalogUtils.POSITION);
-        show.setGenres(CollectionUtils.newList(GenreUtils.getGenreTO()));
+        show.setGenres(CollectionUtils.newList(GenreUtils.getGenre()));
 
         return show;
     }
@@ -80,42 +81,41 @@ public final class ShowUtils {
      * Asserts show deep equals.
      *
      * @param expected expected FO for show
-     * @param actual   actual TO for show
+     * @param actual   actual show
      */
-    public static void assertShowDeepEquals(final ShowFO expected, final ShowTO actual) {
-        assertNotNull(actual);
-        assertNotNull(actual.getImdbCode());
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getCzechName(), actual.getCzechName());
-        assertEquals(expected.getOriginalName(), actual.getOriginalName());
-        assertEquals(expected.getCsfd(), actual.getCsfd());
+    public static void assertShowDeepEquals(final ShowFO expected, final Show actual) {
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getCzechName(), is(expected.getCzechName()));
+        assertThat(actual.getOriginalName(), is(expected.getOriginalName()));
+        assertThat(actual.getCsfd(), is(expected.getCsfd()));
         CatalogUtils.assertImdbCodeDeepEquals(expected.getImdb(), expected.getImdbCode(), actual.getImdbCode());
-        assertEquals(expected.getWikiEn(), actual.getWikiEn());
-        assertEquals(expected.getWikiCz(), actual.getWikiCz());
-        assertEquals(expected.getPicture(), actual.getPicture());
-        assertEquals(expected.getNote(), actual.getNote());
-        assertEquals(expected.getPosition(), actual.getPosition());
+        assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
+        assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
+        assertThat(actual.getPicture(), is(expected.getPicture()));
+        assertThat(actual.getNote(), is(expected.getNote()));
+        assertThat(actual.getPosition(), is(expected.getPosition()));
         GenreUtils.assertGenresDeepEquals(expected.getGenres(), actual.getGenres());
     }
 
     /**
      * Asserts show deep equals.
      *
-     * @param expected expected TO for show
+     * @param expected expected show
      * @param actual   actual FO for show
      */
-    public static void assertShowDeepEquals(final ShowTO expected, final ShowFO actual) {
-        assertNotNull(actual);
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getCzechName(), actual.getCzechName());
-        assertEquals(expected.getOriginalName(), actual.getOriginalName());
-        assertEquals(expected.getCsfd(), actual.getCsfd());
+    public static void assertShowDeepEquals(final Show expected, final ShowFO actual) {
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getCzechName(), is(expected.getCzechName()));
+        assertThat(actual.getOriginalName(), is(expected.getOriginalName()));
+        assertThat(actual.getCsfd(), is(expected.getCsfd()));
         CatalogUtils.assertImdbDeepEquals(expected.getImdbCode(), actual.getImdb(), actual.getImdbCode());
-        assertEquals(expected.getWikiEn(), actual.getWikiEn());
-        assertEquals(expected.getWikiCz(), actual.getWikiCz());
-        assertEquals(expected.getPicture(), actual.getPicture());
-        assertEquals(expected.getNote(), actual.getNote());
-        assertEquals(expected.getPosition(), actual.getPosition());
+        assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
+        assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
+        assertThat(actual.getPicture(), is(expected.getPicture()));
+        assertThat(actual.getNote(), is(expected.getNote()));
+        assertThat(actual.getPosition(), is(expected.getPosition()));
         GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());
     }
 

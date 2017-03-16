@@ -6,30 +6,31 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.commons.Time;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Episode;
+import cz.vhromada.catalog.entity.Genre;
+import cz.vhromada.catalog.entity.Season;
+import cz.vhromada.catalog.entity.Show;
 import cz.vhromada.catalog.facade.EpisodeFacade;
 import cz.vhromada.catalog.facade.GenreFacade;
 import cz.vhromada.catalog.facade.SeasonFacade;
 import cz.vhromada.catalog.facade.ShowFacade;
-import cz.vhromada.catalog.facade.to.EpisodeTO;
-import cz.vhromada.catalog.facade.to.GenreTO;
-import cz.vhromada.catalog.facade.to.SeasonTO;
-import cz.vhromada.catalog.facade.to.ShowTO;
-import cz.vhromada.catalog.web.domain.Show;
+import cz.vhromada.catalog.web.domain.ShowData;
 import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ShowFO;
 import cz.vhromada.converters.Converter;
-import cz.vhromada.validators.Validators;
+import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -39,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller("showController")
 @RequestMapping("/shows")
-public class ShowController {
+public class ShowController extends AbstractResultController {
 
     /**
      * Redirect URL to list
@@ -49,42 +50,42 @@ public class ShowController {
     /**
      * Message for illegal request
      */
-    private static final String ILLEGAL_REQUEST_MESSAGE = "TO for show doesn't exist.";
+    private static final String ILLEGAL_REQUEST_MESSAGE = "Show doesn't exist.";
 
     /**
-     * Model argument
+     * Message for null model
      */
-    private static final String MODEL_ARGUMENT = "Model";
+    private static final String NULL_MODEL_MESSAGE = "Model mustn't be null.";
 
     /**
-     * ID argument
+     * Message for null ID
      */
-    private static final String ID_ARGUMENT = "ID";
+    private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
      * Facade for shows
      */
-    private ShowFacade showFacade;
+    private final ShowFacade showFacade;
 
     /**
      * Facade for seasons
      */
-    private SeasonFacade seasonFacade;
+    private final SeasonFacade seasonFacade;
 
     /**
      * Facade for episodes
      */
-    private EpisodeFacade episodeFacade;
+    private final EpisodeFacade episodeFacade;
 
     /**
      * Facade for genres
      */
-    private GenreFacade genreFacade;
+    private final GenreFacade genreFacade;
 
     /**
      * Converter
      */
-    private Converter converter;
+    private final Converter converter;
 
     /**
      * Creates a new instance of ShowController.
@@ -105,12 +106,12 @@ public class ShowController {
             final SeasonFacade seasonFacade,
             final EpisodeFacade episodeFacade,
             final GenreFacade genreFacade,
-            @Qualifier("webDozerConverter") final Converter converter) {
-        Validators.validateArgumentNotNull(showFacade, "Facade for shows");
-        Validators.validateArgumentNotNull(seasonFacade, "Facade for seasons");
-        Validators.validateArgumentNotNull(episodeFacade, "Facade for episodes");
-        Validators.validateArgumentNotNull(genreFacade, "Facade for genres");
-        Validators.validateArgumentNotNull(converter, "converter");
+            final Converter converter) {
+        Assert.notNull(showFacade, "Facade for shows mustn't be null.");
+        Assert.notNull(seasonFacade, "Facade for seasons mustn't be null.");
+        Assert.notNull(episodeFacade, "Facade for episodes mustn't be null.");
+        Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
+        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.showFacade = showFacade;
         this.seasonFacade = seasonFacade;
@@ -124,7 +125,7 @@ public class ShowController {
      *
      * @return view for redirect to page with list of shows
      */
-    @RequestMapping(value = "new", method = RequestMethod.GET)
+    @GetMapping("/new")
     public String processNew() {
         showFacade.newData();
 
@@ -138,34 +139,44 @@ public class ShowController {
      * @return view for page with list of shows
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "list" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "", "/", "/list" })
     public String showList(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        final List<Show> shows = new ArrayList<>();
-        for (final ShowTO showTO : showFacade.getShows()) {
-            final Show show = new Show();
-            show.setShow(showTO);
+        final Result<List<Show>> showsResult = showFacade.getAll();
+        final Result<Integer> seasonsCountResult = showFacade.getSeasonsCount();
+        final Result<Integer> episodesCountResult = showFacade.getEpisodesCount();
+        final Result<Time> totalLengthResult = showFacade.getTotalLength();
+        processResults(showsResult, seasonsCountResult, episodesCountResult, totalLengthResult);
+
+        final List<ShowData> shows = new ArrayList<>();
+        for (final Show show : showsResult.getData()) {
+            final ShowData showData = new ShowData();
+            showData.setShow(show);
             int seasonsCount = 0;
             int episodesCount = 0;
             int length = 0;
-            for (final SeasonTO season : seasonFacade.findSeasonsByShow(showTO)) {
+            final Result<List<Season>> seasonsResult = seasonFacade.find(show);
+            processResults(seasonsCountResult);
+            for (final Season season : seasonsResult.getData()) {
                 seasonsCount++;
-                for (final EpisodeTO episode : episodeFacade.findEpisodesBySeason(season)) {
+                final Result<List<Episode>> episodesResult = episodeFacade.find(season);
+                processResults(episodesResult);
+                for (final Episode episode : episodesResult.getData()) {
                     episodesCount++;
                     length += episode.getLength();
                 }
             }
-            show.setSeasonsCount(seasonsCount);
-            show.setEpisodesCount(episodesCount);
-            show.setTotalLength(new Time(length));
-            shows.add(show);
+            showData.setSeasonsCount(seasonsCount);
+            showData.setEpisodesCount(episodesCount);
+            showData.setTotalLength(new Time(length));
+            shows.add(showData);
         }
 
         model.addAttribute("shows", shows);
-        model.addAttribute("seasonsCount", showFacade.getSeasonsCount());
-        model.addAttribute("episodesCount", showFacade.getEpisodesCount());
-        model.addAttribute("totalLength", showFacade.getTotalLength());
+        model.addAttribute("seasonsCount", seasonsCountResult.getData());
+        model.addAttribute("episodesCount", episodesCountResult.getData());
+        model.addAttribute("totalLength", totalLengthResult.getData());
         model.addAttribute("title", "Shows");
 
         return "showsList";
@@ -178,9 +189,9 @@ public class ShowController {
      * @return view for page for adding show
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @GetMapping("/add")
     public String showAdd(final Model model) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
 
         return createFormView(model, new ShowFO(), "Add show", "showsAdd");
     }
@@ -190,29 +201,29 @@ public class ShowController {
      *
      * @param model        model
      * @param createButton button create
-     * @param show         FO for show
+     * @param showFO         FO for show
      * @param errors       errors
      * @return view for redirect to page with list of shows (no errors) or view for page for adding show (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for show is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID isn't null
+     *                                                               or ID isn't null
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @PostMapping("/add")
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("show") @Valid final ShowFO show, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(show, "FO for show");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNull(show.getId(), ID_ARGUMENT);
+            @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(showFO, "FO for show mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.isNull(showFO.getId(), "ID must be null.");
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
-                return createFormView(model, show, "Add show", "showsAdd");
+                return createFormView(model, showFO, "Add show", "showsAdd");
             }
-            final ShowTO showTO = converter.convert(show, ShowTO.class);
-            showTO.setGenres(getGenres(showTO.getGenres()));
-            showFacade.add(showTO);
+            final Show show = converter.convert(showFO, Show.class);
+            show.setGenres(getGenres(show.getGenres()));
+            processResults(showFacade.add(show));
         }
 
         return LIST_REDIRECT_URL;
@@ -228,12 +239,15 @@ public class ShowController {
      *                                  or ID is null
      * @throws IllegalRequestException  if TO for show doesn't exist
      */
-    @RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+    @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
 
-        final ShowTO show = showFacade.getShow(id);
+        final Result<Show> result = showFacade.get(id);
+        processResults(result);
+
+        final Show show = result.getData();
         if (show != null) {
             return createFormView(model, converter.convert(show, ShowFO.class), "Edit show", "showsEdit");
         } else {
@@ -246,35 +260,30 @@ public class ShowController {
      *
      * @param model        model
      * @param createButton button create
-     * @param show         FO for show
+     * @param showFO         FO for show
      * @param errors       errors
      * @return view for redirect to page with list of shows (no errors) or view for page for editing show (errors)
      * @throws IllegalArgumentException                              if model is null
      *                                                               or FO for show is null
      *                                                               or errors are null
-     * @throws cz.vhromada.validators.exceptions.ValidationException if ID is null
+     *                                                               or ID is null
      * @throws IllegalRequestException                               if TO for show doesn't exist
      */
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    @PostMapping("/edit")
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("show") @Valid final ShowFO show, final Errors errors) {
-        Validators.validateArgumentNotNull(model, MODEL_ARGUMENT);
-        Validators.validateArgumentNotNull(show, "FO for show");
-        Validators.validateArgumentNotNull(errors, "Errors");
-        Validators.validateNotNull(show.getId(), ID_ARGUMENT);
+            @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(showFO, "FO for show mustn't be null.");
+        Assert.notNull(errors, "Errors mustn't be null.");
+        Assert.notNull(showFO.getId(), NULL_ID_MESSAGE);
 
         if ("Submit".equals(createButton)) {
             if (errors.hasErrors()) {
-                return createFormView(model, show, "Edit show", "showsEdit");
+                return createFormView(model, showFO, "Edit show", "showsEdit");
             }
-
-            if (showFacade.getShow(show.getId()) != null) {
-                final ShowTO showTO = converter.convert(show, ShowTO.class);
-                showTO.setGenres(getGenres(showTO.getGenres()));
-                showFacade.update(showTO);
-            } else {
-                throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-            }
+            final Show show = processShow(converter.convert(showFO, Show.class));
+            show.setGenres(getGenres(show.getGenres()));
+            processResults(showFacade.update(show));
         }
 
         return LIST_REDIRECT_URL;
@@ -288,17 +297,9 @@ public class ShowController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for show doesn't exist
      */
-    @RequestMapping(value = "duplicate/{id}", method = RequestMethod.GET)
+    @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ShowTO show = new ShowTO();
-        show.setId(id);
-        if (showFacade.getShow(id) != null) {
-            showFacade.duplicate(show);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(showFacade.duplicate(getShow(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -311,17 +312,9 @@ public class ShowController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for show doesn't exist
      */
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.GET)
+    @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ShowTO show = new ShowTO();
-        show.setId(id);
-        if (showFacade.getShow(id) != null) {
-            showFacade.remove(show);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(showFacade.remove(getShow(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -334,17 +327,9 @@ public class ShowController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for show doesn't exist
      */
-    @RequestMapping(value = "moveUp/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ShowTO show = new ShowTO();
-        show.setId(id);
-        if (showFacade.getShow(id) != null) {
-            showFacade.moveUp(show);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(showFacade.moveUp(getShow(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -357,17 +342,9 @@ public class ShowController {
      * @throws IllegalArgumentException if ID is null
      * @throws IllegalRequestException  if TO for show doesn't exist
      */
-    @RequestMapping(value = "moveDown/{id}", method = RequestMethod.GET)
+    @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
-        Validators.validateArgumentNotNull(id, ID_ARGUMENT);
-
-        final ShowTO show = new ShowTO();
-        show.setId(id);
-        if (showFacade.getShow(id) != null) {
-            showFacade.moveDown(show);
-        } else {
-            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
-        }
+        processResults(showFacade.moveDown(getShow(id)));
 
         return LIST_REDIRECT_URL;
     }
@@ -377,7 +354,7 @@ public class ShowController {
      *
      * @return view for redirect to page with list of shows
      */
-    @RequestMapping(value = "update", method = RequestMethod.GET)
+    @GetMapping("/update")
     public String processUpdatePositions() {
         showFacade.updatePositions();
 
@@ -394,11 +371,49 @@ public class ShowController {
      * @return page's view with form
      */
     private String createFormView(final Model model, final ShowFO show, final String title, final String view) {
+        final Result<List<Genre>> result = genreFacade.getAll();
+        processResults(result);
+
         model.addAttribute("show", show);
         model.addAttribute("title", title);
-        model.addAttribute("genres", genreFacade.getGenres());
+        model.addAttribute("genres", result.getData());
 
         return view;
+    }
+
+    /**
+     * Returns show with ID.
+     *
+     * @param id ID
+     * @return show with ID
+     * @throws IllegalArgumentException if ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     */
+    private Show getShow(final Integer id) {
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Show show = new Show();
+        show.setId(id);
+
+        return processShow(show);
+    }
+
+    /**
+     * Returns processed show.
+     *
+     * @param show for processing
+     * @return processed show
+     * @throws IllegalRequestException if show doesn't exist
+     */
+    private Show processShow(final Show show) {
+        final Result<Show> showResult = showFacade.get(show.getId());
+        processResults(showResult);
+
+        if (showResult.getData() != null) {
+            return show;
+        }
+
+        throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
     }
 
     /**
@@ -407,8 +422,13 @@ public class ShowController {
      * @param source list of genres
      * @return genres
      */
-    private List<GenreTO> getGenres(final List<GenreTO> source) {
-        return source.stream().map(genre -> genreFacade.getGenre(genre.getId())).collect(Collectors.toList());
+    private List<Genre> getGenres(final List<Genre> source) {
+        return source.stream().map(genre -> {
+            final Result<Genre> result = genreFacade.get(genre.getId());
+            processResults(result);
+
+            return result.getData();
+        }).collect(Collectors.toList());
     }
 
 }

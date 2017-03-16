@@ -1,73 +1,73 @@
 package cz.vhromada.catalog.web.converters;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.SeasonTO;
-import cz.vhromada.catalog.web.commons.SeasonUtils;
+import cz.vhromada.catalog.entity.Season;
+import cz.vhromada.catalog.web.common.SeasonUtils;
 import cz.vhromada.catalog.web.fo.SeasonFO;
 import cz.vhromada.converters.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * A class represents test for converter from {@link SeasonFO} to {@link SeasonTO}.
+ * A class represents test for converter from {@link SeasonFO} to {@link Season}.
  *
  * @author Vladimir Hromada
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:webDozerMappingContext.xml")
+@ContextConfiguration(classes = ConverterConfiguration.class)
 public class SeasonConverterTest {
 
     /**
      * Instance of {@link Converter}
      */
     @Autowired
-    @Qualifier("webDozerConverter")
     private Converter converter;
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity.
      */
     @Test
-    public void testConvertSeasonFO() {
+    public void convertSeasonFO() {
         final SeasonFO seasonFO = SeasonUtils.getSeasonFO();
 
-        final SeasonTO seasonTO = converter.convert(seasonFO, SeasonTO.class);
+        final Season season = converter.convert(seasonFO, Season.class);
 
-        SeasonUtils.assertSeasonDeepEquals(seasonFO, seasonTO);
+        SeasonUtils.assertSeasonDeepEquals(seasonFO, season);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from FO to TO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for season.
      */
     @Test
-    public void testConvertSeasonFO_NullArgument() {
-        assertNull(converter.convert(null, SeasonTO.class));
+    public void convertSeasonFO_NullSeasonFO() {
+        assertThat(converter.convert(null, Season.class), is(nullValue()));
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO.
      */
     @Test
-    public void testConvertSeasonTO() {
-        final SeasonTO seasonTO = SeasonUtils.getSeasonTO();
+    public void convertSeason() {
+        final Season season = SeasonUtils.getSeason();
 
-        final SeasonFO seasonFO = converter.convert(seasonTO, SeasonFO.class);
+        final SeasonFO seasonFO = converter.convert(season, SeasonFO.class);
 
-        SeasonUtils.assertSeasonDeepEquals(seasonFO, seasonTO);
+        SeasonUtils.assertSeasonDeepEquals(seasonFO, season);
     }
 
     /**
-     * Test method for {@link Converter#convert(Object, Class)} from TO to FO with null argument.
+     * Test method for {@link Converter#convert(Object, Class)} from entity to FO with null season.
      */
     @Test
-    public void testConvertSeasonTO_NullArgument() {
-        assertNull(converter.convert(null, SeasonFO.class));
+    public void convertSeason_NullSeason() {
+        assertThat(converter.convert(null, SeasonFO.class), is(nullValue()));
     }
 
 }

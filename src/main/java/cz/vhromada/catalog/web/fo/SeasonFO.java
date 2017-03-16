@@ -6,8 +6,8 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import cz.vhromada.catalog.commons.Constants;
-import cz.vhromada.catalog.commons.Language;
+import cz.vhromada.catalog.common.Language;
+import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.DateRange;
 import cz.vhromada.catalog.web.validator.constraints.Years;
 

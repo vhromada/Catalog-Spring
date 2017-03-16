@@ -1,9 +1,10 @@
-package cz.vhromada.catalog.web.commons;
+package cz.vhromada.catalog.web.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import cz.vhromada.catalog.facade.to.MusicTO;
+import cz.vhromada.catalog.entity.Music;
 import cz.vhromada.catalog.web.fo.MusicFO;
 
 /**
@@ -30,7 +31,7 @@ public final class MusicUtils {
         music.setName(CatalogUtils.NAME);
         music.setWikiEn(CatalogUtils.EN_WIKI);
         music.setWikiCz(CatalogUtils.CZ_WIKI);
-        music.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
+        music.setMediaCount(CatalogUtils.MEDIA.toString());
         music.setNote(CatalogUtils.NOTE);
         music.setPosition(CatalogUtils.POSITION);
 
@@ -38,12 +39,12 @@ public final class MusicUtils {
     }
 
     /**
-     * Returns TO for music.
+     * Returns music.
      *
-     * @return TO for music
+     * @return music
      */
-    public static MusicTO getMusicTO() {
-        final MusicTO music = new MusicTO();
+    public static Music getMusic() {
+        final Music music = new Music();
         music.setId(CatalogUtils.ID);
         music.setName(CatalogUtils.NAME);
         music.setWikiEn(CatalogUtils.EN_WIKI);
@@ -59,18 +60,17 @@ public final class MusicUtils {
      * Asserts music deep equals.
      *
      * @param expected expected FO for music
-     * @param actual   actual TO for music
+     * @param actual   actual music
      */
-    public static void assertMusicDeepEquals(final MusicFO expected, final MusicTO actual) {
-        assertNotNull(actual);
-        assertNotNull(actual.getMediaCount());
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getWikiEn(), actual.getWikiEn());
-        assertEquals(expected.getWikiCz(), actual.getWikiCz());
-        assertEquals(expected.getMediaCount(), Integer.toString(actual.getMediaCount()));
-        assertEquals(expected.getNote(), actual.getNote());
-        assertEquals(expected.getPosition(), actual.getPosition());
+    public static void assertMusicDeepEquals(final MusicFO expected, final Music actual) {
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getName(), is(expected.getName()));
+        assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
+        assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
+        assertThat(actual.getMediaCount(), is(Integer.valueOf(expected.getMediaCount())));
+        assertThat(actual.getNote(), is(expected.getNote()));
+        assertThat(actual.getPosition(), is(expected.getPosition()));
     }
 
 }

@@ -3,15 +3,15 @@ package cz.vhromada.catalog.web.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import cz.vhromada.catalog.commons.Time;
-import cz.vhromada.catalog.facade.to.ShowTO;
+import cz.vhromada.catalog.common.Time;
+import cz.vhromada.catalog.entity.Show;
 
 /**
- * A class represents show.
+ * A class represents show data.
  *
  * @author Vladimir Hromada
  */
-public class Show implements Serializable {
+public class ShowData implements Serializable {
 
     /**
      * SerialVersionUID
@@ -19,9 +19,9 @@ public class Show implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * TO for show
+     * Show
      */
-    private ShowTO show;
+    private Show show;
 
     /**
      * Count of seasons
@@ -39,20 +39,20 @@ public class Show implements Serializable {
     private Time totalLength;
 
     /**
-     * Returns TO for show.
+     * Returns show.
      *
-     * @return TO for show
+     * @return show
      */
-    public ShowTO getShow() {
+    public Show getShow() {
         return show;
     }
 
     /**
-     * Sets a new value to TO for show.
+     * Sets a new value to show.
      *
      * @param show new value
      */
-    public void setShow(final ShowTO show) {
+    public void setShow(final Show show) {
         this.show = show;
     }
 
@@ -119,7 +119,7 @@ public class Show implements Serializable {
             return false;
         }
 
-        return Objects.equals(show, ((Show) obj).show);
+        return Objects.equals(show, ((ShowData) obj).show);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class Show implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Show [show=%s, seasonsCount=%d, episodesCount=%d, totalLength=%s]", show, seasonsCount, episodesCount, totalLength);
+        return String.format("ShowData [show=%s, seasonsCount=%d, episodesCount=%d, totalLength=%s]", show, seasonsCount, episodesCount, totalLength);
     }
 
 }

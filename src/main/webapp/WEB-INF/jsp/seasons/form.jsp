@@ -1,9 +1,8 @@
-<%--suppress XmlDuplicatedId --%>
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<jsp:useBean id="languages" type="cz.vhromada.catalog.commons.Language[]" scope="request"/>
-<jsp:useBean id="subtitles" type="cz.vhromada.catalog.commons.Language[]" scope="request"/>
+<jsp:useBean id="languages" type="cz.vhromada.catalog.common.Language[]" scope="request"/>
+<jsp:useBean id="subtitles" type="cz.vhromada.catalog.common.Language[]" scope="request"/>
 <span class="error global"><form:errors path=""/></span>
 
 <div class="form-group">
