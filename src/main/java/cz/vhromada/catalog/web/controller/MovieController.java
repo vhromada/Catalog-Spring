@@ -17,7 +17,7 @@ import cz.vhromada.catalog.facade.MovieFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;

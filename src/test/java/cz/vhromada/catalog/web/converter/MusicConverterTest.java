@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 import cz.vhromada.catalog.entity.Music;
 import cz.vhromada.catalog.web.common.MusicUtils;
 import cz.vhromada.catalog.web.fo.MusicFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

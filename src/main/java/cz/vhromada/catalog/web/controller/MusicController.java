@@ -13,7 +13,7 @@ import cz.vhromada.catalog.facade.SongFacade;
 import cz.vhromada.catalog.web.domain.MusicData;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MusicFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;

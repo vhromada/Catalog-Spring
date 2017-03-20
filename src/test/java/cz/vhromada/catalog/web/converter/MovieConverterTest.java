@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import cz.vhromada.catalog.entity.Movie;
 import cz.vhromada.catalog.web.common.MovieUtils;
 import cz.vhromada.catalog.web.fo.MovieFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

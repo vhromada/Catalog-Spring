@@ -2,7 +2,7 @@ package cz.vhromada.catalog.web.converter;
 
 import cz.vhromada.catalog.entity.Movie;
 import cz.vhromada.catalog.web.fo.MovieFO;
-import cz.vhromada.converters.orika.MapperConfig;
+import cz.vhromada.converter.orika.MapperConfig;
 
 import ma.glasnost.orika.MapperFactory;
 import org.springframework.stereotype.Component;

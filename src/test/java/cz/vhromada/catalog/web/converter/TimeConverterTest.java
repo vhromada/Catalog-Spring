@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import cz.vhromada.catalog.web.common.TimeUtils;
 import cz.vhromada.catalog.web.fo.TimeFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

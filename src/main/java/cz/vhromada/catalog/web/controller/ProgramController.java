@@ -8,7 +8,7 @@ import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.facade.ProgramFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ProgramFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;

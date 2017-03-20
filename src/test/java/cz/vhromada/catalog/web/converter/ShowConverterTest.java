@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import cz.vhromada.catalog.entity.Show;
 import cz.vhromada.catalog.web.common.ShowUtils;
 import cz.vhromada.catalog.web.fo.ShowFO;
-import cz.vhromada.converters.Converter;
+import cz.vhromada.converter.Converter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
