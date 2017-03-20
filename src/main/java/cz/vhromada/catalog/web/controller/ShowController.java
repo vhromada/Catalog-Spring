@@ -16,7 +16,7 @@ import cz.vhromada.catalog.facade.GenreFacade;
 import cz.vhromada.catalog.facade.SeasonFacade;
 import cz.vhromada.catalog.facade.ShowFacade;
 import cz.vhromada.catalog.web.domain.ShowData;
-import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
+import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ShowFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.result.Result;

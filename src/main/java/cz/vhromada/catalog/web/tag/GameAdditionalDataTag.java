@@ -1,4 +1,4 @@
-package cz.vhromada.catalog.web.tags;
+package cz.vhromada.catalog.web.tag;
 
 import java.io.IOException;
 

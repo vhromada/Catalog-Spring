@@ -8,7 +8,7 @@ import cz.vhromada.catalog.entity.Music;
 import cz.vhromada.catalog.entity.Song;
 import cz.vhromada.catalog.facade.MusicFacade;
 import cz.vhromada.catalog.facade.SongFacade;
-import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
+import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.SongFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.result.Result;

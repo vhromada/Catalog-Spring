@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import cz.vhromada.catalog.entity.Game;
 import cz.vhromada.catalog.facade.GameFacade;
-import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
+import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.GameFO;
 import cz.vhromada.converters.Converter;
 import cz.vhromada.result.Result;

@@ -1,6 +1,6 @@
 package cz.vhromada.catalog.web.controller;
 
-import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
+import cz.vhromada.catalog.web.exception.IllegalRequestException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

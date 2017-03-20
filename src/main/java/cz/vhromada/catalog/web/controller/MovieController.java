@@ -14,7 +14,7 @@ import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.entity.Movie;
 import cz.vhromada.catalog.facade.GenreFacade;
 import cz.vhromada.catalog.facade.MovieFacade;
-import cz.vhromada.catalog.web.exceptions.IllegalRequestException;
+import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
 import cz.vhromada.converters.Converter;

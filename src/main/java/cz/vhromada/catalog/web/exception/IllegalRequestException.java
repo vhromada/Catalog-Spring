@@ -1,4 +1,4 @@
-package cz.vhromada.catalog.web.exceptions;
+package cz.vhromada.catalog.web.exception;
 
 /**
  * A class represents exception caused by illegal request.
