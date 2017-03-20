@@ -1,6 +1,6 @@
 package cz.vhromada.catalog.web;
 
-import cz.vhromada.catalog.web.converters.ConvertersSuite;
+import cz.vhromada.catalog.web.converter.ConverterSuite;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,6 +11,6 @@ import org.junit.runners.Suite;
  * @author Vladimir Hromada
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses(ConvertersSuite.class)
+@Suite.SuiteClasses(ConverterSuite.class)
 public class CatalogSuite {
 }

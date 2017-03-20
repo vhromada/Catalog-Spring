@@ -1,4 +1,4 @@
-package cz.vhromada.catalog.web.converters;
+package cz.vhromada.catalog.web.converter;
 
 import cz.vhromada.converters.orika.OrikaConfiguration;
 
