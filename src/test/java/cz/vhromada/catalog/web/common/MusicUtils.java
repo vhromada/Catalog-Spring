@@ -68,7 +68,7 @@ public final class MusicUtils {
         assertThat(actual.getName(), is(expected.getName()));
         assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
         assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
-        assertThat(actual.getMediaCount(), is(Integer.valueOf(expected.getMediaCount())));
+        assertThat(actual.getMediaCount(), is(Integer.parseInt(expected.getMediaCount())));
         assertThat(actual.getNote(), is(expected.getNote()));
         assertThat(actual.getPosition(), is(expected.getPosition()));
     }

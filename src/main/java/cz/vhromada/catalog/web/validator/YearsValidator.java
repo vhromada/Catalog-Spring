@@ -37,22 +37,14 @@ public class YearsValidator implements ConstraintValidator<Years, SeasonFO> {
         }
 
         final String startYear = value.getStartYear();
-        if (!isStringValid(startYear)) {
-            return true;
-        }
-
         final String endYear = value.getEndYear();
-        if (!isStringValid(endYear)) {
+        if (!isStringValid(startYear) || !isStringValid(endYear)) {
             return true;
         }
 
         final int startYearValue = Integer.parseInt(startYear);
-        if (!isIntValid(startYearValue)) {
-            return true;
-        }
-
         final int endYearValue = Integer.parseInt(endYear);
-        if (!isIntValid(endYearValue)) {
+        if (!isIntValid(startYearValue) || !isIntValid(endYearValue)) {
             return true;
         }
 

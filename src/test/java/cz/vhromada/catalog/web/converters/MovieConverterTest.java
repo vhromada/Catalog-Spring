@@ -47,6 +47,7 @@ public class MovieConverterTest {
     public void convertMovieFO_NoImdb() {
         final MovieFO movieFO = MovieUtils.getMovieFO();
         movieFO.setImdb(false);
+        movieFO.setImdbCode("");
 
         final Movie movie = converter.convert(movieFO, Movie.class);
 

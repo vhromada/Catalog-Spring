@@ -34,8 +34,10 @@ public class SeasonFO implements Serializable {
     /**
      * Number of season
      */
+    //CHECKSTYLE.OFF: MagicNumber
     @Range(min = 1, max = 100)
     private String number;
+    //CHECKSTYLE.ON: MagicNumber
 
     /**
      * Starting year

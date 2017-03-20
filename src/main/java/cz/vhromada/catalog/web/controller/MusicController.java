@@ -189,7 +189,7 @@ public class MusicController extends AbstractResultController {
             if (errors.hasErrors()) {
                 return createFormView(model, music, "Add music", "musicAdd");
             }
-            processResults(musicFacade.add(converter.convert(model, cz.vhromada.catalog.entity.Music.class)));
+            processResults(musicFacade.add(converter.convert(music, cz.vhromada.catalog.entity.Music.class)));
         }
 
         return LIST_REDIRECT_URL;

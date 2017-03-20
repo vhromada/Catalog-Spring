@@ -53,9 +53,9 @@ public final class TimeUtils {
      */
     public static void assertTimeDeepEquals(final TimeFO expected, final Time actual) {
         assertThat(actual, is(notNullValue()));
-        assertThat(actual.getData(Time.TimeData.HOUR), is(Integer.valueOf(expected.getHours())));
-        assertThat(actual.getData(Time.TimeData.MINUTE), is(Integer.valueOf(expected.getMinutes())));
-        assertThat(actual.getData(Time.TimeData.SECOND), is(Integer.valueOf(expected.getSeconds())));
+        assertThat(actual.getData(Time.TimeData.HOUR), is(Integer.parseInt(expected.getHours())));
+        assertThat(actual.getData(Time.TimeData.MINUTE), is(Integer.parseInt(expected.getMinutes())));
+        assertThat(actual.getData(Time.TimeData.SECOND), is(Integer.parseInt(expected.getSeconds())));
     }
 
 }

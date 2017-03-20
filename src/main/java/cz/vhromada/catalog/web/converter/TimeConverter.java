@@ -22,9 +22,9 @@ public class TimeConverter extends BidirectionalConverter<TimeFO, Integer> {
             return null;
         }
 
-        final int hours = Integer.valueOf(source.getHours());
-        final int minutes = Integer.valueOf(source.getMinutes());
-        final int seconds = Integer.valueOf(source.getSeconds());
+        final int hours = Integer.parseInt(source.getHours());
+        final int minutes = Integer.parseInt(source.getMinutes());
+        final int seconds = Integer.parseInt(source.getSeconds());
         return new Time(hours, minutes, seconds).getLength();
     }
 

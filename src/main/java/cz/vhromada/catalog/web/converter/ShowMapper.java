@@ -18,6 +18,7 @@ public class ShowMapper implements MapperConfig {
     @Override
     public void config(final MapperFactory mapperFactory) {
         mapperFactory.classMap(ShowFO.class, Show.class)
+                .exclude("imdbCode")
                 .byDefault()
                 .customize(new ShowCustomMapper())
                 .register();

@@ -131,7 +131,7 @@ public class MovieController extends AbstractResultController {
         final Result<Time> totalLengthResult = movieFacade.getTotalLength();
         processResults(moviesResult, mediaCountResult, totalLengthResult);
 
-        model.addAttribute("movies", mediaCountResult.getData());
+        model.addAttribute("movies", moviesResult.getData());
         model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("totalLength", totalLengthResult.getData());
         model.addAttribute("title", "Movies");

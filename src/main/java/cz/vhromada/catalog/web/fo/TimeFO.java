@@ -20,6 +20,7 @@ public class TimeFO implements Serializable {
     /**
      * Hours
      */
+    //CHECKSTYLE.OFF: MagicNumber
     @Range(min = 0, max = 23)
     private String hours;
 
@@ -34,6 +35,7 @@ public class TimeFO implements Serializable {
      */
     @Range(min = 0, max = 59)
     private String seconds;
+    //CHECKSTYLE.ON: MagicNumber
 
     /**
      * Returns hours.

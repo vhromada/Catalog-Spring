@@ -96,7 +96,7 @@ public final class MovieUtils {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getCzechName(), is(expected.getCzechName()));
         assertThat(actual.getOriginalName(), is(expected.getOriginalName()));
-        assertThat(actual.getYear(), is(Integer.valueOf(expected.getYear())));
+        assertThat(actual.getYear(), is(Integer.parseInt(expected.getYear())));
         assertThat(actual.getLanguage(), is(expected.getLanguage()));
         assertThat(actual.getSubtitles(), is(expected.getSubtitles()));
         assertThat(actual.getCsfd(), is(expected.getCsfd()));

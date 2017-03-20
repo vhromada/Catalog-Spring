@@ -1,7 +1,7 @@
 <%@page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cat" uri="/WEB-INF/catalog.tld" %>
-<jsp:useBean id="seasons" type="java.util.List<cz.vhromada.catalog.web.domain.Season>" scope="request"/>
+<jsp:useBean id="seasons" type="java.util.List<cz.vhromada.catalog.web.domain.SeasonData>" scope="request"/>
 <jsp:useBean id="show" type="java.lang.Integer" scope="request"/>
 <c:choose>
     <c:when test="${not empty seasons}">

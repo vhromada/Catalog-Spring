@@ -28,8 +28,10 @@ public class EpisodeFO implements Serializable {
     /**
      * Number of episode
      */
+    //CHECKSTYLE.OFF: MagicNumber
     @Range(min = 1, max = 500)
     private String number;
+    //CHECKSTYLE.ON: MagicNumber
 
     /**
      * Name

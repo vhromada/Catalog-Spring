@@ -76,7 +76,7 @@ public final class CatalogUtils {
      */
     public static void assertImdbCodeDeepEquals(final boolean expectedImdb, final String expectedImdbCode, final int actualImdbCode) {
         if (expectedImdb) {
-            assertThat(actualImdbCode, is(Integer.valueOf(expectedImdbCode)));
+            assertThat(actualImdbCode, is(Integer.parseInt(expectedImdbCode)));
         } else {
             assertThat(actualImdbCode, is(-1));
         }

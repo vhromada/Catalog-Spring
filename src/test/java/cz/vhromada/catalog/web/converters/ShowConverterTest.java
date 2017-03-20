@@ -47,6 +47,7 @@ public class ShowConverterTest {
     public void convertShowFO_NoImdb() {
         final ShowFO showFO = ShowUtils.getShowFO();
         showFO.setImdb(false);
+        showFO.setImdbCode("");
 
         final Show show = converter.convert(showFO, Show.class);
 

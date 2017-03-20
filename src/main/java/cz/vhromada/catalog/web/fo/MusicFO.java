@@ -42,8 +42,10 @@ public class MusicFO implements Serializable {
     /**
      * Count of media
      */
+    //CHECKSTYLE.OFF: MagicNumber
     @Range(min = 1, max = 100)
     private String mediaCount;
+    //CHECKSTYLE.ON: MagicNumber
 
     /**
      * Note

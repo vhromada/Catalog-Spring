@@ -69,9 +69,9 @@ public final class SeasonUtils {
     public static void assertSeasonDeepEquals(final SeasonFO expected, final Season actual) {
         assertThat(actual, is(notNullValue()));
         assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getNumber(), is(Integer.valueOf(expected.getNumber())));
-        assertThat(actual.getStartYear(), is(Integer.valueOf(expected.getStartYear())));
-        assertThat(actual.getEndYear(), is(Integer.valueOf(expected.getEndYear())));
+        assertThat(actual.getNumber(), is(Integer.parseInt(expected.getNumber())));
+        assertThat(actual.getStartYear(), is(Integer.parseInt(expected.getStartYear())));
+        assertThat(actual.getEndYear(), is(Integer.parseInt(expected.getEndYear())));
         assertThat(actual.getLanguage(), is(expected.getLanguage()));
         assertThat(actual.getSubtitles(), is(expected.getSubtitles()));
         assertThat(actual.getNote(), is(expected.getNote()));

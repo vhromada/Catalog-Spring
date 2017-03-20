@@ -139,7 +139,7 @@ public class ShowController extends AbstractResultController {
      * @return view for page with list of shows
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "/list" })
+    @RequestMapping({ "", "/", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
@@ -149,31 +149,7 @@ public class ShowController extends AbstractResultController {
         final Result<Time> totalLengthResult = showFacade.getTotalLength();
         processResults(showsResult, seasonsCountResult, episodesCountResult, totalLengthResult);
 
-        final List<ShowData> shows = new ArrayList<>();
-        for (final Show show : showsResult.getData()) {
-            final ShowData showData = new ShowData();
-            showData.setShow(show);
-            int seasonsCount = 0;
-            int episodesCount = 0;
-            int length = 0;
-            final Result<List<Season>> seasonsResult = seasonFacade.find(show);
-            processResults(seasonsCountResult);
-            for (final Season season : seasonsResult.getData()) {
-                seasonsCount++;
-                final Result<List<Episode>> episodesResult = episodeFacade.find(season);
-                processResults(episodesResult);
-                for (final Episode episode : episodesResult.getData()) {
-                    episodesCount++;
-                    length += episode.getLength();
-                }
-            }
-            showData.setSeasonsCount(seasonsCount);
-            showData.setEpisodesCount(episodesCount);
-            showData.setTotalLength(new Time(length));
-            shows.add(showData);
-        }
-
-        model.addAttribute("shows", shows);
+        model.addAttribute("shows", getShowData(showsResult.getData()));
         model.addAttribute("seasonsCount", seasonsCountResult.getData());
         model.addAttribute("episodesCount", episodesCountResult.getData());
         model.addAttribute("totalLength", totalLengthResult.getData());
@@ -201,13 +177,13 @@ public class ShowController extends AbstractResultController {
      *
      * @param model        model
      * @param createButton button create
-     * @param showFO         FO for show
+     * @param showFO       FO for show
      * @param errors       errors
      * @return view for redirect to page with list of shows (no errors) or view for page for adding show (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for show is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for show is null
+     *                                  or errors are null
+     *                                  or ID isn't null
      */
     @PostMapping("/add")
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -260,14 +236,14 @@ public class ShowController extends AbstractResultController {
      *
      * @param model        model
      * @param createButton button create
-     * @param showFO         FO for show
+     * @param showFO       FO for show
      * @param errors       errors
      * @return view for redirect to page with list of shows (no errors) or view for page for editing show (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for show is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if TO for show doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for show is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if TO for show doesn't exist
      */
     @PostMapping("/edit")
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -429,6 +405,39 @@ public class ShowController extends AbstractResultController {
 
             return result.getData();
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns list of show data.
+     *
+     * @param shows list fo shows
+     * @return list of show data
+     */
+    private List<ShowData> getShowData(final List<Show> shows) {
+        final List<ShowData> result = new ArrayList<>();
+        for (final Show show : shows) {
+            final ShowData showData = new ShowData();
+            showData.setShow(show);
+            int seasonsCount = 0;
+            int episodesCount = 0;
+            int length = 0;
+            final Result<List<Season>> seasonsResult = seasonFacade.find(show);
+            processResults(seasonsResult);
+            for (final Season season : seasonsResult.getData()) {
+                seasonsCount++;
+                final Result<List<Episode>> episodesResult = episodeFacade.find(season);
+                processResults(episodesResult);
+                for (final Episode episode : episodesResult.getData()) {
+                    episodesCount++;
+                    length += episode.getLength();
+                }
+            }
+            showData.setSeasonsCount(seasonsCount);
+            showData.setEpisodesCount(episodesCount);
+            showData.setTotalLength(new Time(length));
+            result.add(showData);
+        }
+        return result;
     }
 
 }

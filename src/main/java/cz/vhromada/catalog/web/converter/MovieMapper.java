@@ -19,6 +19,7 @@ public class MovieMapper implements MapperConfig {
     public void config(final MapperFactory mapperFactory) {
         mapperFactory.classMap(MovieFO.class, Movie.class)
                 .field("media{}", "media{length}")
+                .exclude("imdbCode")
                 .byDefault()
                 .customize(new MovieCustomMapper())
                 .register();

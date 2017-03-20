@@ -84,7 +84,7 @@ public final class GameUtils {
         assertThat(actual.getName(), is(expected.getName()));
         assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
         assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
-        assertThat(actual.getMediaCount(), is(Integer.valueOf(expected.getMediaCount())));
+        assertThat(actual.getMediaCount(), is(Integer.parseInt(expected.getMediaCount())));
         assertThat(actual.getCrack(), is(expected.getCrack()));
         assertThat(actual.getSerialKey(), is(expected.getSerialKey()));
         assertThat(actual.getPatch(), is(expected.getPatch()));

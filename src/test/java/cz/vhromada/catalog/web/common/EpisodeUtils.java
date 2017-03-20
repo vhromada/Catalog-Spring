@@ -63,7 +63,7 @@ public final class EpisodeUtils {
     public static void assertEpisodeDeepEquals(final EpisodeFO expected, final Episode actual) {
         assertThat(actual, is(notNullValue()));
         assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getNumber(), is(Integer.valueOf(expected.getNumber())));
+        assertThat(actual.getNumber(), is(Integer.parseInt(expected.getNumber())));
         assertThat(actual.getName(), is(expected.getName()));
         TimeUtils.assertTimeDeepEquals(expected.getLength(), actual.getLength());
         assertThat(actual.getNote(), is(expected.getNote()));
