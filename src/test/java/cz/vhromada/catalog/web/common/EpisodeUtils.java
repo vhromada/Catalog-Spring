@@ -28,7 +28,7 @@ public final class EpisodeUtils {
     public static EpisodeFO getEpisodeFO() {
         final EpisodeFO episode = new EpisodeFO();
         episode.setId(CatalogUtils.ID);
-        episode.setNumber(CatalogUtils.NUMBER.toString());
+        episode.setNumber(Integer.toString(CatalogUtils.NUMBER));
         episode.setName(CatalogUtils.NAME);
         episode.setLength(TimeUtils.getTimeFO());
         episode.setNote(CatalogUtils.NOTE);

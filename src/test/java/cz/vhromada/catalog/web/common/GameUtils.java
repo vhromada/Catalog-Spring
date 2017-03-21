@@ -31,7 +31,7 @@ public final class GameUtils {
         game.setName(CatalogUtils.NAME);
         game.setWikiEn(CatalogUtils.EN_WIKI);
         game.setWikiCz(CatalogUtils.CZ_WIKI);
-        game.setMediaCount(CatalogUtils.MEDIA.toString());
+        game.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
         game.setCrack(true);
         game.setSerialKey(true);
         game.setPatch(true);

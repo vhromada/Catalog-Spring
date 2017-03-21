@@ -194,7 +194,7 @@ public class SeasonController extends AbstractResultController {
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonFO, "FO for season mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
-        Assert.notNull(seasonFO.getId(), "ID must be null.");
+        Assert.isNull(seasonFO.getId(), "ID must be null.");
 
         final Show show = getShow(showId);
 

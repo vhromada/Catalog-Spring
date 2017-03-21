@@ -30,8 +30,8 @@ public final class SeasonUtils {
     public static SeasonFO getSeasonFO() {
         final SeasonFO season = new SeasonFO();
         season.setId(CatalogUtils.ID);
-        season.setNumber(CatalogUtils.NUMBER.toString());
-        season.setStartYear(CatalogUtils.YEAR.toString());
+        season.setNumber(Integer.toString(CatalogUtils.NUMBER));
+        season.setStartYear(Integer.toString(CatalogUtils.YEAR));
         season.setEndYear(Integer.toString(CatalogUtils.YEAR + 1));
         season.setLanguage(Language.EN);
         season.setSubtitles(CollectionUtils.newList(Language.CZ));

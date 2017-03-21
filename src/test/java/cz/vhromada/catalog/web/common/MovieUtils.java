@@ -37,7 +37,7 @@ public final class MovieUtils {
         movie.setId(CatalogUtils.ID);
         movie.setCzechName("czName");
         movie.setOriginalName("origName");
-        movie.setYear(CatalogUtils.YEAR.toString());
+        movie.setYear(Integer.toString(CatalogUtils.YEAR));
         movie.setLanguage(Language.EN);
         movie.setSubtitles(CollectionUtils.newList(Language.CZ));
         movie.setCsfd("Csfd");

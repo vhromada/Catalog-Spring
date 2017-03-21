@@ -31,7 +31,7 @@ public final class ProgramUtils {
         program.setName(CatalogUtils.NAME);
         program.setWikiEn(CatalogUtils.EN_WIKI);
         program.setWikiCz(CatalogUtils.CZ_WIKI);
-        program.setMediaCount(CatalogUtils.MEDIA.toString());
+        program.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
         program.setCrack(true);
         program.setSerialKey(true);
         program.setOtherData("Other data");

@@ -31,7 +31,7 @@ public final class MusicUtils {
         music.setName(CatalogUtils.NAME);
         music.setWikiEn(CatalogUtils.EN_WIKI);
         music.setWikiCz(CatalogUtils.CZ_WIKI);
-        music.setMediaCount(CatalogUtils.MEDIA.toString());
+        music.setMediaCount(Integer.toString(CatalogUtils.MEDIA));
         music.setNote(CatalogUtils.NOTE);
         music.setPosition(CatalogUtils.POSITION);
 
