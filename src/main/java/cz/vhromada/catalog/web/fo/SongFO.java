@@ -141,7 +141,7 @@ public class SongFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof SongFO) || id == null) {
+        if (!(obj instanceof SongFO) || id == null) {
             return false;
         }
 

@@ -373,7 +373,7 @@ public class GameFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof GameFO) || id == null) {
+        if (!(obj instanceof GameFO) || id == null) {
             return false;
         }
 

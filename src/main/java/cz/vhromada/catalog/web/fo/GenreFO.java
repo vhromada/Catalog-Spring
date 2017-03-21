@@ -93,7 +93,7 @@ public class GenreFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof GenreFO) || id == null) {
+        if (!(obj instanceof GenreFO) || id == null) {
             return false;
         }
 

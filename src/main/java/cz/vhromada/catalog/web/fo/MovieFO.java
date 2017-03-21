@@ -419,7 +419,7 @@ public class MovieFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof MovieFO) || id == null) {
+        if (!(obj instanceof MovieFO) || id == null) {
             return false;
         }
 

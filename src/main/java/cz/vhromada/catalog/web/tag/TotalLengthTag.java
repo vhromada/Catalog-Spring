@@ -31,6 +31,7 @@ public class TotalLengthTag extends SimpleTagSupport {
     }
 
     @Override
+    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getTotalLength().toString());

@@ -189,7 +189,7 @@ public class MusicFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof MusicFO) || id == null) {
+        if (!(obj instanceof MusicFO) || id == null) {
             return false;
         }
 

@@ -16,7 +16,7 @@ public abstract class AbstractResultController {
      * @param results results
      * @throws IllegalArgumentException if results aren't OK
      */
-    protected void processResults(final Result<?>... results) {
+    protected static void processResults(final Result<?>... results) {
         final Result<Void> result = new Result<>();
         for (final Result<?> resultItem : results) {
             result.addEvents(resultItem.getEvents());

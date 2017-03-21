@@ -122,7 +122,7 @@ public class MovieController extends AbstractResultController {
      * @return view for page with list of movies
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping(value = { "", "/", "/list" })
+    @RequestMapping({ "", "/", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 

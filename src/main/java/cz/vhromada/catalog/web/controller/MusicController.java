@@ -114,7 +114,7 @@ public class MusicController extends AbstractResultController {
      * @return view for page with list of music
      * @throws IllegalArgumentException if model is null
      */
-    @GetMapping(value = { "", "/", "/list" })
+    @GetMapping({ "", "/", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
@@ -189,7 +189,7 @@ public class MusicController extends AbstractResultController {
             if (errors.hasErrors()) {
                 return createFormView(model, music, "Add music", "musicAdd");
             }
-            processResults(musicFacade.add(converter.convert(music, cz.vhromada.catalog.entity.Music.class)));
+            processResults(musicFacade.add(converter.convert(music, Music.class)));
         }
 
         return LIST_REDIRECT_URL;

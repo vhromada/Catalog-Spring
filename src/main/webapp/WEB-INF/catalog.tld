@@ -3,7 +3,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
         version="2.1">
-
     <tlib-version>1.0</tlib-version>
     <short-name>CatalogTags</short-name>
 
@@ -15,7 +14,7 @@
             <name>game</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>cz.vhromada.catalog.facade.to.GameTO</type>
+            <type>cz.vhromada.catalog.entity.Game</type>
         </attribute>
     </tag>
 
@@ -27,7 +26,7 @@
             <name>program</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>cz.vhromada.catalog.facade.to.ProgramTO</type>
+            <type>cz.vhromada.catalog.entity.Program</type>
         </attribute>
     </tag>
 

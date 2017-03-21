@@ -222,7 +222,7 @@ public class SeasonFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof SeasonFO) || id == null) {
+        if (!(obj instanceof SeasonFO) || id == null) {
             return false;
         }
 

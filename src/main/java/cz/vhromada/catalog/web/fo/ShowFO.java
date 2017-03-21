@@ -311,7 +311,7 @@ public class ShowFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof ShowFO) || id == null) {
+        if (!(obj instanceof ShowFO) || id == null) {
             return false;
         }
 

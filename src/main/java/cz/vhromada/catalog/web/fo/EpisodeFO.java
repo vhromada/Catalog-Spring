@@ -168,7 +168,7 @@ public class EpisodeFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof EpisodeFO) || id == null) {
+        if (!(obj instanceof EpisodeFO) || id == null) {
             return false;
         }
 

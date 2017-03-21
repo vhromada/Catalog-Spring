@@ -29,6 +29,7 @@ public class ProgramAdditionalDataTag extends SimpleTagSupport {
     }
 
     @Override
+    @SuppressWarnings("resource")
     public void doTag() throws IOException {
         final JspWriter writer = getJspContext().getOut();
         writer.write(getAdditionalData());

@@ -258,7 +258,7 @@ public class ProgramFO implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof ProgramFO) || id == null) {
+        if (!(obj instanceof ProgramFO) || id == null) {
             return false;
         }
 
