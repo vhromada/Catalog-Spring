@@ -173,17 +173,17 @@ public class EpisodeController extends AbstractResultController {
      * @param createButton button create
      * @param showId       show ID
      * @param seasonId     season ID
-     * @param episode    FO for episode
+     * @param episode      FO for episode
      * @param errors       errors
      * @return view for redirect to page with list of episodes (no errors) or view for page for adding episode (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or show ID is null
-     *                                                               or season ID is null
-     *                                                               or FO for episode is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
-     * @throws IllegalRequestException                               if show doesn't exist
-     *                                                               or season doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or show ID is null
+     *                                  or season ID is null
+     *                                  or FO for episode is null
+     *                                  or errors are null
+     *                                  or ID isn't null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
      */
     @PostMapping("/add")
     public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -253,18 +253,18 @@ public class EpisodeController extends AbstractResultController {
      * @param createButton button create
      * @param showId       show ID
      * @param seasonId     season ID
-     * @param episode    FO for episode
+     * @param episode      FO for episode
      * @param errors       errors
      * @return view for redirect to page with list of episodes (no errors) or view for page for editing episode (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or show ID is null
-     *                                                               or season ID is null
-     *                                                               or FO for episode is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if show doesn't exist
-     *                                                               or season doesn't exist
-     *                                                               or episode doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or show ID is null
+     *                                  or season ID is null
+     *                                  or FO for episode is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
+     *                                  or episode doesn't exist
      */
     @PostMapping("/edit")
     public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
@@ -419,19 +419,16 @@ public class EpisodeController extends AbstractResultController {
      * Returns show.
      *
      * @param id show ID
-     * @return show
      * @throws IllegalRequestException if show doesn't exist
      */
-    private Show getShow(final int id) {
+    @SuppressWarnings("Duplicates")
+    private void getShow(final int id) {
         final Result<Show> showResult = showFacade.get(id);
         processResults(showResult);
 
-        final Show show = showResult.getData();
-        if (show == null) {
+        if (showResult.getData() == null) {
             throw new IllegalRequestException("Show doesn't exist.");
         }
-
-        return show;
     }
 
     /**

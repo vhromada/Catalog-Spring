@@ -32,6 +32,7 @@ public class MovieCustomMapper extends CustomMapper<MovieFO, Movie> {
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public void mapBtoA(final Movie movie, final MovieFO movieFO, final MappingContext context) {
         super.mapBtoA(movie, movieFO, context);
 

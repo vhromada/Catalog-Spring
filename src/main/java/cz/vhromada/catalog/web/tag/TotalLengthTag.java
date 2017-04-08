@@ -26,6 +26,7 @@ public class TotalLengthTag extends SimpleTagSupport {
      *
      * @param media new value
      */
+    @SuppressWarnings("unused")
     public void setMedia(final List<Medium> media) {
         this.media = media;
     }

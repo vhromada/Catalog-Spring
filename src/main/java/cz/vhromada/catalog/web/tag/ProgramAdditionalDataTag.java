@@ -63,6 +63,7 @@ public class ProgramAdditionalDataTag extends SimpleTagSupport {
      * @param value  value
      * @param data   data
      */
+    @SuppressWarnings({ "Duplicates", "SameParameterValue" })
     private static void addToResult(final StringBuilder result, final boolean value, final String data) {
         if (value) {
             if (result.length() == 0) {

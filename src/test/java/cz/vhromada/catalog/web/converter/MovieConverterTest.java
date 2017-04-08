@@ -1,6 +1,8 @@
 package cz.vhromada.catalog.web.converter;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import cz.vhromada.catalog.entity.Movie;
 import cz.vhromada.catalog.web.common.MovieUtils;
@@ -59,7 +61,7 @@ public class MovieConverterTest {
      */
     @Test
     public void convertMovieFO_NullMovieFO() {
-        assertNull(converter.convert(null, Movie.class));
+        assertThat(converter.convert(null, Movie.class), is(nullValue()));
     }
 
     /**
@@ -92,7 +94,7 @@ public class MovieConverterTest {
      */
     @Test
     public void convertMovie_NullEntity() {
-        assertNull(converter.convert(null, MovieFO.class));
+        assertThat(converter.convert(null, MovieFO.class), is(nullValue()));
     }
 
 }

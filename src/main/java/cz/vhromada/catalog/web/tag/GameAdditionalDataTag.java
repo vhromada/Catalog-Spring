@@ -24,6 +24,7 @@ public class GameAdditionalDataTag extends SimpleTagSupport {
      *
      * @param game new value
      */
+    @SuppressWarnings("unused")
     public void setGame(final Game game) {
         this.game = game;
     }
@@ -68,6 +69,7 @@ public class GameAdditionalDataTag extends SimpleTagSupport {
      * @param value  value
      * @param data   data
      */
+    @SuppressWarnings("Duplicates")
     private static void addToResult(final StringBuilder result, final boolean value, final String data) {
         if (value) {
             if (result.length() == 0) {

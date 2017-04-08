@@ -13,6 +13,8 @@ import cz.vhromada.catalog.web.validator.DateRangeValidator;
 
 /**
  * An annotation represents date range constraint.
+ *
+ * @author Vladimir Hromada
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -20,12 +22,32 @@ import cz.vhromada.catalog.web.validator.DateRangeValidator;
 @Documented
 public @interface DateRange {
 
+    /**
+     * Returns error message template.
+     *
+     * @return error message template
+     */
     String message() default "{cz.vhromada.catalog.validator.DateRange.message}";
 
+    /**
+     * Returns groups constraint belongs to.
+     *
+     * @return groups constraint belongs to
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * Returns payload associated to constraint.
+     *
+     * @return payload associated to constraint
+     */
     Class<? extends Payload>[] payload() default {};
 
+    /**
+     * Returns valid minimal year.
+     *
+     * @return valid minimal year
+     */
     int value();
 
 }

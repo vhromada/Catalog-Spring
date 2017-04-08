@@ -27,6 +27,7 @@ public class YearsTag extends SimpleTagSupport {
      *
      * @param startYear new value
      */
+    @SuppressWarnings("unused")
     public void setStartYear(final int startYear) {
         this.startYear = startYear;
     }
@@ -36,6 +37,7 @@ public class YearsTag extends SimpleTagSupport {
      *
      * @param endYear new value
      */
+    @SuppressWarnings("unused")
     public void setEndYear(final int endYear) {
         this.endYear = endYear;
     }

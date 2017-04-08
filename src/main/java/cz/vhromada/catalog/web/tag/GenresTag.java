@@ -25,6 +25,7 @@ public class GenresTag extends SimpleTagSupport {
      *
      * @param genres new value
      */
+    @SuppressWarnings("unused")
     public void setGenres(final List<Genre> genres) {
         this.genres = genres;
     }

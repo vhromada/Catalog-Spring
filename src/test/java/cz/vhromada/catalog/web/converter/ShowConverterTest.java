@@ -1,6 +1,8 @@
 package cz.vhromada.catalog.web.converter;
 
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import cz.vhromada.catalog.entity.Show;
 import cz.vhromada.catalog.web.common.ShowUtils;
@@ -59,7 +61,7 @@ public class ShowConverterTest {
      */
     @Test
     public void convertShowFO_NullShowFO() {
-        assertNull(converter.convert(null, Show.class));
+        assertThat(converter.convert(null, Show.class), is(nullValue()));
     }
 
     /**
@@ -92,7 +94,7 @@ public class ShowConverterTest {
      */
     @Test
     public void convertShow_NullEntity() {
-        assertNull(converter.convert(null, ShowFO.class));
+        assertThat(converter.convert(null, ShowFO.class), is(nullValue()));
     }
 
 }

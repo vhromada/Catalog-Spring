@@ -14,6 +14,8 @@ import cz.vhromada.catalog.web.validator.ImdbShowValidator;
 
 /**
  * An annotation represents IMDB code constraint.
+ *
+ * @author Vladimir Hromada
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -21,10 +23,25 @@ import cz.vhromada.catalog.web.validator.ImdbShowValidator;
 @Documented
 public @interface Imdb {
 
+    /**
+     * Returns error message template.
+     *
+     * @return error message template
+     */
     String message() default "{cz.vhromada.catalog.validator.Imdb.message}";
 
+    /**
+     * Returns groups constraint belongs to.
+     *
+     * @return groups constraint belongs to
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * Returns payload associated to constraint.
+     *
+     * @return payload associated to constraint
+     */
     Class<? extends Payload>[] payload() default {};
 
 }

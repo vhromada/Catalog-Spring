@@ -21,6 +21,7 @@ public class ShowCustomMapper extends CustomMapper<ShowFO, Show> {
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public void mapBtoA(final Show show, final ShowFO showFO, final MappingContext context) {
         super.mapBtoA(show, showFO, context);
 

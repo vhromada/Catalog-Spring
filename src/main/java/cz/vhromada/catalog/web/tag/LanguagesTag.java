@@ -25,6 +25,7 @@ public class LanguagesTag extends SimpleTagSupport {
      *
      * @param languages new value
      */
+    @SuppressWarnings("unused")
     public void setLanguages(final List<Language> languages) {
         this.languages = languages;
     }

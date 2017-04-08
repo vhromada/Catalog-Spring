@@ -24,6 +24,7 @@ public class TimeTag extends SimpleTagSupport {
      *
      * @param time new value
      */
+    @SuppressWarnings("unused")
     public void setTime(final int time) {
         this.time = time;
     }

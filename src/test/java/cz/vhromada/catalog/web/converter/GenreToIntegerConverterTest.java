@@ -1,8 +1,9 @@
 package cz.vhromada.catalog.web.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.web.common.CatalogUtils;
@@ -39,8 +40,8 @@ public class GenreToIntegerConverterTest {
 
         final Integer result = converter.convert(genre, Integer.class);
 
-        assertNotNull(result);
-        assertEquals(genre.getId(), result);
+        assertThat(result, is(notNullValue()));
+        assertThat(result, is(genre.getId()));
     }
 
     /**
@@ -48,7 +49,7 @@ public class GenreToIntegerConverterTest {
      */
     @Test
     public void convertGenre_NullGenre() {
-        assertNull(converter.convert(null, Integer.class));
+        assertThat(converter.convert(null, Integer.class), is(nullValue()));
     }
 
     /**
@@ -59,8 +60,8 @@ public class GenreToIntegerConverterTest {
 
         final Genre genre = converter.convert(CatalogUtils.ID, Genre.class);
 
-        assertNotNull(genre);
-        assertEquals(CatalogUtils.ID, genre.getId());
+        assertThat(genre, is(notNullValue()));
+        assertThat(genre.getId(), is(CatalogUtils.ID));
     }
 
     /**
@@ -68,7 +69,7 @@ public class GenreToIntegerConverterTest {
      */
     @Test
     public void convertInteger_NullInteger() {
-        assertNull(converter.convert(null, Integer.class));
+        assertThat(converter.convert(null, Integer.class), is(nullValue()));
     }
 
 }

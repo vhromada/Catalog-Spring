@@ -394,6 +394,7 @@ public class SeasonController extends AbstractResultController {
      * @return show
      * @throws IllegalRequestException if show doesn't exist
      */
+    @SuppressWarnings("Duplicates")
     private Show getShow(final int id) {
         final Result<Show> showResult = showFacade.get(id);
         processResults(showResult);
