@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
  */
 @SpringBootApplication
 @Import(CatalogConfiguration.class)
-public class WebApplication extends WebMvcConfigurerAdapter {
+public class WebApplication implements WebMvcConfigurer {
 
     /**
      * Main method.

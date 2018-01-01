@@ -3,7 +3,8 @@ package cz.vhromada.catalog.web.fo;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.Range;
 
 /**

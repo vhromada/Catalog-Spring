@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.validation.Valid;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 /**
  * A class represents FO for song.

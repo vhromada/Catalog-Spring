@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,8 +15,6 @@ import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.DateRange;
 import cz.vhromada.catalog.web.validator.constraints.Imdb;
 import cz.vhromada.catalog.web.validator.constraints.ImdbCode;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * A class represents FO for movie.
