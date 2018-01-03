@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for songs.
@@ -116,7 +115,7 @@ public class SongController extends AbstractResultController {
         model.addAttribute("music", musicId);
         model.addAttribute("title", "Songs");
 
-        return "songsList";
+        return "song/index";
     }
 
     /**
@@ -135,28 +134,27 @@ public class SongController extends AbstractResultController {
         Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
         getMusic(musicId);
 
-        return createFormView(model, new SongFO(), musicId, "Add song", "songsAdd");
+        return createFormView(model, new SongFO(), musicId, "Add song", "add");
     }
 
     /**
      * Process adding song.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param musicId      music ID
-     * @param song       FO for song
-     * @param errors       errors
+     * @param model   model
+     * @param musicId music ID
+     * @param song    FO for song
+     * @param errors  errors
      * @return view for redirect to page with list of songs (no errors) or view for page for adding song (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or music ID is null
-     *                                                               or FO for song is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
-     * @throws IllegalRequestException                               if music doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or music ID is null
+     *                                  or FO for song is null
+     *                                  or errors are null
+     *                                  or ID isn't null
+     * @throws IllegalRequestException  if music doesn't exist
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @PathVariable("musicId") final Integer musicId, @ModelAttribute("song") @Valid final SongFO song, final Errors errors) {
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @PathVariable("musicId") final Integer musicId, @ModelAttribute("song") @Valid final SongFO song,
+            final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
         Assert.notNull(song, "FO for song mustn't be null.");
@@ -165,12 +163,26 @@ public class SongController extends AbstractResultController {
 
         final Music music = getMusic(musicId);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, song, musicId, "Add song", "songsAdd");
-            }
-            processResults(songFacade.add(music, converter.convert(song, Song.class)));
+        if (errors.hasErrors()) {
+            return createFormView(model, song, musicId, "Add song", "add");
         }
+        processResults(songFacade.add(music, converter.convert(song, Song.class)));
+
+        return getListRedirectUrl(musicId);
+    }
+
+    /**
+     * Cancel adding song.
+     *
+     * @param musicId music ID
+     * @return view for redirect to page with list of songs
+     * @throws IllegalArgumentException if music ID is null
+     * @throws IllegalRequestException  if music doesn't exist
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String cancelAdd(@PathVariable("musicId") final Integer musicId) {
+        Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
+        getMusic(musicId);
 
         return getListRedirectUrl(musicId);
     }
@@ -200,7 +212,7 @@ public class SongController extends AbstractResultController {
 
         final Song song = result.getData();
         if (song != null) {
-            return createFormView(model, converter.convert(song, SongFO.class), musicId, "Edit song", "songsEdit");
+            return createFormView(model, converter.convert(song, SongFO.class), musicId, "Edit song", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -209,23 +221,22 @@ public class SongController extends AbstractResultController {
     /**
      * Process editing song.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param musicId      music ID
-     * @param song       FO for song
-     * @param errors       errors
+     * @param model   model
+     * @param musicId music ID
+     * @param song    FO for song
+     * @param errors  errors
      * @return view for redirect to page with list of songs (no errors) or view for page for editing song (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or music ID is null
-     *                                                               or FO for song is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if music doesn't exist
-     *                                                               or song doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or music ID is null
+     *                                  or FO for song is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if music doesn't exist
+     *                                  or song doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @PathVariable("musicId") final Integer musicId, @ModelAttribute("song") @Valid final SongFO song, final Errors errors) {
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @PathVariable("musicId") final Integer musicId, @ModelAttribute("song") @Valid final SongFO song,
+            final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
         Assert.notNull(song, "FO for song mustn't be null.");
@@ -233,12 +244,26 @@ public class SongController extends AbstractResultController {
         Assert.notNull(song.getId(), NULL_ID_MESSAGE);
         getMusic(musicId);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, song, musicId, "Edit song", "songsEdit");
-            }
-            processResults(songFacade.update(processSong(converter.convert(song, Song.class))));
+        if (errors.hasErrors()) {
+            return createFormView(model, song, musicId, "Edit song", "edit");
         }
+        processResults(songFacade.update(processSong(converter.convert(song, Song.class))));
+
+        return getListRedirectUrl(musicId);
+    }
+
+    /**
+     * Cancel editing song.
+     *
+     * @param musicId music ID
+     * @return view for redirect to page with list of songs
+     * @throws IllegalArgumentException if music ID is null
+     * @throws IllegalRequestException  if music doesn't exist
+     */
+    @PostMapping("/edit")
+    public String cancelEdit(@PathVariable("musicId") final Integer musicId) {
+        Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
+        getMusic(musicId);
 
         return getListRedirectUrl(musicId);
     }
@@ -322,15 +347,16 @@ public class SongController extends AbstractResultController {
      * @param song    FO for song
      * @param musicId music ID
      * @param title   page's title
-     * @param view    returning view
+     * @param action  action
      * @return page's view with form
      */
-    private static String createFormView(final Model model, final SongFO song, final Integer musicId, final String title, final String view) {
+    private static String createFormView(final Model model, final SongFO song, final Integer musicId, final String title, final String action) {
         model.addAttribute("song", song);
         model.addAttribute("music", musicId);
         model.addAttribute("title", title);
+        model.addAttribute("action", action);
 
-        return view;
+        return "song/form";
     }
 
     /**

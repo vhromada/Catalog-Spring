@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for genres.
@@ -66,7 +65,7 @@ public class GenreController extends AbstractResultController {
      * Creates a new instance of GenreController.
      *
      * @param genreFacade facade for genres
-     * @param converter  converter
+     * @param converter   converter
      * @throws IllegalArgumentException if facade for genres is null
      *                                  or converter is null
      */
@@ -109,7 +108,7 @@ public class GenreController extends AbstractResultController {
         model.addAttribute("genres", result.getData());
         model.addAttribute("title", "Genres");
 
-        return "genresList";
+        return "genre/index";
     }
 
     /**
@@ -123,37 +122,43 @@ public class GenreController extends AbstractResultController {
     public String showAdd(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        return createFormView(model, new GenreFO(), "Add genre", "genresAdd");
+        return createFormView(model, new GenreFO(), "Add genre", "add");
     }
 
     /**
      * Process adding genre.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param genre         FO for genre
-     * @param errors       errors
+     * @param model  model
+     * @param genre  FO for genre
+     * @param errors errors
      * @return view for redirect to page with list of genres (no errors) or view for page for adding genre (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for genre is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for genre is null
+     *                                  or errors are null
+     *                                  or ID isn't null
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("genre") @Valid final GenreFO genre, final Errors errors) {
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @ModelAttribute("genre") @Valid final GenreFO genre, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(genre, "FO for genre mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.isNull(genre.getId(), "ID must be null.");
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, genre, "Add genre", "genresAdd");
-            }
-            processResults(genreFacade.add(converter.convert(genre, Genre.class)));
+        if (errors.hasErrors()) {
+            return createFormView(model, genre, "Add genre", "add");
         }
+        processResults(genreFacade.add(converter.convert(genre, Genre.class)));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel adding genre.
+     *
+     * @return view for redirect to page with list of genres
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String cancelAdd() {
         return LIST_REDIRECT_URL;
     }
 
@@ -177,7 +182,7 @@ public class GenreController extends AbstractResultController {
 
         final Genre genre = result.getData();
         if (genre != null) {
-            return createFormView(model, converter.convert(genre, GenreFO.class), "Edit genre", "genresEdit");
+            return createFormView(model, converter.convert(genre, GenreFO.class), "Edit genre", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -186,32 +191,38 @@ public class GenreController extends AbstractResultController {
     /**
      * Process editing genre.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param genre       FO for genre
-     * @param errors       errors
+     * @param model  model
+     * @param genre  FO for genre
+     * @param errors errors
      * @return view for redirect to page with list of genres (no errors) or view for page for editing genre (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for genre is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if genre doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for genre is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if genre doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("genre") @Valid final GenreFO genre, final Errors errors) {
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @ModelAttribute("genre") @Valid final GenreFO genre, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(genre, "FO for genre mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.notNull(genre.getId(), NULL_ID_MESSAGE);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, genre, "Edit genre", "genresEdit");
-            }
-            processResults(genreFacade.update(processGenre(converter.convert(genre, Genre.class))));
+        if (errors.hasErrors()) {
+            return createFormView(model, genre, "Edit genre", "edit");
         }
+        processResults(genreFacade.update(processGenre(converter.convert(genre, Genre.class))));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel editing genre.
+     *
+     * @return view for redirect to page with list of genres
+     */
+    @PostMapping(value = "/edit", params = "cancel")
+    public String cancelEdit() {
         return LIST_REDIRECT_URL;
     }
 
@@ -290,17 +301,18 @@ public class GenreController extends AbstractResultController {
     /**
      * Returns page's view with form.
      *
-     * @param model model
+     * @param model  model
      * @param genre  FO for genre
-     * @param title page's title
-     * @param view  returning view
+     * @param title  page's title
+     * @param action action
      * @return page's view with form
      */
-    private static String createFormView(final Model model, final GenreFO genre, final String title, final String view) {
+    private static String createFormView(final Model model, final GenreFO genre, final String title, final String action) {
         model.addAttribute("genre", genre);
         model.addAttribute("title", title);
+        model.addAttribute("action", action);
 
-        return view;
+        return "genre/form";
     }
 
     /**

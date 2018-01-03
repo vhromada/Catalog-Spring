@@ -27,6 +27,7 @@ public class CatalogController {
         Assert.notNull(model, "Model mustn't be null.");
 
         model.addAttribute("title", "Catalog");
+        model.addAttribute("inner", false);
 
         return "index";
     }

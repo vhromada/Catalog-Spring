@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for games.
@@ -111,7 +110,7 @@ public class GameController extends AbstractResultController {
         model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("title", "Games");
 
-        return "gamesList";
+        return "game/index";
     }
 
     /**
@@ -125,37 +124,43 @@ public class GameController extends AbstractResultController {
     public String showAdd(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        return createFormView(model, new GameFO(), "Add game", "gamesAdd");
+        return createFormView(model, new GameFO(), "Add game", "add");
     }
 
     /**
      * Process adding game.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param game         FO for game
-     * @param errors       errors
+     * @param model  model
+     * @param game   FO for game
+     * @param errors errors
      * @return view for redirect to page with list of games (no errors) or view for page for adding game (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for game is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for game is null
+     *                                  or errors are null
+     *                                  or ID isn't null
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(game, "FO for game mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.isNull(game.getId(), "ID must be null.");
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, game, "Add game", "gamesAdd");
-            }
-            processResults(gameFacade.add(converter.convert(game, Game.class)));
+        if (errors.hasErrors()) {
+            return createFormView(model, game, "Add game", "add");
         }
+        processResults(gameFacade.add(converter.convert(game, Game.class)));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel adding game.
+     *
+     * @return view for redirect to page with list of games
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String cancelAdd() {
         return LIST_REDIRECT_URL;
     }
 
@@ -179,7 +184,7 @@ public class GameController extends AbstractResultController {
 
         final Game game = result.getData();
         if (game != null) {
-            return createFormView(model, converter.convert(game, GameFO.class), "Edit game", "gamesEdit");
+            return createFormView(model, converter.convert(game, GameFO.class), "Edit game", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -188,32 +193,38 @@ public class GameController extends AbstractResultController {
     /**
      * Process editing game.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param game       FO for game
-     * @param errors       errors
+     * @param model  model
+     * @param game   FO for game
+     * @param errors errors
      * @return view for redirect to page with list of games (no errors) or view for page for editing game (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for game is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if game doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for game is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if game doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(game, "FO for game mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.notNull(game.getId(), NULL_ID_MESSAGE);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, game, "Edit game", "gamesEdit");
-            }
-            processResults(gameFacade.update(processGame(converter.convert(game, Game.class))));
+        if (errors.hasErrors()) {
+            return createFormView(model, game, "Edit game", "edit");
         }
+        processResults(gameFacade.update(processGame(converter.convert(game, Game.class))));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel editing game.
+     *
+     * @return view for redirect to page with list of games
+     */
+    @PostMapping(value = "/edit", params = "cancel")
+    public String processEdit() {
         return LIST_REDIRECT_URL;
     }
 
@@ -292,17 +303,18 @@ public class GameController extends AbstractResultController {
     /**
      * Returns page's view with form.
      *
-     * @param model model
-     * @param game  FO for game
-     * @param title page's title
-     * @param view  returning view
+     * @param model  model
+     * @param game   FO for game
+     * @param title  page's title
+     * @param action action
      * @return page's view with form
      */
-    private static String createFormView(final Model model, final GameFO game, final String title, final String view) {
+    private static String createFormView(final Model model, final GameFO game, final String title, final String action) {
         model.addAttribute("game", game);
         model.addAttribute("title", title);
+        model.addAttribute("action", action);
 
-        return view;
+        return "game/form";
     }
 
     /**

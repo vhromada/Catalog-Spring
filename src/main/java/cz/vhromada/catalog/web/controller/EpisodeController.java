@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for episodes.
@@ -139,7 +138,7 @@ public class EpisodeController extends AbstractResultController {
         model.addAttribute("season", seasonId);
         model.addAttribute("title", "Episodes");
 
-        return "episodesList";
+        return "episode/index";
     }
 
     /**
@@ -163,18 +162,17 @@ public class EpisodeController extends AbstractResultController {
         getShow(showId);
         getSeason(seasonId);
 
-        return createFormView(model, new EpisodeFO(), showId, seasonId, "Add episode", "episodesAdd");
+        return createFormView(model, new EpisodeFO(), showId, seasonId, "Add episode", "add");
     }
 
     /**
      * Process adding episode.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param showId       show ID
-     * @param seasonId     season ID
-     * @param episode      FO for episode
-     * @param errors       errors
+     * @param model    model
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @param episode  FO for episode
+     * @param errors   errors
      * @return view for redirect to page with list of episodes (no errors) or view for page for adding episode (errors)
      * @throws IllegalArgumentException if model is null
      *                                  or show ID is null
@@ -185,9 +183,8 @@ public class EpisodeController extends AbstractResultController {
      * @throws IllegalRequestException  if show doesn't exist
      *                                  or season doesn't exist
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @ModelAttribute("episode") @Valid final EpisodeFO episode, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
@@ -199,12 +196,31 @@ public class EpisodeController extends AbstractResultController {
 
         final Season season = getSeason(seasonId);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, episode, showId, seasonId, "Add episode", "episodesAdd");
-            }
-            processResults(episodeFacade.add(season, converter.convert(episode, Episode.class)));
+        if (errors.hasErrors()) {
+            return createFormView(model, episode, showId, seasonId, "Add episode", "add");
         }
+        processResults(episodeFacade.add(season, converter.convert(episode, Episode.class)));
+
+        return getListRedirectUrl(showId, seasonId);
+    }
+
+    /**
+     * Cancel adding episode.
+     *
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @return view for redirect to page with list of episodes
+     * @throws IllegalArgumentException if show ID is null
+     *                                  or season ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String cancelAdd(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
+        getShow(showId);
+        getSeason(seasonId);
 
         return getListRedirectUrl(showId, seasonId);
     }
@@ -240,7 +256,7 @@ public class EpisodeController extends AbstractResultController {
 
         final Episode episode = result.getData();
         if (episode != null) {
-            return createFormView(model, converter.convert(episode, EpisodeFO.class), showId, seasonId, "Edit episode", "episodesEdit");
+            return createFormView(model, converter.convert(episode, EpisodeFO.class), showId, seasonId, "Edit episode", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -249,12 +265,11 @@ public class EpisodeController extends AbstractResultController {
     /**
      * Process editing episode.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param showId       show ID
-     * @param seasonId     season ID
-     * @param episode      FO for episode
-     * @param errors       errors
+     * @param model    model
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @param episode  FO for episode
+     * @param errors   errors
      * @return view for redirect to page with list of episodes (no errors) or view for page for editing episode (errors)
      * @throws IllegalArgumentException if model is null
      *                                  or show ID is null
@@ -266,9 +281,8 @@ public class EpisodeController extends AbstractResultController {
      *                                  or season doesn't exist
      *                                  or episode doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
             @ModelAttribute("episode") @Valid final EpisodeFO episode, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
@@ -279,12 +293,31 @@ public class EpisodeController extends AbstractResultController {
         getShow(showId);
         getSeason(seasonId);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, episode, showId, seasonId, "Edit episode", "episodesEdit");
-            }
-            processResults(episodeFacade.update(processEpisode(converter.convert(episode, Episode.class))));
+        if (errors.hasErrors()) {
+            return createFormView(model, episode, showId, seasonId, "Edit episode", "edit");
         }
+        processResults(episodeFacade.update(processEpisode(converter.convert(episode, Episode.class))));
+
+        return getListRedirectUrl(showId, seasonId);
+    }
+
+    /**
+     * Cancel editing episode.
+     *
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @return view for redirect to page with list of episodes
+     * @throws IllegalArgumentException if show ID is null
+     *                                  or season ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
+     */
+    @PostMapping(value = "/edit", params = "cancel")
+    public String cancelEdit(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
+        getShow(showId);
+        getSeason(seasonId);
 
         return getListRedirectUrl(showId, seasonId);
     }
@@ -391,17 +424,18 @@ public class EpisodeController extends AbstractResultController {
      * @param showId   show ID
      * @param seasonId season ID
      * @param title    page's title
-     * @param view     returning view
+     * @param action   action
      * @return page's view with form
      */
     private static String createFormView(final Model model, final EpisodeFO episode, final Integer showId, final Integer seasonId, final String title,
-            final String view) {
+            final String action) {
         model.addAttribute("episode", episode);
         model.addAttribute("show", showId);
         model.addAttribute("season", seasonId);
         model.addAttribute("title", title);
+        model.addAttribute("action", action);
 
-        return view;
+        return "episode/form";
     }
 
     /**

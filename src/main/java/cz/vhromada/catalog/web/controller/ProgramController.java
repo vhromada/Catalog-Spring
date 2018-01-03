@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for programs.
@@ -66,7 +65,7 @@ public class ProgramController extends AbstractResultController {
      * Creates a new instance of ProgramController.
      *
      * @param programFacade facade for programs
-     * @param converter  converter
+     * @param converter     converter
      * @throws IllegalArgumentException if facade for programs is null
      *                                  or converter is null
      */
@@ -111,7 +110,7 @@ public class ProgramController extends AbstractResultController {
         model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("title", "Programs");
 
-        return "programsList";
+        return "program/index";
     }
 
     /**
@@ -125,37 +124,43 @@ public class ProgramController extends AbstractResultController {
     public String showAdd(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        return createFormView(model, new ProgramFO(), "Add program", "programsAdd");
+        return createFormView(model, new ProgramFO(), "Add program", "add");
     }
 
     /**
      * Process adding program.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param program         FO for program
-     * @param errors       errors
+     * @param model   model
+     * @param program FO for program
+     * @param errors  errors
      * @return view for redirect to page with list of programs (no errors) or view for page for adding program (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for program is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for program is null
+     *                                  or errors are null
+     *                                  or ID isn't null
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(program, "FO for program mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.isNull(program.getId(), "ID must be null.");
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, program, "Add program", "programsAdd");
-            }
-            processResults(programFacade.add(converter.convert(program, Program.class)));
+        if (errors.hasErrors()) {
+            return createFormView(model, program, "Add program", "add");
         }
+        processResults(programFacade.add(converter.convert(program, Program.class)));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Process adding program.
+     *
+     * @return view for redirect to page with list of programs
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String cancelAdd() {
         return LIST_REDIRECT_URL;
     }
 
@@ -179,7 +184,7 @@ public class ProgramController extends AbstractResultController {
 
         final Program program = result.getData();
         if (program != null) {
-            return createFormView(model, converter.convert(program, ProgramFO.class), "Edit program", "programsEdit");
+            return createFormView(model, converter.convert(program, ProgramFO.class), "Edit program", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -188,32 +193,38 @@ public class ProgramController extends AbstractResultController {
     /**
      * Process editing program.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param program      FO for program
-     * @param errors       errors
+     * @param model   model
+     * @param program FO for program
+     * @param errors  errors
      * @return view for redirect to page with list of programs (no errors) or view for page for editing program (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for program is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if program doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for program is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if program doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @ModelAttribute("program") @Valid final ProgramFO program, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(program, "FO for program mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.notNull(program.getId(), NULL_ID_MESSAGE);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, program, "Edit program", "programsEdit");
-            }
-            processResults(programFacade.update(processProgram(converter.convert(program, Program.class))));
+        if (errors.hasErrors()) {
+            return createFormView(model, program, "Edit program", "edit");
         }
+        processResults(programFacade.update(processProgram(converter.convert(program, Program.class))));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel editing program.
+     *
+     * @return view for redirect to page with list of programs
+     */
+    @PostMapping(value = "/edit", params = "cancel")
+    public String cancelEdit() {
         return LIST_REDIRECT_URL;
     }
 
@@ -292,17 +303,18 @@ public class ProgramController extends AbstractResultController {
     /**
      * Returns page's view with form.
      *
-     * @param model model
-     * @param program  FO for program
-     * @param title page's title
-     * @param view  returning view
+     * @param model   model
+     * @param program FO for program
+     * @param title   page's title
+     * @param action  action
      * @return page's view with form
      */
-    private static String createFormView(final Model model, final ProgramFO program, final String title, final String view) {
+    private static String createFormView(final Model model, final ProgramFO program, final String title, final String action) {
         model.addAttribute("program", program);
         model.addAttribute("title", title);
+        model.addAttribute("action", action);
 
-        return view;
+        return "program/form";
     }
 
     /**

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div class="container-fluid innerMenu" th:fragment="menu">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/games/list}">All games</a></li>
+                <li><a th:href="@{/games/new}">New data</a></li>
+                <li><a th:href="@{/games/add}">Add game</a></li>
+                <li><a th:href="@{/games/update}">Update positions</a></li>
+            </ul>
+        </div>
+    </body>
+</html>

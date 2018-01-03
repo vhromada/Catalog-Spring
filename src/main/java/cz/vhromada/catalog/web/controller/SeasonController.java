@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for seasons.
@@ -149,7 +148,7 @@ public class SeasonController extends AbstractResultController {
         model.addAttribute("show", showId);
         model.addAttribute("title", "Seasons");
 
-        return "seasonsList";
+        return "season/index";
     }
 
     /**
@@ -168,28 +167,27 @@ public class SeasonController extends AbstractResultController {
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         getShow(showId);
 
-        return createFormView(model, new SeasonFO(), showId, "Add season", "seasonsAdd");
+        return createFormView(model, new SeasonFO(), showId, "Add season", "add");
     }
 
     /**
      * Process adding season.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param showId       show ID
-     * @param seasonFO     FO for season
-     * @param errors       errors
+     * @param model    model
+     * @param showId   show ID
+     * @param seasonFO FO for season
+     * @param errors   errors
      * @return view for redirect to page with list of seasons (no errors) or view for page for adding season (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or show ID is null
-     *                                                               or FO for season is null
-     *                                                               or errors are null
-     *                                                               or ID isn't null
-     * @throws IllegalRequestException                               if show doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or show ID is null
+     *                                  or FO for season is null
+     *                                  or errors are null
+     *                                  or ID isn't null
+     * @throws IllegalRequestException  if show doesn't exist
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO, final Errors errors) {
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO,
+            final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonFO, "FO for season mustn't be null.");
@@ -198,17 +196,31 @@ public class SeasonController extends AbstractResultController {
 
         final Show show = getShow(showId);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, seasonFO, showId, "Add season", "seasonsAdd");
-            }
-
-            final Season season = converter.convert(seasonFO, Season.class);
-            if (season.getSubtitles() == null) {
-                season.setSubtitles(new ArrayList<>());
-            }
-            processResults(seasonFacade.add(show, season));
+        if (errors.hasErrors()) {
+            return createFormView(model, seasonFO, showId, "Add season", "add");
         }
+
+        final Season season = converter.convert(seasonFO, Season.class);
+        if (season.getSubtitles() == null) {
+            season.setSubtitles(new ArrayList<>());
+        }
+        processResults(seasonFacade.add(show, season));
+
+        return getListRedirectUrl(showId);
+    }
+
+    /**
+     * Cancel adding season.
+     *
+     * @param showId show ID
+     * @return view for redirect to page with list of seasons
+     * @throws IllegalArgumentException if show ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String processAdd(@PathVariable("showId") final Integer showId) {
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        getShow(showId);
 
         return getListRedirectUrl(showId);
     }
@@ -238,7 +250,7 @@ public class SeasonController extends AbstractResultController {
 
         final Season season = result.getData();
         if (season != null) {
-            return createFormView(model, converter.convert(season, SeasonFO.class), showId, "Edit season", "seasonsEdit");
+            return createFormView(model, converter.convert(season, SeasonFO.class), showId, "Edit season", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -247,23 +259,22 @@ public class SeasonController extends AbstractResultController {
     /**
      * Process editing season.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param showId       show ID
-     * @param seasonFO     FO for season
-     * @param errors       errors
+     * @param model    model
+     * @param showId   show ID
+     * @param seasonFO FO for season
+     * @param errors   errors
      * @return view for redirect to page with list of seasons (no errors) or view for page for editing season (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or show ID is null
-     *                                                               or FO for season is null
-     *                                                               or errors are null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if show doesn't exist
-     *                                                               or season doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or show ID is null
+     *                                  or FO for season is null
+     *                                  or errors are null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO, final Errors errors) {
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO,
+            final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonFO, "FO for season mustn't be null.");
@@ -271,16 +282,30 @@ public class SeasonController extends AbstractResultController {
         Assert.notNull(seasonFO.getId(), NULL_ID_MESSAGE);
         getShow(showId);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, seasonFO, showId, "Edit season", "seasonsEdit");
-            }
-            final Season season = processSeason(converter.convert(seasonFO, Season.class));
-            if (season.getSubtitles() == null) {
-                season.setSubtitles(new ArrayList<>());
-            }
-            processResults(seasonFacade.update(season));
+        if (errors.hasErrors()) {
+            return createFormView(model, seasonFO, showId, "Edit season", "edit");
         }
+        final Season season = processSeason(converter.convert(seasonFO, Season.class));
+        if (season.getSubtitles() == null) {
+            season.setSubtitles(new ArrayList<>());
+        }
+        processResults(seasonFacade.update(season));
+
+        return getListRedirectUrl(showId);
+    }
+
+    /**
+     * Cancel editing season.
+     *
+     * @param showId show ID
+     * @return view for redirect to page with list of seasons
+     * @throws IllegalArgumentException if how ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     */
+    @PostMapping(value = "/edit", params = "cancel")
+    public String cancelEdit(@PathVariable("showId") final Integer showId) {
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        getShow(showId);
 
         return getListRedirectUrl(showId);
     }
@@ -364,17 +389,18 @@ public class SeasonController extends AbstractResultController {
      * @param season FO for season
      * @param showId show ID
      * @param title  page's title
-     * @param view   returning view
+     * @param action action
      * @return page's view with form
      */
-    private static String createFormView(final Model model, final SeasonFO season, final Integer showId, final String title, final String view) {
+    private static String createFormView(final Model model, final SeasonFO season, final Integer showId, final String title, final String action) {
         model.addAttribute("season", season);
         model.addAttribute("show", showId);
         model.addAttribute("languages", Language.values());
         model.addAttribute("subtitles", new Language[]{ Language.CZ, Language.EN });
         model.addAttribute("title", title);
+        model.addAttribute("action", action);
 
-        return view;
+        return "season/form";
     }
 
     /**

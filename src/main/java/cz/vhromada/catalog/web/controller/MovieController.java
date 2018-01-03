@@ -61,11 +61,6 @@ public class MovieController extends AbstractResultController {
     private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
-     * Button parameter value
-     */
-    private static final String BUTTON_PARAMETER_VALUE = "Submit";
-
-    /**
      * Facade for movies
      */
     private final MovieFacade movieFacade;
@@ -136,7 +131,7 @@ public class MovieController extends AbstractResultController {
         model.addAttribute("totalLength", totalLengthResult.getData());
         model.addAttribute("title", "Movies");
 
-        return "moviesList";
+        return "movie/index";
     }
 
     /**
@@ -157,15 +152,15 @@ public class MovieController extends AbstractResultController {
      * Process adding movie.
      *
      * @param model   model
-     * @param movieFO   FO for movie
+     * @param movieFO FO for movie
      * @param errors  errors
      * @param request HTTP request
      * @return view for redirect to page with list of movies (no errors) or view for page for adding movie (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for movie is null
-     *                                                               or errors are null
-     *                                                               or HTTP request is null
-     *                                                               or ID isn't null
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for movie is null
+     *                                  or errors are null
+     *                                  or HTTP request is null
+     *                                  or ID isn't null
      */
     @PostMapping("/add")
     public String processAdd(final Model model, @ModelAttribute("movie") @Valid final MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
@@ -175,7 +170,7 @@ public class MovieController extends AbstractResultController {
         Assert.notNull(request, "Request mustn't be null.");
         Assert.isNull(movieFO.getId(), "ID must be null.");
 
-        if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("create"))) {
+        if (request.getParameter("create") != null) {
             if (errors.hasErrors()) {
                 return createAddFormView(model, movieFO);
             }
@@ -187,7 +182,7 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.add(movie));
         }
 
-        if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("add"))) {
+        if (request.getParameter("add") != null) {
             movieFO.getMedia().add(new TimeFO());
 
             return createAddFormView(model, movieFO);
@@ -211,7 +206,7 @@ public class MovieController extends AbstractResultController {
      * @return view for page for editing movie
      * @throws IllegalArgumentException if model is null
      *                                  or ID is null
-     * @throws IllegalRequestException  if TO for movie doesn't exist
+     * @throws IllegalRequestException  if movie doesn't exist
      */
     @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
@@ -233,16 +228,16 @@ public class MovieController extends AbstractResultController {
      * Process editing movie.
      *
      * @param model   model
-     * @param movieFO   FO for movie
+     * @param movieFO FO for movie
      * @param errors  errors
      * @param request HTTP request
      * @return view for redirect to page with list of movies (no errors) or view for page for editing movie (errors)
-     * @throws IllegalArgumentException                              if model is null
-     *                                                               or FO for movie is null
-     *                                                               or errors are null
-     *                                                               or HTTP request is null
-     *                                                               or ID is null
-     * @throws IllegalRequestException                               if TO for movie doesn't exist
+     * @throws IllegalArgumentException if model is null
+     *                                  or FO for movie is null
+     *                                  or errors are null
+     *                                  or HTTP request is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if movie doesn't exist
      */
     @PostMapping("/edit")
     public String processEdit(final Model model, @ModelAttribute("movie") @Valid final MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
@@ -252,7 +247,7 @@ public class MovieController extends AbstractResultController {
         Assert.notNull(request, "Request mustn't be null.");
         Assert.notNull(movieFO.getId(), NULL_ID_MESSAGE);
 
-        if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("create"))) {
+        if (request.getParameter("update") != null) {
             if (errors.hasErrors()) {
                 return createEditFormView(model, movieFO);
             }
@@ -265,7 +260,7 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.update(movie));
         }
 
-        if (BUTTON_PARAMETER_VALUE.equals(request.getParameter("add"))) {
+        if (request.getParameter("add") != null) {
             movieFO.getMedia().add(new TimeFO());
 
             return createEditFormView(model, movieFO);
@@ -287,7 +282,7 @@ public class MovieController extends AbstractResultController {
      * @param id ID of duplicating movie
      * @return view for redirect to page with list of movies
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for movie doesn't exist
+     * @throws IllegalRequestException  if movie doesn't exist
      */
     @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
@@ -302,7 +297,7 @@ public class MovieController extends AbstractResultController {
      * @param id ID of removing movie
      * @return view for redirect to page with list of movies
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for movie doesn't exist
+     * @throws IllegalRequestException  if movie doesn't exist
      */
     @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
@@ -317,7 +312,7 @@ public class MovieController extends AbstractResultController {
      * @param id ID of moving movie
      * @return view for redirect to page with list of movies
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for movie doesn't exist
+     * @throws IllegalRequestException  if movie doesn't exist
      */
     @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
@@ -332,7 +327,7 @@ public class MovieController extends AbstractResultController {
      * @param id ID of moving movie
      * @return view for redirect to page with list of movies
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for movie doesn't exist
+     * @throws IllegalRequestException  if movie doesn't exist
      */
     @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
@@ -364,9 +359,7 @@ public class MovieController extends AbstractResultController {
         for (final Enumeration<String> names = request.getParameterNames(); names.hasMoreElements() && index == null; ) {
             final String name = names.nextElement();
             if (name.startsWith("remove")) {
-                if (BUTTON_PARAMETER_VALUE.equals(request.getParameter(name))) {
-                    index = Integer.parseInt(name.substring(6));
-                }
+                index = Integer.parseInt(name.substring(6));
             }
         }
 
@@ -376,13 +369,13 @@ public class MovieController extends AbstractResultController {
     /**
      * Returns page's view with form.
      *
-     * @param model model
-     * @param movie FO for movie
-     * @param title page's title
-     * @param view  returning view
+     * @param model  model
+     * @param movie  FO for movie
+     * @param title  page's title
+     * @param action action
      * @return page's view with form
      */
-    private String createFormView(final Model model, final MovieFO movie, final String title, final String view) {
+    private String createFormView(final Model model, final MovieFO movie, final String title, final String action) {
         final Result<List<Genre>> result = genreFacade.getAll();
         processResults(result);
 
@@ -391,8 +384,9 @@ public class MovieController extends AbstractResultController {
         model.addAttribute("languages", Language.values());
         model.addAttribute("subtitles", new Language[]{ Language.CZ, Language.EN });
         model.addAttribute("genres", result.getData());
+        model.addAttribute("action", action);
 
-        return view;
+        return "movie/form";
     }
 
     /**
@@ -403,7 +397,7 @@ public class MovieController extends AbstractResultController {
      * @return page's view with form for adding movie
      */
     private String createAddFormView(final Model model, final MovieFO movie) {
-        return createFormView(model, movie, "Add movie", "moviesAdd");
+        return createFormView(model, movie, "Add movie", "add");
     }
 
     /**
@@ -414,7 +408,7 @@ public class MovieController extends AbstractResultController {
      * @return page's view with form for editing movie
      */
     private String createEditFormView(final Model model, final MovieFO movie) {
-        return createFormView(model, movie, "Edit movie", "moviesEdit");
+        return createFormView(model, movie, "Edit movie", "edit");
     }
 
     /**

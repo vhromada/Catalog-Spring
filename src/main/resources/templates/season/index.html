@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout :: head"></head>
+    <body>
+        <th:block th:replace="layout :: menu"/>
+        <th:block th:replace="season/menu :: menu"/>
+        <div class="container-fluid">
+            <th:block th:replace="layout :: title"/>
+            <table class="table table-hover" th:if="${!#lists.isEmpty(seasons)}">
+                <thead>
+                    <tr>
+                        <th>Number of season</th>
+                        <th>Year</th>
+                        <th>Language</th>
+                        <th>Subtitles</th>
+                        <th>Episodes count</th>
+                        <th>Total length</th>
+                        <th>Note</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="season : ${seasons}">
+                        <tr>
+                            <td th:text="${season.season.number}"></td>
+                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertSeasonYears(season.season)}"></td>
+                            <td th:text="${season.season.language}"></td>
+                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertLanguages(season.season.subtitles)}"></td>
+                            <td th:text="${season.episodesCount}"></td>
+                            <td th:text="${season.totalLength}"></td>
+                            <td th:text="${season.season.note}"></td>
+                            <td><a th:href="@{|/shows/${show}/seasons/${season.season.id}/episodes/list|}">Episodes</a></td>
+                            <td><a th:href="@{|/shows/${show}/seasons/moveUp/${season.season.id}|}" th:if="${seasons.indexOf(season) > 0}">Move up</a></td>
+                            <td>
+                                <a th:href="@{|/shows/${show}/seasons/moveDown/${season.season.id}|}" th:if="${seasons.indexOf(season) < seasons.size() - 1}">
+                                    Move down
+                                </a>
+                            </td>
+                            <td><a th:href="@{|/shows/${show}/seasons/duplicate/${season.season.id}|}">Duplicate</a></td>
+                            <td><a th:href="@{|/shows/${show}/seasons/edit/${season.season.id}|}">Edit</a></td>
+                            <td><a th:href="@{|/shows/${show}/seasons/remove/${season.season.id}|}">Remove</a></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <th:block th:if="${#lists.isEmpty(seasons)}">No records.</th:block>
+        </div>
+    </body>
+</html>

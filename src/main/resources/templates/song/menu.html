@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="music" type="java.lang.Integer"*/-->
+    <body>
+        <th:block th:fragment="menu">
+            <th:block th:replace="music/menu :: menu"/>
+            <div class="container-fluid innerMenu">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{|/music/${music}/songs/list|}">All songs</a></li>
+                    <li><a th:href="@{|/music/${music}/songs/add|}">Add song</a></li>
+                </ul>
+            </div>
+        </th:block>
+    </body>
+</html>

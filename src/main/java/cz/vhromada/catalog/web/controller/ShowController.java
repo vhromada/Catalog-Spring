@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * A class represents controller for shows.
@@ -155,7 +154,7 @@ public class ShowController extends AbstractResultController {
         model.addAttribute("totalLength", totalLengthResult.getData());
         model.addAttribute("title", "Shows");
 
-        return "showsList";
+        return "show/index";
     }
 
     /**
@@ -169,39 +168,45 @@ public class ShowController extends AbstractResultController {
     public String showAdd(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
-        return createFormView(model, new ShowFO(), "Add show", "showsAdd");
+        return createFormView(model, new ShowFO(), "Add show", "add");
     }
 
     /**
      * Process adding show.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param showFO       FO for show
-     * @param errors       errors
+     * @param model  model
+     * @param showFO FO for show
+     * @param errors errors
      * @return view for redirect to page with list of shows (no errors) or view for page for adding show (errors)
      * @throws IllegalArgumentException if model is null
      *                                  or FO for show is null
      *                                  or errors are null
      *                                  or ID isn't null
      */
-    @PostMapping("/add")
-    public String processAdd(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
+    @PostMapping(value = "/add", params = "create")
+    public String processAdd(final Model model, @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showFO, "FO for show mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.isNull(showFO.getId(), "ID must be null.");
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, showFO, "Add show", "showsAdd");
-            }
-            final Show show = converter.convert(showFO, Show.class);
-            show.setGenres(getGenres(show.getGenres()));
-            processResults(showFacade.add(show));
+        if (errors.hasErrors()) {
+            return createFormView(model, showFO, "Add show", "add");
         }
+        final Show show = converter.convert(showFO, Show.class);
+        show.setGenres(getGenres(show.getGenres()));
+        processResults(showFacade.add(show));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel adding show.
+     *
+     * @return view for redirect to page with list of shows
+     */
+    @PostMapping(value = "/add", params = "cancel")
+    public String processAdd() {
         return LIST_REDIRECT_URL;
     }
 
@@ -213,7 +218,7 @@ public class ShowController extends AbstractResultController {
      * @return view for page for editing show
      * @throws IllegalArgumentException if model is null
      *                                  or ID is null
-     * @throws IllegalRequestException  if TO for show doesn't exist
+     * @throws IllegalRequestException  if show doesn't exist
      */
     @GetMapping("/edit/{id}")
     public String showEdit(final Model model, @PathVariable("id") final Integer id) {
@@ -225,7 +230,7 @@ public class ShowController extends AbstractResultController {
 
         final Show show = result.getData();
         if (show != null) {
-            return createFormView(model, converter.convert(show, ShowFO.class), "Edit show", "showsEdit");
+            return createFormView(model, converter.convert(show, ShowFO.class), "Edit show", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -234,34 +239,40 @@ public class ShowController extends AbstractResultController {
     /**
      * Process editing show.
      *
-     * @param model        model
-     * @param createButton button create
-     * @param showFO       FO for show
-     * @param errors       errors
+     * @param model  model
+     * @param showFO FO for show
+     * @param errors errors
      * @return view for redirect to page with list of shows (no errors) or view for page for editing show (errors)
      * @throws IllegalArgumentException if model is null
      *                                  or FO for show is null
      *                                  or errors are null
      *                                  or ID is null
-     * @throws IllegalRequestException  if TO for show doesn't exist
+     * @throws IllegalRequestException  if show doesn't exist
      */
-    @PostMapping("/edit")
-    public String processEdit(final Model model, @RequestParam(value = "create", required = false) final String createButton,
-            @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
+    @PostMapping(value = "/edit", params = "update")
+    public String processEdit(final Model model, @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showFO, "FO for show mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
         Assert.notNull(showFO.getId(), NULL_ID_MESSAGE);
 
-        if ("Submit".equals(createButton)) {
-            if (errors.hasErrors()) {
-                return createFormView(model, showFO, "Edit show", "showsEdit");
-            }
-            final Show show = processShow(converter.convert(showFO, Show.class));
-            show.setGenres(getGenres(show.getGenres()));
-            processResults(showFacade.update(show));
+        if (errors.hasErrors()) {
+            return createFormView(model, showFO, "Edit show", "edit");
         }
+        final Show show = processShow(converter.convert(showFO, Show.class));
+        show.setGenres(getGenres(show.getGenres()));
+        processResults(showFacade.update(show));
 
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Cancel editing show.
+     *
+     * @return view for redirect to page with list of shows
+     */
+    @PostMapping(value = "/edit", params = "cancel")
+    public String processEdit() {
         return LIST_REDIRECT_URL;
     }
 
@@ -271,7 +282,7 @@ public class ShowController extends AbstractResultController {
      * @param id ID of duplicating show
      * @return view for redirect to page with list of shows
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for show doesn't exist
+     * @throws IllegalRequestException  if show doesn't exist
      */
     @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("id") final Integer id) {
@@ -286,7 +297,7 @@ public class ShowController extends AbstractResultController {
      * @param id ID of removing show
      * @return view for redirect to page with list of shows
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for show doesn't exist
+     * @throws IllegalRequestException  if show doesn't exist
      */
     @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("id") final Integer id) {
@@ -301,7 +312,7 @@ public class ShowController extends AbstractResultController {
      * @param id ID of moving show
      * @return view for redirect to page with list of shows
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for show doesn't exist
+     * @throws IllegalRequestException  if show doesn't exist
      */
     @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("id") final Integer id) {
@@ -316,7 +327,7 @@ public class ShowController extends AbstractResultController {
      * @param id ID of moving show
      * @return view for redirect to page with list of shows
      * @throws IllegalArgumentException if ID is null
-     * @throws IllegalRequestException  if TO for show doesn't exist
+     * @throws IllegalRequestException  if show doesn't exist
      */
     @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("id") final Integer id) {
@@ -340,21 +351,22 @@ public class ShowController extends AbstractResultController {
     /**
      * Returns page's view with form.
      *
-     * @param model model
-     * @param show  FO for show
-     * @param title page's title
-     * @param view  returning view
+     * @param model  model
+     * @param show   FO for show
+     * @param title  page's title
+     * @param action action
      * @return page's view with form
      */
-    private String createFormView(final Model model, final ShowFO show, final String title, final String view) {
+    private String createFormView(final Model model, final ShowFO show, final String title, final String action) {
         final Result<List<Genre>> result = genreFacade.getAll();
         processResults(result);
 
         model.addAttribute("show", show);
         model.addAttribute("title", title);
         model.addAttribute("genres", result.getData());
+        model.addAttribute("action", action);
 
-        return view;
+        return "show/form";
     }
 
     /**

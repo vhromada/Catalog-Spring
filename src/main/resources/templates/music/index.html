@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout :: head"></head>
+    <body>
+        <th:block th:replace="layout :: menu"/>
+        <th:block th:replace="music/menu :: menu"/>
+        <div class="container-fluid">
+            <th:block th:replace="layout :: title"/>
+            <table class="table table-hover" th:if="${!#lists.isEmpty(music)}">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Count of media</th>
+                        <th>Count of songs</th>
+                        <th>Total length</th>
+                        <th>Note</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="musicItem : ${music}">
+                        <tr>
+                            <td th:text="${musicItem.music.name}"></td>
+                            <td th:text="${musicItem.music.mediaCount}"></td>
+                            <td th:text="${musicItem.songsCount}"></td>
+                            <td th:text="${musicItem.totalLength}"></td>
+                            <td th:text="${musicItem.music.note}"></td>
+                            <td>
+                                <a th:href="@{|http://cz.wikipedia.org/wiki/${musicItem.music.wikiCz}|}" th:if="${!#strings.isEmpty(musicItem.music.wikiCz)}">
+                                    Czech Wikipedia
+                                </a>
+                            </td>
+                            <td>
+                                <a th:href="@{|http://en.wikipedia.org/wiki/${musicItem.music.wikiEn}|}" th:if="${!#strings.isEmpty(musicItem.music.wikiEn)}">
+                                    English Wikipedia
+                                </a>
+                            </td>
+                            <td><a th:href="@{|/music/${musicItem.music.id}/songs/list|}">Songs</a></td>
+                            <td><a th:href="@{|/music/moveUp/${musicItem.music.id}|}" th:if="${music.indexOf(musicItem) > 0}">Move up</a></td>
+                            <td>
+                                <a th:href="@{|/music/moveDown/${musicItem.music.id}|}" th:if="${music.indexOf(musicItem) < music.size() - 1}">Move down</a>
+                            </td>
+                            <td><a th:href="@{|/music/duplicate/${musicItem.music.id}|}">Duplicate</a></td>
+                            <td><a th:href="@{|/music/edit/${musicItem.music.id}|}">Edit</a></td>
+                            <td><a th:href="@{|/music/remove/${musicItem.music.id}|}">Remove</a></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <th:block th:if="${#lists.isEmpty(music)}">No records.</th:block>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Count of music</th>
+                        <th>Count of media</th>
+                        <th>Count of songs</th>
+                        <th>Total length</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${music.size()}"></td>
+                        <td th:text="${mediaCount}"></td>
+                        <td th:text="${songsCount}"></td>
+                        <td th:text="${totalLength}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

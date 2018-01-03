@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div class="container-fluid innerMenu" th:fragment="menu">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/programs/list}">All programs</a></li>
+                <li><a th:href="@{/programs/new}">New data</a></li>
+                <li><a th:href="@{/programs/add}">Add program</a></li>
+                <li><a th:href="@{/programs/update}">Update positions</a></li>
+            </ul>
+        </div>
+    </body>
+</html>

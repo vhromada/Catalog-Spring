@@ -81,6 +81,7 @@ public class ErrorControllerAdvice {
     private static String process(final Model model, final String errorMessage) {
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("title", "Error");
+        model.addAttribute("inner", false);
 
         return "errors";
     }
