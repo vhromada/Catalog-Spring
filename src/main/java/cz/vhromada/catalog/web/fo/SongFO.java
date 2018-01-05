@@ -26,14 +26,12 @@ public class SongFO implements Serializable {
     /**
      * Name
      */
-    @NotBlank
-    private String name;
+    private @NotBlank String name;
 
     /**
      * Length
      */
-    @Valid
-    private TimeFO length;
+    private @Valid TimeFO length;
 
     /**
      * Note

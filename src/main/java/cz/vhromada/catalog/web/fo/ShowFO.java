@@ -32,14 +32,12 @@ public class ShowFO implements Serializable {
     /**
      * Czech name
      */
-    @NotBlank
-    private String czechName;
+    private @NotBlank String czechName;
 
     /**
      * Original name
      */
-    @NotBlank
-    private String originalName;
+    private @NotBlank String originalName;
 
     /**
      * URL to ČSFD page about show
@@ -85,9 +83,7 @@ public class ShowFO implements Serializable {
     /**
      * Genres
      */
-    @NotNull
-    @Size(min = 1)
-    private List<Integer> genres;
+    private @NotNull @Size(min = 1) List<Integer> genres;
 
     /**
      * Returns ID.

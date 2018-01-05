@@ -27,8 +27,7 @@ public class MusicFO implements Serializable {
     /**
      * Name
      */
-    @NotBlank
-    private String name;
+    private @NotBlank String name;
 
     /**
      * URL to english Wikipedia page about music
@@ -44,8 +43,7 @@ public class MusicFO implements Serializable {
      * Count of media
      */
     //CHECKSTYLE.OFF: MagicNumber
-    @Range(min = 1, max = 100)
-    private String mediaCount;
+    private @Range(min = 1, max = 100) String mediaCount;
     //CHECKSTYLE.ON: MagicNumber
 
     /**

@@ -25,8 +25,7 @@ public class GenreFO implements Serializable {
     /**
      * Name
      */
-    @NotBlank
-    private String name;
+    private @NotBlank String name;
 
     /**
      * Position

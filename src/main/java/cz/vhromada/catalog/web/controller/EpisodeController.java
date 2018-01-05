@@ -185,7 +185,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @PostMapping(value = "/add", params = "create")
     public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @ModelAttribute("episode") @Valid final EpisodeFO episode, final Errors errors) {
+            @ModelAttribute("episode") final @Valid EpisodeFO episode, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
@@ -217,12 +217,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @PostMapping(value = "/add", params = "cancel")
     public String cancelAdd(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
-        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
-        Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
-        getShow(showId);
-        getSeason(seasonId);
-
-        return getListRedirectUrl(showId, seasonId);
+        return cancel(showId, seasonId);
     }
 
     /**
@@ -283,7 +278,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @PostMapping(value = "/edit", params = "update")
     public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @ModelAttribute("episode") @Valid final EpisodeFO episode, final Errors errors) {
+            @ModelAttribute("episode") final @Valid EpisodeFO episode, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
@@ -314,12 +309,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @PostMapping(value = "/edit", params = "cancel")
     public String cancelEdit(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
-        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
-        Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
-        getShow(showId);
-        getSeason(seasonId);
-
-        return getListRedirectUrl(showId, seasonId);
+        return cancel(showId, seasonId);
     }
 
     /**
@@ -436,6 +426,26 @@ public class EpisodeController extends AbstractResultController {
         model.addAttribute("action", action);
 
         return "episode/form";
+    }
+
+    /**
+     * Cancel processing episode.
+     *
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @return view for redirect to page with list of episodes
+     * @throws IllegalArgumentException if show ID is null
+     *                                  or season ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
+     */
+    private String cancel(final Integer showId, final Integer seasonId) {
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
+        getShow(showId);
+        getSeason(seasonId);
+
+        return getListRedirectUrl(showId, seasonId);
     }
 
     /**

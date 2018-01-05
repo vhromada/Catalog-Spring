@@ -67,7 +67,7 @@
                     <th:block th:each="medium, info : *{media}">
                         <div class="form-group">
                             <label class="col-sm-2 control-label" th:text="|Medium ${info.index + 1}|"></label>
-                            <button type="submit" th:id="|remove${info.index}|" th:name="|remove${info.index}|" class="btn btn-danger col-sm-1"
+                            <button type="submit" th:id="|removeMedium${info.index}|" th:name="|removeMedium${info.index}|" class="btn btn-danger col-sm-1"
                                     formnovalidate="formnovalidate" th:if="${info.index > 0}">
                                 Remove
                             </button>
@@ -104,7 +104,9 @@
                         </div>
                     </th:block>
                     <div class="form-group">
-                        <button type="submit" id="add" name="add" class="btn btn-success col-sm-offset-2 col-sm-1" formnovalidate="formnovalidate">Add</button>
+                        <button type="submit" id="addMedium" name="addMedium" class="btn btn-success col-sm-offset-2 col-sm-1" formnovalidate="formnovalidate">
+                            Add
+                        </button>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="csfd">ČSFD</label>

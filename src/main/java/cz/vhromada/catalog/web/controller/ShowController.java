@@ -184,7 +184,7 @@ public class ShowController extends AbstractResultController {
      *                                  or ID isn't null
      */
     @PostMapping(value = "/add", params = "create")
-    public String processAdd(final Model model, @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
+    public String processAdd(final Model model, @ModelAttribute("show") final @Valid ShowFO showFO, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showFO, "FO for show mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
@@ -250,7 +250,7 @@ public class ShowController extends AbstractResultController {
      * @throws IllegalRequestException  if show doesn't exist
      */
     @PostMapping(value = "/edit", params = "update")
-    public String processEdit(final Model model, @ModelAttribute("show") @Valid final ShowFO showFO, final Errors errors) {
+    public String processEdit(final Model model, @ModelAttribute("show") final @Valid ShowFO showFO, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showFO, "FO for show mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");

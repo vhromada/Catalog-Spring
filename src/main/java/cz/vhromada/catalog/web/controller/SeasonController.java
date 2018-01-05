@@ -186,7 +186,7 @@ public class SeasonController extends AbstractResultController {
      * @throws IllegalRequestException  if show doesn't exist
      */
     @PostMapping(value = "/add", params = "create")
-    public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO,
+    public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") final @Valid SeasonFO seasonFO,
             final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
@@ -218,11 +218,8 @@ public class SeasonController extends AbstractResultController {
      * @throws IllegalRequestException  if show doesn't exist
      */
     @PostMapping(value = "/add", params = "cancel")
-    public String processAdd(@PathVariable("showId") final Integer showId) {
-        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
-        getShow(showId);
-
-        return getListRedirectUrl(showId);
+    public String cancelAdd(@PathVariable("showId") final Integer showId) {
+        return cancel(showId);
     }
 
     /**
@@ -273,7 +270,7 @@ public class SeasonController extends AbstractResultController {
      *                                  or season doesn't exist
      */
     @PostMapping(value = "/edit", params = "update")
-    public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") @Valid final SeasonFO seasonFO,
+    public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") final @Valid SeasonFO seasonFO,
             final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
@@ -304,10 +301,7 @@ public class SeasonController extends AbstractResultController {
      */
     @PostMapping(value = "/edit", params = "cancel")
     public String cancelEdit(@PathVariable("showId") final Integer showId) {
-        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
-        getShow(showId);
-
-        return getListRedirectUrl(showId);
+        return cancel(showId);
     }
 
     /**
@@ -401,6 +395,21 @@ public class SeasonController extends AbstractResultController {
         model.addAttribute("action", action);
 
         return "season/form";
+    }
+
+    /**
+     * Cancel processing season.
+     *
+     * @param showId show ID
+     * @return view for redirect to page with list of seasons
+     * @throws IllegalArgumentException if show ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     */
+    private String cancel(final Integer showId) {
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        getShow(showId);
+
+        return getListRedirectUrl(showId);
     }
 
     /**

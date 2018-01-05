@@ -37,14 +37,12 @@ public class MovieFO implements Serializable {
     /**
      * Czech name
      */
-    @NotBlank
-    private String czechName;
+    private @NotBlank String czechName;
 
     /**
      * Original name
      */
-    @NotBlank
-    private String originalName;
+    private @NotBlank String originalName;
 
     /**
      * Year
@@ -55,8 +53,7 @@ public class MovieFO implements Serializable {
     /**
      * Language
      */
-    @NotNull
-    private Language language;
+    private @NotNull Language language;
 
     /**
      * Subtitles
@@ -66,8 +63,7 @@ public class MovieFO implements Serializable {
     /**
      * Media
      */
-    @Valid
-    private List<TimeFO> media;
+    private @Valid List<TimeFO> media;
 
     /**
      * URL to ČSFD page about movie
@@ -113,9 +109,7 @@ public class MovieFO implements Serializable {
     /**
      * Genres
      */
-    @NotNull
-    @Size(min = 1)
-    private List<Integer> genres;
+    private @NotNull @Size(min = 1) List<Integer> genres;
 
     /**
      * Creates a new instance of MovieFO.

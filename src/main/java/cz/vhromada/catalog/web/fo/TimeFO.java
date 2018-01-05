@@ -21,20 +21,17 @@ public class TimeFO implements Serializable {
      * Hours
      */
     //CHECKSTYLE.OFF: MagicNumber
-    @Range(min = 0, max = 23)
-    private String hours;
+    private @Range(min = 0, max = 23) String hours;
 
     /**
      * Minutes
      */
-    @Range(min = 0, max = 59)
-    private String minutes;
+    private @Range(min = 0, max = 59) String minutes;
 
     /**
      * Seconds
      */
-    @Range(min = 0, max = 59)
-    private String seconds;
+    private @Range(min = 0, max = 59) String seconds;
     //CHECKSTYLE.ON: MagicNumber
 
     /**

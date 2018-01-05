@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author Vladimir Hromada
  */
+//CHECKSTYLE.OFF: HideUtilityClassConstructor
 @SpringBootApplication
 @Import(CatalogConfiguration.class)
 public class WebApplication implements WebMvcConfigurer {
@@ -25,6 +26,7 @@ public class WebApplication implements WebMvcConfigurer {
     public static void main(final String[] args) {
         SpringApplication.run(WebApplication.class, args);
     }
-    //CHECKSTYLE.OFF: UncommentedMain
+    //CHECKSTYLE.ON: UncommentedMain
 
 }
+//CHECKSTYLE.ON: HideUtilityClassConstructor

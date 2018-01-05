@@ -29,21 +29,18 @@ public class EpisodeFO implements Serializable {
      * Number of episode
      */
     //CHECKSTYLE.OFF: MagicNumber
-    @Range(min = 1, max = 500)
-    private String number;
+    private @Range(min = 1, max = 500) String number;
     //CHECKSTYLE.ON: MagicNumber
 
     /**
      * Name
      */
-    @NotBlank
-    private String name;
+    private @NotBlank String name;
 
     /**
      * Length
      */
-    @Valid
-    private TimeFO length;
+    private @Valid TimeFO length;
 
     /**
      * Note

@@ -176,7 +176,7 @@ public class MusicController extends AbstractResultController {
      *                                  or ID isn't null
      */
     @PostMapping(value = "/add", params = "create")
-    public String processAdd(final Model model, @ModelAttribute("music") @Valid final MusicFO music, final Errors errors) {
+    public String processAdd(final Model model, @ModelAttribute("music") final @Valid MusicFO music, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(music, "FO for music mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
@@ -240,7 +240,7 @@ public class MusicController extends AbstractResultController {
      * @throws IllegalRequestException  if music doesn't exist
      */
     @PostMapping(value = "/edit", params = "update")
-    public String processEdit(final Model model, @ModelAttribute("music") @Valid final MusicFO music, final Errors errors) {
+    public String processEdit(final Model model, @ModelAttribute("music") final @Valid MusicFO music, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(music, "FO for music mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");

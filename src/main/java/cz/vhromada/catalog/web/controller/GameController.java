@@ -140,7 +140,7 @@ public class GameController extends AbstractResultController {
      *                                  or ID isn't null
      */
     @PostMapping(value = "/add", params = "create")
-    public String processAdd(final Model model, @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
+    public String processAdd(final Model model, @ModelAttribute("game") final @Valid GameFO game, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(game, "FO for game mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
@@ -204,7 +204,7 @@ public class GameController extends AbstractResultController {
      * @throws IllegalRequestException  if game doesn't exist
      */
     @PostMapping(value = "/edit", params = "update")
-    public String processEdit(final Model model, @ModelAttribute("game") @Valid final GameFO game, final Errors errors) {
+    public String processEdit(final Model model, @ModelAttribute("game") final @Valid GameFO game, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(game, "FO for game mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");

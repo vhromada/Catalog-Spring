@@ -163,7 +163,7 @@ public class MovieController extends AbstractResultController {
      *                                  or ID isn't null
      */
     @PostMapping("/add")
-    public String processAdd(final Model model, @ModelAttribute("movie") @Valid final MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
+    public String processAdd(final Model model, @ModelAttribute("movie") final @Valid MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(movieFO, "FO for movie mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
@@ -182,7 +182,7 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.add(movie));
         }
 
-        if (request.getParameter("add") != null) {
+        if (request.getParameter("addMedium") != null) {
             movieFO.getMedia().add(new TimeFO());
 
             return createAddFormView(model, movieFO);
@@ -240,7 +240,7 @@ public class MovieController extends AbstractResultController {
      * @throws IllegalRequestException  if movie doesn't exist
      */
     @PostMapping("/edit")
-    public String processEdit(final Model model, @ModelAttribute("movie") @Valid final MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
+    public String processEdit(final Model model, @ModelAttribute("movie") final @Valid MovieFO movieFO, final Errors errors, final HttpServletRequest request) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(movieFO, "FO for movie mustn't be null.");
         Assert.notNull(errors, "Errors mustn't be null.");
@@ -358,8 +358,8 @@ public class MovieController extends AbstractResultController {
         Integer index = null;
         for (final Enumeration<String> names = request.getParameterNames(); names.hasMoreElements() && index == null; ) {
             final String name = names.nextElement();
-            if (name.startsWith("remove")) {
-                index = Integer.parseInt(name.substring(6));
+            if (name.startsWith("removeMedium")) {
+                index = Integer.parseInt(name.substring(12));
             }
         }
 
