@@ -1,5 +1,7 @@
 package cz.vhromada.catalog.web.validator;
 
+import java.util.regex.Pattern;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -12,6 +14,11 @@ import cz.vhromada.catalog.web.validator.constraints.DateRange;
  * @author Vladimir Hromada
  */
 public class DateRangeValidator implements ConstraintValidator<DateRange, String> {
+
+    /**
+     * Date pattern
+     */
+    private static final Pattern PATTERN = Pattern.compile("\\d{4}");
 
     /**
      * Minimal date
@@ -34,7 +41,7 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, String
         if (date == null) {
             return false;
         }
-        if (!date.matches("\\d{4}")) {
+        if (!PATTERN.matcher(date).matches()) {
             return false;
         }
 

@@ -1,5 +1,7 @@
 package cz.vhromada.catalog.web.validator;
 
+import java.util.regex.Pattern;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -12,6 +14,11 @@ import cz.vhromada.catalog.web.validator.constraints.ImdbCode;
  * @author Vladimir Hromada
  */
 public class ImdbCodeValidator implements ConstraintValidator<ImdbCode, String> {
+
+    /**
+     * IMDB code pattern
+     */
+    private static final Pattern PATTERN = Pattern.compile("\\d{1,7}");
 
     /**
      * Minimal IMDB code
@@ -37,7 +44,7 @@ public class ImdbCodeValidator implements ConstraintValidator<ImdbCode, String> 
         if (imdbCode.isEmpty()) {
             return true;
         }
-        if (!imdbCode.matches("\\d{1,7}")) {
+        if (!PATTERN.matcher(imdbCode).matches()) {
             return false;
         }
 

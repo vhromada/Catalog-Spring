@@ -1,8 +1,6 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import cz.vhromada.catalog.common.Language;
 import cz.vhromada.catalog.entity.Season;
@@ -67,15 +65,20 @@ public final class SeasonUtils {
      * @param actual   actual season
      */
     public static void assertSeasonDeepEquals(final SeasonFO expected, final Season actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getNumber(), is(Integer.parseInt(expected.getNumber())));
-        assertThat(actual.getStartYear(), is(Integer.parseInt(expected.getStartYear())));
-        assertThat(actual.getEndYear(), is(Integer.parseInt(expected.getEndYear())));
-        assertThat(actual.getLanguage(), is(expected.getLanguage()));
-        assertThat(actual.getSubtitles(), is(expected.getSubtitles()));
-        assertThat(actual.getNote(), is(expected.getNote()));
-        assertThat(actual.getPosition(), is(expected.getPosition()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getId()).isEqualTo(expected.getId());
+            softly.assertThat(actual.getNumber()).isEqualTo(Integer.parseInt(expected.getNumber()));
+            softly.assertThat(actual.getStartYear()).isEqualTo(Integer.parseInt(expected.getStartYear()));
+            softly.assertThat(actual.getEndYear()).isEqualTo(Integer.parseInt(expected.getEndYear()));
+            softly.assertThat(actual.getLanguage()).isEqualTo(expected.getLanguage());
+            softly.assertThat(actual.getSubtitles()).isEqualTo(expected.getSubtitles());
+            softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
+            softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
+        });
     }
 
 }

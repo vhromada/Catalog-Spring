@@ -1,5 +1,7 @@
 package cz.vhromada.catalog.web.validator;
 
+import java.util.regex.Pattern;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -13,6 +15,11 @@ import cz.vhromada.catalog.web.validator.constraints.Years;
  * @author Vladimir Hromada
  */
 public class YearsValidator implements ConstraintValidator<Years, SeasonFO> {
+
+    /**
+     * Year pattern
+     */
+    private static final Pattern PATTERN = Pattern.compile("\\d{4}");
 
     /**
      * Minimal date
@@ -38,13 +45,13 @@ public class YearsValidator implements ConstraintValidator<Years, SeasonFO> {
 
         final String startYear = value.getStartYear();
         final String endYear = value.getEndYear();
-        if (!isStringValid(startYear) || !isStringValid(endYear)) {
+        if (isNotStringValid(startYear) || isNotStringValid(endYear)) {
             return true;
         }
 
         final int startYearValue = Integer.parseInt(startYear);
         final int endYearValue = Integer.parseInt(endYear);
-        if (!isIntValid(startYearValue) || !isIntValid(endYearValue)) {
+        if (isNotIntValid(startYearValue) || isNotIntValid(endYearValue)) {
             return true;
         }
 
@@ -57,8 +64,8 @@ public class YearsValidator implements ConstraintValidator<Years, SeasonFO> {
      * @param value value to validate
      * @return true if value isn't null and is valid integer
      */
-    public static boolean isStringValid(final String value) {
-        return value != null && value.matches("\\d{4}");
+    public static boolean isNotStringValid(final String value) {
+        return value == null || !PATTERN.matcher(value).matches();
     }
 
     /**
@@ -67,8 +74,8 @@ public class YearsValidator implements ConstraintValidator<Years, SeasonFO> {
      * @param value value to validate
      * @return true if value is in valid range
      */
-    public boolean isIntValid(final int value) {
-        return value >= minDate && value <= maxDate;
+    public boolean isNotIntValid(final int value) {
+        return value < minDate || value > maxDate;
     }
 
 }

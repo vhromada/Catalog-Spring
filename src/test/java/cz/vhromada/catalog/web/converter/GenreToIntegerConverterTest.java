@@ -1,29 +1,26 @@
 package cz.vhromada.catalog.web.converter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.web.common.CatalogUtils;
 import cz.vhromada.catalog.web.common.GenreUtils;
 import cz.vhromada.converter.Converter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * A class represents test for converter from {@link Genre} to {@link Integer}.
  *
  * @author Vladimir Hromada
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConverterConfiguration.class)
-public class GenreToIntegerConverterTest {
+class GenreToIntegerConverterTest {
 
     /**
      * Instance of {@link Converter}
@@ -35,41 +32,38 @@ public class GenreToIntegerConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from entity to integer.
      */
     @Test
-    public void convertGenre() {
+    void convertGenre() {
         final Genre genre = GenreUtils.getGenre();
 
         final Integer result = converter.convert(genre, Integer.class);
 
-        assertThat(result, is(notNullValue()));
-        assertThat(result, is(genre.getId()));
+        GenreUtils.assertGenreDeepEquals(genre, result);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from entity to integer with null argument.
      */
     @Test
-    public void convertGenre_NullGenre() {
-        assertThat(converter.convert(null, Integer.class), is(nullValue()));
+    void convertGenre_NullGenre() {
+        assertThat(converter.convert(null, Integer.class)).isNull();
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from integer to entity.
      */
     @Test
-    public void convertInteger() {
-
+    void convertInteger() {
         final Genre genre = converter.convert(CatalogUtils.ID, Genre.class);
 
-        assertThat(genre, is(notNullValue()));
-        assertThat(genre.getId(), is(CatalogUtils.ID));
+        GenreUtils.assertGenreDeepEquals(CatalogUtils.ID, genre);
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from integer to entity with null argument.
      */
     @Test
-    public void convertInteger_NullInteger() {
-        assertThat(converter.convert(null, Integer.class), is(nullValue()));
+    void convertInteger_NullInteger() {
+        assertThat(converter.convert(null, Integer.class)).isNull();
     }
 
 }

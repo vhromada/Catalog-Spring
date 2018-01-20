@@ -1,27 +1,25 @@
 package cz.vhromada.catalog.web.converter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cz.vhromada.catalog.web.common.TimeUtils;
 import cz.vhromada.catalog.web.fo.TimeFO;
 import cz.vhromada.converter.Converter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * A class represents test for converter from {@link TimeFO} to {@link Integer}.
  *
  * @author Vladimir Hromada
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConverterConfiguration.class)
-public class TimeConverterTest {
+class TimeConverterTest {
 
     /**
      * Instance of {@link Converter}
@@ -33,7 +31,7 @@ public class TimeConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to integer.
      */
     @Test
-    public void convertTimeFO() {
+    void convertTimeFO() {
         final TimeFO time = TimeUtils.getTimeFO();
 
         final Integer result = converter.convert(time, Integer.class);
@@ -45,15 +43,15 @@ public class TimeConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to integer with null FO for time.
      */
     @Test
-    public void convertTimeFO_NullTimeFO() {
-        assertThat(converter.convert(null, Integer.class), is(nullValue()));
+    void convertTimeFO_NullTimeFO() {
+        assertThat(converter.convert(null, Integer.class)).isNull();
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from integer to FO.
      */
     @Test
-    public void convertInteger() {
+    void convertInteger() {
         final Integer length = 100;
 
         final TimeFO time = converter.convert(length, TimeFO.class);
@@ -65,8 +63,8 @@ public class TimeConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from integer to FO with null integer.
      */
     @Test
-    public void convertInteger_NullInteger() {
-        assertThat(converter.convert(null, TimeFO.class), is(nullValue()));
+    void convertInteger_NullInteger() {
+        assertThat(converter.convert(null, TimeFO.class)).isNull();
     }
 
 }

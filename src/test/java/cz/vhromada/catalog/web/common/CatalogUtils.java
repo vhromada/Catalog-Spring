@@ -1,8 +1,6 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A class represents utility class for tests.
@@ -14,7 +12,7 @@ public final class CatalogUtils {
     /**
      * ID
      */
-    public static final Integer ID = 1;
+    public static final int ID = 1;
 
     /**
      * English Wikipedia
@@ -29,12 +27,12 @@ public final class CatalogUtils {
     /**
      * Media
      */
-    public static final Integer MEDIA = 10;
+    public static final int MEDIA = 10;
 
     /**
      * Length
      */
-    public static final Integer LENGTH = 100;
+    public static final int LENGTH = 100;
 
     /**
      * Name
@@ -49,17 +47,17 @@ public final class CatalogUtils {
     /**
      * Number
      */
-    public static final Integer NUMBER = 2;
+    public static final int NUMBER = 2;
 
     /**
      * Year
      */
-    public static final Integer YEAR = 2000;
+    public static final int YEAR = 2000;
 
     /**
      * Position
      */
-    public static final Integer POSITION = 0;
+    public static final int POSITION = 0;
 
     /**
      * Creates a new instance of CatalogUtils.
@@ -76,9 +74,9 @@ public final class CatalogUtils {
      */
     public static void assertImdbCodeDeepEquals(final boolean expectedImdb, final String expectedImdbCode, final int actualImdbCode) {
         if (expectedImdb) {
-            assertThat(actualImdbCode, is(Integer.parseInt(expectedImdbCode)));
+            assertThat(actualImdbCode).isEqualTo(Integer.parseInt(expectedImdbCode));
         } else {
-            assertThat(actualImdbCode, is(-1));
+            assertThat(actualImdbCode).isEqualTo(-1);
         }
     }
 
@@ -91,11 +89,11 @@ public final class CatalogUtils {
      */
     public static void assertImdbDeepEquals(final int expectedImdbCode, final boolean actualImdb, final String actualImdbCode) {
         if (expectedImdbCode < 1) {
-            assertThat(actualImdb, is(false));
-            assertThat(actualImdbCode, is(nullValue()));
+            assertThat(actualImdb).isFalse();
+            assertThat(actualImdbCode).isNull();
         } else {
-            assertThat(actualImdb, is(true));
-            assertThat(actualImdbCode, is(Integer.toString(expectedImdbCode)));
+            assertThat(actualImdb).isTrue();
+            assertThat(actualImdbCode).isEqualTo(Integer.toString(expectedImdbCode));
         }
     }
 

@@ -115,7 +115,7 @@ public class ShowData implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Show)) {
+        if (!(obj instanceof ShowData)) {
             return false;
         }
 

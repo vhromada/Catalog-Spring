@@ -1,9 +1,7 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
 
@@ -58,10 +56,15 @@ public final class GenreUtils {
      * @param actual   actual genre
      */
     public static void assertGenreDeepEquals(final GenreFO expected, final Genre actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getName(), is(expected.getName()));
-        assertThat(actual.getPosition(), is(expected.getPosition()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getId()).isEqualTo(expected.getId());
+            softly.assertThat(actual.getName()).isEqualTo(expected.getName());
+            softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
+        });
     }
 
     /**
@@ -71,8 +74,11 @@ public final class GenreUtils {
      * @param actual   actual list of genre
      */
     public static void assertGenresDeepEquals(final List<Integer> expected, final List<Genre> actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.size(), is(expected.size()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertThat(actual.size()).isEqualTo(expected.size());
         for (int i = 0; i < expected.size(); i++) {
             assertGenreDeepEquals(expected.get(i), actual.get(i));
         }
@@ -85,9 +91,14 @@ public final class GenreUtils {
      * @param actual   actual genre
      */
     public static void assertGenreDeepEquals(final Integer expected, final Genre actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getId(), is(expected));
-        assertThat(actual.getName(), is(nullValue()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getId()).isEqualTo(expected);
+            softly.assertThat(actual.getName()).isNull();
+        });
     }
 
     /**
@@ -97,8 +108,11 @@ public final class GenreUtils {
      * @param actual   actual list of genres
      */
     public static void assertGenreListDeepEquals(final List<Genre> expected, final List<Integer> actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.size(), is(expected.size()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertThat(actual.size()).isEqualTo(expected.size());
         for (int i = 0; i < expected.size(); i++) {
             assertGenreDeepEquals(expected.get(i), actual.get(i));
         }
@@ -111,8 +125,11 @@ public final class GenreUtils {
      * @param actual   actual genre
      */
     public static void assertGenreDeepEquals(final Genre expected, final Integer actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual, is(expected.getId()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> softly.assertThat(actual).isEqualTo(expected.getId()));
     }
 
 }

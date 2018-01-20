@@ -1,28 +1,26 @@
 package cz.vhromada.catalog.web.converter;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import cz.vhromada.catalog.entity.Game;
 import cz.vhromada.catalog.web.common.GameUtils;
 import cz.vhromada.catalog.web.fo.GameFO;
 import cz.vhromada.converter.Converter;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * A class represents test for converter from {@link GameFO} to {@link Game}.
  *
  * @author Vladimir Hromada
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConverterConfiguration.class)
-public class GameConverterTest {
+class GameConverterTest {
 
     /**
      * Instance of {@link Converter}
@@ -34,7 +32,7 @@ public class GameConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to entity.
      */
     @Test
-    public void convertGameFO() {
+    void convertGameFO() {
         final GameFO gameFO = GameUtils.getGameFO();
 
         final Game game = converter.convert(gameFO, Game.class);
@@ -46,15 +44,15 @@ public class GameConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from FO to entity with null FO for game.
      */
     @Test
-    public void convertGameFO_NullGameFO() {
-        assertThat(converter.convert(null, Game.class), is(nullValue()));
+    void convertGameFO_NullGameFO() {
+        assertThat(converter.convert(null, Game.class)).isNull();
     }
 
     /**
      * Test method for {@link Converter#convert(Object, Class)} from entity to FO.
      */
     @Test
-    public void convertGame() {
+    void convertGame() {
         final Game game = GameUtils.getGame();
 
         final GameFO gameFO = converter.convert(game, GameFO.class);
@@ -66,8 +64,8 @@ public class GameConverterTest {
      * Test method for {@link Converter#convert(Object, Class)} from entity to FO with null game.
      */
     @Test
-    public void convertGame_NullGame() {
-        assertThat(converter.convert(null, GameFO.class), is(nullValue()));
+    void convertGame_NullGame() {
+        assertThat(converter.convert(null, GameFO.class)).isNull();
     }
 
 }

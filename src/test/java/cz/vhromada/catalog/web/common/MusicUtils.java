@@ -1,8 +1,6 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import cz.vhromada.catalog.entity.Music;
 import cz.vhromada.catalog.web.fo.MusicFO;
@@ -63,14 +61,19 @@ public final class MusicUtils {
      * @param actual   actual music
      */
     public static void assertMusicDeepEquals(final MusicFO expected, final Music actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getName(), is(expected.getName()));
-        assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
-        assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
-        assertThat(actual.getMediaCount(), is(Integer.parseInt(expected.getMediaCount())));
-        assertThat(actual.getNote(), is(expected.getNote()));
-        assertThat(actual.getPosition(), is(expected.getPosition()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getId()).isEqualTo(expected.getId());
+            softly.assertThat(actual.getName()).isEqualTo(expected.getName());
+            softly.assertThat(actual.getWikiEn()).isEqualTo(expected.getWikiEn());
+            softly.assertThat(actual.getWikiCz()).isEqualTo(expected.getWikiCz());
+            softly.assertThat(actual.getMediaCount()).isEqualTo(Integer.parseInt(expected.getMediaCount()));
+            softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
+            softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
+        });
     }
 
 }

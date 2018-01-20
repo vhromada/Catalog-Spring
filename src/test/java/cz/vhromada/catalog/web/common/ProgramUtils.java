@@ -1,8 +1,6 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.web.fo.ProgramFO;
@@ -69,17 +67,22 @@ public final class ProgramUtils {
      * @param actual   actual program
      */
     public static void assertProgramDeepEquals(final ProgramFO expected, final Program actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getName(), is(expected.getName()));
-        assertThat(actual.getWikiEn(), is(expected.getWikiEn()));
-        assertThat(actual.getWikiCz(), is(expected.getWikiCz()));
-        assertThat(actual.getMediaCount(), is(Integer.parseInt(expected.getMediaCount())));
-        assertThat(actual.getCrack(), is(expected.getCrack()));
-        assertThat(actual.getSerialKey(), is(expected.getSerialKey()));
-        assertThat(actual.getOtherData(), is(expected.getOtherData()));
-        assertThat(actual.getNote(), is(expected.getNote()));
-        assertThat(actual.getPosition(), is(expected.getPosition()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getId()).isEqualTo(expected.getId());
+            softly.assertThat(actual.getName()).isEqualTo(expected.getName());
+            softly.assertThat(actual.getWikiEn()).isEqualTo(expected.getWikiEn());
+            softly.assertThat(actual.getWikiCz()).isEqualTo(expected.getWikiCz());
+            softly.assertThat(actual.getMediaCount()).isEqualTo(Integer.parseInt(expected.getMediaCount()));
+            softly.assertThat(actual.getCrack()).isEqualTo(expected.getCrack());
+            softly.assertThat(actual.getSerialKey()).isEqualTo(expected.getSerialKey());
+            softly.assertThat(actual.getOtherData()).isEqualTo(expected.getOtherData());
+            softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
+            softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
+        });
     }
 
 }

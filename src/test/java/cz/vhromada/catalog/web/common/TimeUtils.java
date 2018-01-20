@@ -1,8 +1,6 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.web.fo.TimeFO;
@@ -41,7 +39,10 @@ public final class TimeUtils {
      * @param actual   actual length
      */
     public static void assertTimeDeepEquals(final TimeFO expected, final Integer actual) {
-        assertThat(actual, is(notNullValue()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
         assertTimeDeepEquals(expected, new Time(actual));
     }
 
@@ -52,10 +53,15 @@ public final class TimeUtils {
      * @param actual   actual length
      */
     public static void assertTimeDeepEquals(final TimeFO expected, final Time actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getData(Time.TimeData.HOUR), is(Integer.parseInt(expected.getHours())));
-        assertThat(actual.getData(Time.TimeData.MINUTE), is(Integer.parseInt(expected.getMinutes())));
-        assertThat(actual.getData(Time.TimeData.SECOND), is(Integer.parseInt(expected.getSeconds())));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getData(Time.TimeData.HOUR)).isEqualTo(Integer.parseInt(expected.getHours()));
+            softly.assertThat(actual.getData(Time.TimeData.MINUTE)).isEqualTo(Integer.parseInt(expected.getMinutes()));
+            softly.assertThat(actual.getData(Time.TimeData.SECOND)).isEqualTo(Integer.parseInt(expected.getSeconds()));
+        });
     }
 
 }

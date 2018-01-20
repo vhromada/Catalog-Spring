@@ -1,8 +1,6 @@
 package cz.vhromada.catalog.web.common;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import cz.vhromada.catalog.entity.Episode;
 import cz.vhromada.catalog.web.fo.EpisodeFO;
@@ -61,13 +59,18 @@ public final class EpisodeUtils {
      * @param actual   actual episode
      */
     public static void assertEpisodeDeepEquals(final EpisodeFO expected, final Episode actual) {
-        assertThat(actual, is(notNullValue()));
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getNumber(), is(Integer.parseInt(expected.getNumber())));
-        assertThat(actual.getName(), is(expected.getName()));
-        TimeUtils.assertTimeDeepEquals(expected.getLength(), actual.getLength());
-        assertThat(actual.getNote(), is(expected.getNote()));
-        assertThat(actual.getPosition(), is(expected.getPosition()));
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(actual).isNotNull();
+        });
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getId()).isEqualTo(expected.getId());
+            softly.assertThat(actual.getNumber()).isEqualTo(Integer.parseInt(expected.getNumber()));
+            softly.assertThat(actual.getName()).isEqualTo(expected.getName());
+            TimeUtils.assertTimeDeepEquals(expected.getLength(), actual.getLength());
+            softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
+            softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
+        });
     }
 
 }
