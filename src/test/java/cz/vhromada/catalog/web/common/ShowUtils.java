@@ -40,7 +40,7 @@ public final class ShowUtils {
         show.setImdbCode("1000");
         show.setWikiEn(CatalogUtils.EN_WIKI);
         show.setWikiCz(CatalogUtils.CZ_WIKI);
-        show.setPicture("Picture");
+        show.setPicture(Integer.toString(CatalogUtils.ID));
         show.setNote(CatalogUtils.NOTE);
         show.setPosition(CatalogUtils.POSITION);
         show.setGenres(CollectionUtils.newList(CatalogUtils.ID));
@@ -67,7 +67,7 @@ public final class ShowUtils {
         show.setImdbCode(1000);
         show.setWikiEn(CatalogUtils.EN_WIKI);
         show.setWikiCz(CatalogUtils.CZ_WIKI);
-        show.setPicture("Picture");
+        show.setPicture(CatalogUtils.ID);
         show.setNote(CatalogUtils.NOTE);
         show.setPosition(CatalogUtils.POSITION);
         show.setGenres(CollectionUtils.newList(GenreUtils.getGenre()));
@@ -94,7 +94,7 @@ public final class ShowUtils {
             CatalogUtils.assertImdbCodeDeepEquals(expected.getImdb(), expected.getImdbCode(), actual.getImdbCode());
             softly.assertThat(actual.getWikiEn()).isEqualTo(expected.getWikiEn());
             softly.assertThat(actual.getWikiCz()).isEqualTo(expected.getWikiCz());
-            softly.assertThat(actual.getPicture()).isEqualTo(expected.getPicture());
+            softly.assertThat(actual.getPicture()).isEqualTo(Integer.parseInt(expected.getPicture()));
             softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
             softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
             GenreUtils.assertGenresDeepEquals(expected.getGenres(), actual.getGenres());
@@ -120,7 +120,7 @@ public final class ShowUtils {
             CatalogUtils.assertImdbDeepEquals(expected.getImdbCode(), actual.getImdb(), actual.getImdbCode());
             softly.assertThat(actual.getWikiEn()).isEqualTo(expected.getWikiEn());
             softly.assertThat(actual.getWikiCz()).isEqualTo(expected.getWikiCz());
-            softly.assertThat(actual.getPicture()).isEqualTo(expected.getPicture());
+            softly.assertThat(actual.getPicture()).isEqualTo(Integer.toString(expected.getPicture()));
             softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
             softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
             GenreUtils.assertGenreListDeepEquals(expected.getGenres(), actual.getGenres());

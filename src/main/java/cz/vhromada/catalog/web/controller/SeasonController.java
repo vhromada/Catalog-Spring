@@ -60,6 +60,16 @@ public class SeasonController extends AbstractResultController {
     private static final String NULL_SHOW_ID_MESSAGE = "Show ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
+     * Show model attribute
+     */
+    private static final String SHOW_ATTRIBUTE = "show";
+
+    /**
      * Facade for shows
      */
     private final ShowFacade showFacade;
@@ -93,9 +103,9 @@ public class SeasonController extends AbstractResultController {
      */
     @Autowired
     public SeasonController(final ShowFacade showFacade,
-            final SeasonFacade seasonFacade,
-            final EpisodeFacade episodeFacade,
-            final Converter converter) {
+        final SeasonFacade seasonFacade,
+        final EpisodeFacade episodeFacade,
+        final Converter converter) {
         Assert.notNull(showFacade, "Facade for shows mustn't be null.");
         Assert.notNull(seasonFacade, "Facade for seasons mustn't be null.");
         Assert.notNull(episodeFacade, "Facade for episodes mustn't be null.");
@@ -127,8 +137,38 @@ public class SeasonController extends AbstractResultController {
         final Result<List<Season>> seasonsResult = seasonFacade.find(show);
         processResults(seasonsResult);
 
-        final List<SeasonData> seasons = new ArrayList<>();
-        for (final Season season : seasonsResult.getData()) {
+        model.addAttribute("seasons", seasonsResult.getData());
+        model.addAttribute(SHOW_ATTRIBUTE, showId);
+        model.addAttribute(TITLE_ATTRIBUTE, "Seasons");
+
+        return "season/index";
+    }
+
+    /**
+     * Shows page with detail of season.
+     *
+     * @param model  model
+     * @param showId show ID
+     * @param id     ID of editing season
+     * @return view for page with detail of season
+     * @throws IllegalArgumentException if model is null
+     *                                  or show ID is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+        getShow(showId);
+
+        final Result<Season> result = seasonFacade.get(id);
+        processResults(result);
+
+        final Season season = result.getData();
+        if (season != null) {
             final SeasonData seasonData = new SeasonData();
             seasonData.setSeason(season);
             int count = 0;
@@ -141,14 +181,15 @@ public class SeasonController extends AbstractResultController {
             }
             seasonData.setEpisodesCount(count);
             seasonData.setTotalLength(new Time(length));
-            seasons.add(seasonData);
+
+            model.addAttribute("season", seasonData);
+            model.addAttribute(SHOW_ATTRIBUTE, showId);
+            model.addAttribute(TITLE_ATTRIBUTE, "Season detail");
+
+            return "season/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
-
-        model.addAttribute("seasons", seasons);
-        model.addAttribute("show", showId);
-        model.addAttribute("title", "Seasons");
-
-        return "season/index";
     }
 
     /**
@@ -187,7 +228,7 @@ public class SeasonController extends AbstractResultController {
      */
     @PostMapping(value = "/add", params = "create")
     public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") final @Valid SeasonFO seasonFO,
-            final Errors errors) {
+        final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonFO, "FO for season mustn't be null.");
@@ -271,7 +312,7 @@ public class SeasonController extends AbstractResultController {
      */
     @PostMapping(value = "/edit", params = "update")
     public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @ModelAttribute("season") final @Valid SeasonFO seasonFO,
-            final Errors errors) {
+        final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonFO, "FO for season mustn't be null.");
@@ -388,10 +429,10 @@ public class SeasonController extends AbstractResultController {
      */
     private static String createFormView(final Model model, final SeasonFO season, final Integer showId, final String title, final String action) {
         model.addAttribute("season", season);
-        model.addAttribute("show", showId);
+        model.addAttribute(SHOW_ATTRIBUTE, showId);
         model.addAttribute("languages", Language.values());
         model.addAttribute("subtitles", new Language[]{ Language.CZ, Language.EN });
-        model.addAttribute("title", title);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 
         return "season/form";

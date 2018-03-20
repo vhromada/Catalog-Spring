@@ -10,6 +10,8 @@ import cz.vhromada.catalog.entity.Medium;
 import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.entity.Season;
 
+import org.springframework.util.StringUtils;
+
 /**
  * A class represents utility class for converters.
  *
@@ -112,6 +114,16 @@ public final class ConverterUtils {
     }
 
     /**
+     * Converts content of game's additional data.
+     *
+     * @param game game
+     * @return converted content of game's additional data
+     */
+    public static boolean convertGameAdditionalDataContent(final Game game) {
+        return !StringUtils.isEmpty(convertGameAdditionalData(game));
+    }
+
+    /**
      * Converts seasons's years.
      *
      * @param season season
@@ -141,6 +153,16 @@ public final class ConverterUtils {
         }
 
         return result.toString();
+    }
+
+    /**
+     * Converts content of program's additional data.
+     *
+     * @param program program
+     * @return converted content of program's additional data
+     */
+    public static boolean convertProgramAdditionalDataContent(final Program program) {
+        return !StringUtils.isEmpty(convertProgramAdditionalData(program));
     }
 
     /**

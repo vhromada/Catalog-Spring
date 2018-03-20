@@ -1,6 +1,5 @@
 package cz.vhromada.catalog.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -57,6 +56,11 @@ public class MusicController extends AbstractResultController {
     private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
      * Facade for music
      */
     private final MusicFacade musicFacade;
@@ -83,8 +87,8 @@ public class MusicController extends AbstractResultController {
      */
     @Autowired
     public MusicController(final MusicFacade musicFacade,
-            final SongFacade songFacade,
-            final Converter converter) {
+        final SongFacade songFacade,
+        final Converter converter) {
         Assert.notNull(musicFacade, "Facade for music mustn't be null.");
         Assert.notNull(songFacade, "Facade for songs mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
@@ -123,30 +127,55 @@ public class MusicController extends AbstractResultController {
         final Result<Time> totalLengthResult = musicFacade.getTotalLength();
         processResults(musicResult, mediaCountResult, songsCountResult, totalLengthResult);
 
-        final List<MusicData> musicDataList = new ArrayList<>();
-        for (final Music music : musicResult.getData()) {
+        model.addAttribute("music", musicResult.getData());
+        model.addAttribute("mediaCount", mediaCountResult.getData());
+        model.addAttribute("songsCount", songsCountResult.getData());
+        model.addAttribute("totalLength", totalLengthResult.getData());
+        model.addAttribute(TITLE_ATTRIBUTE, "Music");
+
+        return "music/index";
+    }
+
+    /**
+     * Shows page with detail of music.
+     *
+     * @param model model
+     * @param id    ID of editing music
+     * @return view for page with detail of music
+     * @throws IllegalArgumentException if model is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if music doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Result<Music> result = musicFacade.get(id);
+        processResults(result);
+
+        final Music music = result.getData();
+        if (music != null) {
             final MusicData musicData = new MusicData();
             musicData.setMusic(music);
             int count = 0;
             int length = 0;
             final Result<List<Song>> songsResult = songFacade.find(music);
-            processResults(songsCountResult);
+            processResults(songsResult);
             for (final Song song : songsResult.getData()) {
                 count++;
                 length += song.getLength();
             }
             musicData.setSongsCount(count);
             musicData.setTotalLength(new Time(length));
-            musicDataList.add(musicData);
+
+            model.addAttribute("music", musicData);
+            model.addAttribute(TITLE_ATTRIBUTE, "Music detail");
+
+            return "music/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
-
-        model.addAttribute("music", musicDataList);
-        model.addAttribute("mediaCount", mediaCountResult.getData());
-        model.addAttribute("songsCount", songsCountResult.getData());
-        model.addAttribute("totalLength", totalLengthResult.getData());
-        model.addAttribute("title", "Music");
-
-        return "music/index";
     }
 
     /**
@@ -347,7 +376,7 @@ public class MusicController extends AbstractResultController {
      */
     private static String createFormView(final Model model, final MusicFO music, final String title, final String action) {
         model.addAttribute("music", music);
-        model.addAttribute("title", title);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 
         return "music/form";

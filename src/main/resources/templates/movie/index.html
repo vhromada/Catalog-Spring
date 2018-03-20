@@ -10,20 +10,7 @@
             <table class="table table-hover" th:if="${!#lists.isEmpty(movies)}">
                 <thead>
                     <tr>
-                        <th>Czech name</th>
-                        <th>Original name</th>
-                        <th>Genres</th>
-                        <th>Year</th>
-                        <th>Language</th>
-                        <th>Subtitles</th>
-                        <th>Media</th>
-                        <th>Total length</th>
-                        <th>Picture</th>
-                        <th>Note</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th>Movie</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -34,28 +21,7 @@
                 <tbody>
                     <th:block th:each="movie : ${movies}">
                         <tr>
-                            <td th:text="${movie.czechName}"></td>
-                            <td th:text="${movie.originalName}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertGenres(movie.genres)}"></td>
-                            <td th:text="${movie.year}"></td>
-                            <td th:text="${movie.language}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertLanguages(movie.subtitles)}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertMedia(movie.media)}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertMovieTotalLength(movie.media)}"></td>
-                            <td th:text="${movie.picture}"></td>
-                            <td th:text="${movie.note}"></td>
-                            <td><a th:href="@{|http://www.csfd.cz/film/${movie.csfd}|}" th:if="${!#strings.isEmpty(movie.csfd)}">ČSFD</a></td>
-                            <td><a th:href="@{http://www.imdb.com/title/{imdb}(imdb = 'tt' + ${movie.imdbCode})}" th:if="${movie.imdbCode > 0}">IMDB</a></td>
-                            <td>
-                                <a th:href="@{|http://cz.wikipedia.org/wiki/${movie.wikiCz}|}" th:if="${!#strings.isEmpty(movie.wikiCz)}">
-                                    Czech Wikipedia
-                                </a>
-                            </td>
-                            <td>
-                                <a th:href="@{|http://en.wikipedia.org/wiki/${movie.wikiEn}|}" th:if="${!#strings.isEmpty(movie.wikiEn)}">
-                                    English Wikipedia
-                                </a>
-                            </td>
+                            <td><a th:href="@{|/movies/${movie.id}/detail|}" th:text="${movie.czechName} + ' - ' +  ${movie.originalName}"></a></td>
                             <td><a th:href="@{|/movies/moveUp/${movie.id}|}" th:if="${movies.indexOf(movie) > 0}">Move up</a></td>
                             <td><a th:href="@{|/movies/moveDown/${movie.id}|}" th:if="${movies.indexOf(movie) < movies.size() - 1}">Move down</a></td>
                             <td><a th:href="@{|/movies/duplicate/${movie.id}|}">Duplicate</a></td>

@@ -10,10 +10,7 @@
             <table class="table table-hover" th:if="${!#lists.isEmpty(episodes)}">
                 <thead>
                     <tr>
-                        <th>Number</th>
-                        <th>Name</th>
-                        <th>Length</th>
-                        <th>Note</th>
+                        <th>Episode</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -24,10 +21,7 @@
                 <tbody>
                     <th:block th:each="episode : ${episodes}">
                         <tr>
-                            <td th:text="${episode.number}"></td>
-                            <td th:text="${episode.name}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertLength(episode.length)}"></td>
-                            <td th:text="${episode.note}"></td>
+                            <td><a th:href="@{|/episode/${episode.id}/detail|}" th:text="${episode.name} + ' - ' + ${episode.number}"></a></td>
                             <td>
                                 <a th:href="@{|/shows/${show}/seasons/${season}/episodes/moveUp/${episode.id}|}" th:if="${episodes.indexOf(episode) > 0}">
                                     Move up

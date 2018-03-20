@@ -387,8 +387,8 @@ public class GameFO implements Serializable {
     @Override
     public String toString() {
         return String.format("GameFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%s, crack=%b, serialKey=%b, patch=%b, trainer=%b, trainerData=%b, "
-                        + "editor=%b, saves=%b, otherData=%s, note=%s, position=%d]", id, name, wikiEn, wikiCz, mediaCount, crack, serialKey, patch, trainer,
-                trainerData, editor, saves, otherData, note, position);
+                + "editor=%b, saves=%b, otherData=%s, note=%s, position=%d]", id, name, wikiEn, wikiCz, mediaCount, crack, serialKey, patch, trainer,
+            trainerData, editor, saves, otherData, note, position);
     }
 
 }

@@ -61,6 +61,21 @@ public class EpisodeController extends AbstractResultController {
     private static final String NULL_SEASON_ID_MESSAGE = "Season ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
+     * Show model attribute
+     */
+    private static final String SHOW_ATTRIBUTE = "show";
+
+    /**
+     * Season model attribute
+     */
+    private static final String SEASON_ATTRIBUTE = "season";
+
+    /**
      * Facade for shows
      */
     private final ShowFacade showFacade;
@@ -94,9 +109,9 @@ public class EpisodeController extends AbstractResultController {
      */
     @Autowired
     public EpisodeController(final ShowFacade showFacade,
-            final SeasonFacade seasonFacade,
-            final EpisodeFacade episodeFacade,
-            final Converter converter) {
+        final SeasonFacade seasonFacade,
+        final EpisodeFacade episodeFacade,
+        final Converter converter) {
         Assert.notNull(showFacade, "Facade for shows mustn't be null.");
         Assert.notNull(seasonFacade, "Facade for seasons mustn't be null.");
         Assert.notNull(episodeFacade, "Facade for episodes mustn't be null.");
@@ -134,11 +149,53 @@ public class EpisodeController extends AbstractResultController {
         processResults(result);
 
         model.addAttribute("episodes", result.getData());
-        model.addAttribute("show", showId);
-        model.addAttribute("season", seasonId);
-        model.addAttribute("title", "Episodes");
+        model.addAttribute(SHOW_ATTRIBUTE, showId);
+        model.addAttribute(SEASON_ATTRIBUTE, seasonId);
+        model.addAttribute(TITLE_ATTRIBUTE, "Episodes");
 
         return "episode/index";
+    }
+
+    /**
+     * Shows page with detail of episode.
+     *
+     * @param model    model
+     * @param showId   show ID
+     * @param seasonId season ID
+     * @param id       ID of editing episode
+     * @return view for page with detail of episode
+     * @throws IllegalArgumentException if model is null
+     *                                  or show ID is null
+     *                                  or season ID is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if show doesn't exist
+     *                                  or season doesn't exist
+     *                                  or episode doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
+        @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
+        Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+        getShow(showId);
+        getSeason(seasonId);
+
+        final Result<Episode> result = episodeFacade.get(id);
+        processResults(result);
+
+        final Episode episode = result.getData();
+        if (episode != null) {
+            model.addAttribute("episode", episode);
+            model.addAttribute(SHOW_ATTRIBUTE, showId);
+            model.addAttribute(SEASON_ATTRIBUTE, seasonId);
+            model.addAttribute(TITLE_ATTRIBUTE, "Episode detail");
+
+            return "episode/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
     }
 
     /**
@@ -185,7 +242,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @PostMapping(value = "/add", params = "create")
     public String processAdd(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @ModelAttribute("episode") final @Valid EpisodeFO episode, final Errors errors) {
+        @ModelAttribute("episode") final @Valid EpisodeFO episode, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
@@ -238,7 +295,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @GetMapping("edit/{id}")
     public String showEdit(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @PathVariable("id") final Integer id) {
+        @PathVariable("id") final Integer id) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
@@ -278,7 +335,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @PostMapping(value = "/edit", params = "update")
     public String processEdit(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @ModelAttribute("episode") final @Valid EpisodeFO episode, final Errors errors) {
+        @ModelAttribute("episode") final @Valid EpisodeFO episode, final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
@@ -328,7 +385,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @GetMapping("/duplicate/{id}")
     public String processDuplicate(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @PathVariable("id") final Integer id) {
+        @PathVariable("id") final Integer id) {
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);
         Assert.notNull(seasonId, NULL_SEASON_ID_MESSAGE);
         Assert.notNull(id, NULL_ID_MESSAGE);
@@ -356,7 +413,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @GetMapping("/remove/{id}")
     public String processRemove(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @PathVariable("id") final Integer id) {
+        @PathVariable("id") final Integer id) {
         processResults(episodeFacade.remove(getEpisode(showId, seasonId, id)));
 
         return getListRedirectUrl(showId, seasonId);
@@ -378,7 +435,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @GetMapping("/moveUp/{id}")
     public String processMoveUp(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @PathVariable("id") final Integer id) {
+        @PathVariable("id") final Integer id) {
         processResults(episodeFacade.moveUp(getEpisode(showId, seasonId, id)));
 
         return getListRedirectUrl(showId, seasonId);
@@ -400,7 +457,7 @@ public class EpisodeController extends AbstractResultController {
      */
     @GetMapping("/moveDown/{id}")
     public String processMoveDown(@PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId,
-            @PathVariable("id") final Integer id) {
+        @PathVariable("id") final Integer id) {
         processResults(episodeFacade.moveDown(getEpisode(showId, seasonId, id)));
 
         return getListRedirectUrl(showId, seasonId);
@@ -418,11 +475,11 @@ public class EpisodeController extends AbstractResultController {
      * @return page's view with form
      */
     private static String createFormView(final Model model, final EpisodeFO episode, final Integer showId, final Integer seasonId, final String title,
-            final String action) {
+        final String action) {
         model.addAttribute("episode", episode);
-        model.addAttribute("show", showId);
-        model.addAttribute("season", seasonId);
-        model.addAttribute("title", title);
+        model.addAttribute(SHOW_ATTRIBUTE, showId);
+        model.addAttribute(SEASON_ATTRIBUTE, seasonId);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 
         return "episode/form";

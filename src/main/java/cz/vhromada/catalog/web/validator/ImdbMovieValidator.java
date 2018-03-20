@@ -20,15 +20,15 @@ public class ImdbMovieValidator implements ConstraintValidator<Imdb, MovieFO> {
     }
 
     @Override
-    public boolean isValid(final MovieFO show, final ConstraintValidatorContext constraintValidatorContext) {
-        if (show == null) {
+    public boolean isValid(final MovieFO movie, final ConstraintValidatorContext constraintValidatorContext) {
+        if (movie == null) {
             return false;
         }
-        if (!show.getImdb()) {
+        if (!movie.getImdb()) {
             return true;
         }
 
-        return !StringUtils.isEmpty(show.getImdbCode());
+        return !StringUtils.isEmpty(movie.getImdbCode());
     }
 
 }

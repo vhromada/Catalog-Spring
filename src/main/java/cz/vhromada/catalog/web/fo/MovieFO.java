@@ -92,7 +92,7 @@ public class MovieFO implements Serializable {
     private String wikiCz;
 
     /**
-     * Path to file with movie's picture
+     * Picture's ID
      */
     private String picture;
 
@@ -336,16 +336,16 @@ public class MovieFO implements Serializable {
     }
 
     /**
-     * Returns path to file with movie's picture.
+     * Returns picture's ID.
      *
-     * @return path to file with movie's picture
+     * @return picture's ID
      */
     public String getPicture() {
         return picture;
     }
 
     /**
-     * Sets a new value to path to file with movie's picture.
+     * Sets a picture's ID.
      *
      * @param picture new value
      */
@@ -427,8 +427,8 @@ public class MovieFO implements Serializable {
     @Override
     public String toString() {
         return String.format("MovieFO [id=%d, czechName=%s, originalName=%s, year=%s, language=%s, subtitles=%s, media=%s, csfd=%s, imdb=%b, imdbCode=%s, "
-                        + "wikiEn=%s, wikiCz=%s, picture=%s, note=%s, position=%d, genres=%s]", id, czechName, originalName, year, language, subtitles, media,
-                csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
+                + "wikiEn=%s, wikiCz=%s, picture=%s, note=%s, position=%d, genres=%s]", id, czechName, originalName, year, language, subtitles, media, csfd,
+            imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
     }
 
 }

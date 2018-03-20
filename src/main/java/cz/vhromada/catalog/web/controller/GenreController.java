@@ -71,7 +71,7 @@ public class GenreController extends AbstractResultController {
      */
     @Autowired
     public GenreController(final GenreFacade genreFacade,
-            final Converter converter) {
+        final Converter converter) {
         Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
 

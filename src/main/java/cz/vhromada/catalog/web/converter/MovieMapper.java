@@ -18,11 +18,12 @@ public class MovieMapper implements MapperConfig {
     @Override
     public void config(final MapperFactory mapperFactory) {
         mapperFactory.classMap(MovieFO.class, Movie.class)
-                .field("media{}", "media{length}")
-                .exclude("imdbCode")
-                .byDefault()
-                .customize(new MovieCustomMapper())
-                .register();
+            .field("media{}", "media{length}")
+            .exclude("imdbCode")
+            .exclude("picture")
+            .byDefault()
+            .customize(new MovieCustomMapper())
+            .register();
     }
 
 }

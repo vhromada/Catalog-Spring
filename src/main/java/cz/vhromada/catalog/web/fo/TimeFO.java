@@ -3,6 +3,8 @@ package cz.vhromada.catalog.web.fo;
 import java.io.Serializable;
 import java.util.Objects;
 
+import cz.vhromada.catalog.web.validator.constraints.Time;
+
 import org.hibernate.validator.constraints.Range;
 
 /**
@@ -10,6 +12,7 @@ import org.hibernate.validator.constraints.Range;
  *
  * @author Vladimir Hromada
  */
+@Time
 public class TimeFO implements Serializable {
 
     /**

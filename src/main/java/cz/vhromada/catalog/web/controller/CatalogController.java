@@ -18,8 +18,8 @@ public class CatalogController {
     /**
      * Show index page.
      *
+     * @param model model
      * @return view for index page
-     * @param model    model
      * @throws IllegalArgumentException if model is null
      */
     @GetMapping

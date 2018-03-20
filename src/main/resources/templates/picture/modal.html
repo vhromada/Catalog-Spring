@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="pictures" type="java.util.List<java.lang.Integer>"*/-->
+    <div class="modal fade" id="picturesModal" tabindex="-1" role="dialog" aria-hidden="true" th:fragment="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="closeModal" name="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <th:block th:each="picture : ${pictures}">
+                        <label class="radio custom">
+                            <input type="radio" th:field="*{picture}" th:value="${picture}"/>
+                            <img th:src="@{|/pictures/${picture}|}" alt="Picture" class="picture"/>
+                        </label>
+                    </th:block>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close" name="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="choosePicture" name="choosePicture" class="btn btn-primary">Choose</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>

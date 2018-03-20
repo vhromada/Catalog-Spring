@@ -62,10 +62,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="picture">Picture</label>
+                        <label class="col-sm-2 control-label">Picture</label>
                         <div class="col-sm-10">
-                            <input type="text" id="picture" name="picture" class="form-control" th:field="*{picture}"/>
-                            <span class="error" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></span>
+                            <img th:src="@{|/pictures/${show.picture}|}" alt="Picture" class="picture" th:if="${show.picture != null}"/>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#picturesModal">Choose picture</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -91,6 +91,7 @@
                             <button type="submit" id="cancel" name="cancel" class="btn btn-danger" formnovalidate="formnovalidate">Cancel</button>
                         </div>
                     </div>
+                    <th:block th:replace="picture/modal :: modal"/>
                 </fieldset>
             </form>
         </div>

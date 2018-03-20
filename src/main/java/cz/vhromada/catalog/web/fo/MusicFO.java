@@ -203,7 +203,7 @@ public class MusicFO implements Serializable {
     @Override
     public String toString() {
         return String.format("MusicFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%s, note=%s, position=%d]", id, name, wikiEn, wikiCz, mediaCount, note,
-                position);
+            position);
     }
 
 }

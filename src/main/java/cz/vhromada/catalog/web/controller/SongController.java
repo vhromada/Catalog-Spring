@@ -54,6 +54,16 @@ public class SongController extends AbstractResultController {
     private static final String NULL_MUSIC_ID_MESSAGE = "Music ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
+     * Music model attribute
+     */
+    private static final String MUSIC_ATTRIBUTE = "music";
+
+    /**
      * Facade for music
      */
     private final MusicFacade musicFacade;
@@ -80,8 +90,8 @@ public class SongController extends AbstractResultController {
      */
     @Autowired
     public SongController(final MusicFacade musicFacade,
-            final SongFacade songFacade,
-            final Converter converter) {
+        final SongFacade songFacade,
+        final Converter converter) {
         Assert.notNull(musicFacade, "Facade for music mustn't be null.");
         Assert.notNull(songFacade, "Facade for songs mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
@@ -112,10 +122,45 @@ public class SongController extends AbstractResultController {
         processResults(result);
 
         model.addAttribute("songs", result.getData());
-        model.addAttribute("music", musicId);
-        model.addAttribute("title", "Songs");
+        model.addAttribute(MUSIC_ATTRIBUTE, musicId);
+        model.addAttribute(TITLE_ATTRIBUTE, "Songs");
 
         return "song/index";
+    }
+
+    /**
+     * Shows page with detail of song.
+     *
+     * @param model   model
+     * @param musicId music ID
+     * @param id      ID of editing song
+     * @return view for page with detail of song
+     * @throws IllegalArgumentException if model is null
+     *                                  or music ID is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if music doesn't exist
+     *                                  or song doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("musicId") final Integer musicId, @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+        getMusic(musicId);
+
+        final Result<Song> result = songFacade.get(id);
+        processResults(result);
+
+        final Song song = result.getData();
+        if (song != null) {
+            model.addAttribute("song", song);
+            model.addAttribute(MUSIC_ATTRIBUTE, musicId);
+            model.addAttribute(TITLE_ATTRIBUTE, "Song detail");
+
+            return "song/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
     }
 
     /**
@@ -154,7 +199,7 @@ public class SongController extends AbstractResultController {
      */
     @PostMapping(value = "/add", params = "create")
     public String processAdd(final Model model, @PathVariable("musicId") final Integer musicId, @ModelAttribute("song") final @Valid SongFO song,
-            final Errors errors) {
+        final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
         Assert.notNull(song, "FO for song mustn't be null.");
@@ -233,7 +278,7 @@ public class SongController extends AbstractResultController {
      */
     @PostMapping(value = "/edit", params = "update")
     public String processEdit(final Model model, @PathVariable("musicId") final Integer musicId, @ModelAttribute("song") final @Valid SongFO song,
-            final Errors errors) {
+        final Errors errors) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);
         Assert.notNull(song, "FO for song mustn't be null.");
@@ -346,8 +391,8 @@ public class SongController extends AbstractResultController {
      */
     private static String createFormView(final Model model, final SongFO song, final Integer musicId, final String title, final String action) {
         model.addAttribute("song", song);
-        model.addAttribute("music", musicId);
-        model.addAttribute("title", title);
+        model.addAttribute(MUSIC_ATTRIBUTE, musicId);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 
         return "song/form";

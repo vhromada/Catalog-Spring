@@ -235,7 +235,7 @@ public class SeasonFO implements Serializable {
     @Override
     public String toString() {
         return String.format("SeasonFO [id=%d, number=%s, startYear=%s, endYear=%s, language=%s, subtitles=%s, note=%s, position=%d]", id, number, startYear,
-                endYear, language, subtitles, note, position);
+            endYear, language, subtitles, note, position);
     }
 
 }

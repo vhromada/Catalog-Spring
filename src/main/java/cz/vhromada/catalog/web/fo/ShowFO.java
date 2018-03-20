@@ -66,7 +66,7 @@ public class ShowFO implements Serializable {
     private String wikiCz;
 
     /**
-     * Path to file with show picture
+     * Picture's ID
      */
     private String picture;
 
@@ -230,16 +230,16 @@ public class ShowFO implements Serializable {
     }
 
     /**
-     * Returns path to file with show picture.
+     * Returns picture's ID.
      *
-     * @return path to file with show picture
+     * @return picture's ID
      */
     public String getPicture() {
         return picture;
     }
 
     /**
-     * Sets a new value to path to file with show picture.
+     * Sets a picture's ID.
      *
      * @param picture new value
      */
@@ -321,7 +321,7 @@ public class ShowFO implements Serializable {
     @Override
     public String toString() {
         return String.format("ShowFO [id=%d, czechName=%s, originalName=%s, csfd=%s, imdb=%b, imdbCode=%s, wikiEn=%s, wikiCz=%s, picture=%s, note=%s, "
-                + "position=%d, genres=%s]", id, czechName, originalName, csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
+            + "position=%d, genres=%s]", id, czechName, originalName, csfd, imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
     }
 
 }

@@ -10,12 +10,7 @@
             <table class="table table-hover" th:if="${!#lists.isEmpty(games)}">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Count of media</th>
-                        <th>Additional data</th>
-                        <th>Note</th>
-                        <th></th>
-                        <th></th>
+                        <th>Game</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -26,14 +21,7 @@
                 <tbody>
                     <th:block th:each="game : ${games}">
                         <tr>
-                            <td th:text="${game.name}"></td>
-                            <td th:text="${game.mediaCount}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertGameAdditionalData(game)}"></td>
-                            <td th:text="${game.note}"></td>
-                            <td><a th:href="@{|http://cz.wikipedia.org/wiki/${game.wikiCz}|}" th:if="${!#strings.isEmpty(game.wikiCz)}">Czech Wikipedia</a></td>
-                            <td>
-                                <a th:href="@{|http://en.wikipedia.org/wiki/${game.wikiEn}|}" th:if="${!#strings.isEmpty(game.wikiEn)}">English Wikipedia</a>
-                            </td>
+                            <td><a th:href="@{|/games/${game.id}/detail|}" th:text="${game.name}"></a></td>
                             <td><a th:href="@{|/games/moveUp/${game.id}|}" th:if="${games.indexOf(game) > 0}">Move up</a></td>
                             <td><a th:href="@{|/games/moveDown/${game.id}|}" th:if="${games.indexOf(game) < games.size() - 1}">Move down</a></td>
                             <td><a th:href="@{|/games/duplicate/${game.id}|}">Duplicate</a></td>

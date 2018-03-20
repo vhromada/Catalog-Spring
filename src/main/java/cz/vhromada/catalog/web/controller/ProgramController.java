@@ -52,6 +52,11 @@ public class ProgramController extends AbstractResultController {
     private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
      * Facade for programs
      */
     private final ProgramFacade programFacade;
@@ -71,7 +76,7 @@ public class ProgramController extends AbstractResultController {
      */
     @Autowired
     public ProgramController(final ProgramFacade programFacade,
-            final Converter converter) {
+        final Converter converter) {
         Assert.notNull(programFacade, "Facade for programs mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
 
@@ -108,9 +113,38 @@ public class ProgramController extends AbstractResultController {
 
         model.addAttribute("programs", programsResult.getData());
         model.addAttribute("mediaCount", mediaCountResult.getData());
-        model.addAttribute("title", "Programs");
+        model.addAttribute(TITLE_ATTRIBUTE, "Programs");
 
         return "program/index";
+    }
+
+    /**
+     * Shows page with detail of program.
+     *
+     * @param model model
+     * @param id    ID of editing program
+     * @return view for page with detail of program
+     * @throws IllegalArgumentException if model is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if program doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Result<Program> result = programFacade.get(id);
+        processResults(result);
+
+        final Program program = result.getData();
+        if (program != null) {
+            model.addAttribute("program", program);
+            model.addAttribute(TITLE_ATTRIBUTE, "Program detail");
+
+            return "program/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
     }
 
     /**
@@ -311,7 +345,7 @@ public class ProgramController extends AbstractResultController {
      */
     private static String createFormView(final Model model, final ProgramFO program, final String title, final String action) {
         model.addAttribute("program", program);
-        model.addAttribute("title", title);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 
         return "program/form";

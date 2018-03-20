@@ -5,6 +5,7 @@ import cz.vhromada.catalog.web.fo.ShowFO;
 
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
+import org.springframework.util.StringUtils;
 
 /**
  * A class represents custom mapper for show.
@@ -14,10 +15,14 @@ import ma.glasnost.orika.MappingContext;
 public class ShowCustomMapper extends CustomMapper<ShowFO, Show> {
 
     @Override
-    public void mapAtoB(final ShowFO showMO, final Show show, final MappingContext context) {
-        super.mapAtoB(showMO, show, context);
+    public void mapAtoB(final ShowFO showFO, final Show show, final MappingContext context) {
+        super.mapAtoB(showFO, show, context);
 
-        show.setImdbCode(showMO.getImdb() ? Integer.parseInt(showMO.getImdbCode()) : -1);
+        show.setImdbCode(showFO.getImdb() ? Integer.parseInt(showFO.getImdbCode()) : -1);
+
+        if (!StringUtils.isEmpty(showFO.getPicture())) {
+            show.setPicture(Integer.parseInt(showFO.getPicture()));
+        }
     }
 
     @Override
@@ -31,6 +36,10 @@ public class ShowCustomMapper extends CustomMapper<ShowFO, Show> {
         } else {
             showFO.setImdb(true);
             showFO.setImdbCode(Integer.toString(show.getImdbCode()));
+        }
+
+        if (show.getPicture() != null) {
+            showFO.setPicture(String.valueOf(show.getPicture()));
         }
     }
 

@@ -14,3 +14,16 @@
 .custom {
   padding-left: 15px;
 }
+
+.title {
+  font-weight: bold
+}
+
+.detail > tbody > tr > td {
+  border-top: 0;
+}
+
+.picture {
+  height: 180px;
+  width: 200px;
+}

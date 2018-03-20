@@ -10,12 +10,7 @@
             <table class="table table-hover" th:if="${!#lists.isEmpty(programs)}">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Count of media</th>
-                        <th>Additional data</th>
-                        <th>Note</th>
-                        <th></th>
-                        <th></th>
+                        <th>Program</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -26,20 +21,7 @@
                 <tbody>
                     <th:block th:each="program : ${programs}">
                         <tr>
-                            <td th:text="${program.name}"></td>
-                            <td th:text="${program.mediaCount}"></td>
-                            <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertProgramAdditionalData(program)}"></td>
-                            <td th:text="${program.note}"></td>
-                            <td>
-                                <a th:href="@{|http://cz.wikipedia.org/wiki/${program.wikiCz}|}" th:if="${!#strings.isEmpty(program.wikiCz)}">
-                                    Czech Wikipedia
-                                </a>
-                            </td>
-                            <td>
-                                <a th:href="@{|http://en.wikipedia.org/wiki/${program.wikiEn}|}" th:if="${!#strings.isEmpty(program.wikiEn)}">
-                                    English Wikipedia
-                                </a>
-                            </td>
+                            <td><a th:href="@{|/programs/${program.id}/detail|}" th:text="${program.name}"></a></td>
                             <td><a th:href="@{|/programs/moveUp/${program.id}|}" th:if="${programs.indexOf(program) > 0}">Move up</a></td>
                             <td><a th:href="@{|/programs/moveDown/${program.id}|}" th:if="${programs.indexOf(program) < programs.size() - 1}">Move down</a></td>
                             <td><a th:href="@{|/programs/duplicate/${program.id}|}">Duplicate</a></td>

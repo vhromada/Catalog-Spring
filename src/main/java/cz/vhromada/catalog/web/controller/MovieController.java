@@ -12,8 +12,10 @@ import cz.vhromada.catalog.common.Language;
 import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.entity.Movie;
+import cz.vhromada.catalog.entity.Picture;
 import cz.vhromada.catalog.facade.GenreFacade;
 import cz.vhromada.catalog.facade.MovieFacade;
+import cz.vhromada.catalog.facade.PictureFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
@@ -61,10 +63,19 @@ public class MovieController extends AbstractResultController {
     private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
      * Facade for movies
      */
     private final MovieFacade movieFacade;
 
+    /**
+     * Facade for pictures
+     */
+    private final PictureFacade pictureFacade;
     /**
      * Facade for genres
      */
@@ -78,22 +89,27 @@ public class MovieController extends AbstractResultController {
     /**
      * Creates a new instance of MovieController.
      *
-     * @param movieFacade facade for movies
-     * @param genreFacade facade for genres
-     * @param converter   converter
+     * @param movieFacade   facade for movies
+     * @param pictureFacade facade for pictures
+     * @param genreFacade   facade for genres
+     * @param converter     converter
      * @throws IllegalArgumentException if facade for movies is null
+     *                                  or facade for pictures is null
      *                                  or facade for genres is null
      *                                  or converter is null
      */
     @Autowired
     public MovieController(final MovieFacade movieFacade,
-            final GenreFacade genreFacade,
-            final Converter converter) {
+        final PictureFacade pictureFacade,
+        final GenreFacade genreFacade,
+        final Converter converter) {
         Assert.notNull(movieFacade, "Facade for movies mustn't be null.");
+        Assert.notNull(pictureFacade, "Facade for pictures mustn't be null.");
         Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
 
         this.movieFacade = movieFacade;
+        this.pictureFacade = pictureFacade;
         this.genreFacade = genreFacade;
         this.converter = converter;
     }
@@ -129,9 +145,38 @@ public class MovieController extends AbstractResultController {
         model.addAttribute("movies", moviesResult.getData());
         model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("totalLength", totalLengthResult.getData());
-        model.addAttribute("title", "Movies");
+        model.addAttribute(TITLE_ATTRIBUTE, "Movies");
 
         return "movie/index";
+    }
+
+    /**
+     * Shows page with detail of movie.
+     *
+     * @param model model
+     * @param id    ID of editing movie
+     * @return view for page with detail of movie
+     * @throws IllegalArgumentException if model is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if movie doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Result<Movie> result = movieFacade.get(id);
+        processResults(result);
+
+        final Movie movie = result.getData();
+        if (movie != null) {
+            model.addAttribute("movie", movie);
+            model.addAttribute(TITLE_ATTRIBUTE, "Movie detail");
+
+            return "movie/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
     }
 
     /**
@@ -182,20 +227,7 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.add(movie));
         }
 
-        if (request.getParameter("addMedium") != null) {
-            movieFO.getMedia().add(new TimeFO());
-
-            return createAddFormView(model, movieFO);
-        }
-
-        final Integer index = getRemoveIndex(request);
-        if (index != null) {
-            movieFO.getMedia().remove(index.intValue());
-
-            return createAddFormView(model, movieFO);
-        }
-
-        return LIST_REDIRECT_URL;
+        return processAddMovie(model, movieFO, request);
     }
 
     /**
@@ -260,20 +292,7 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.update(movie));
         }
 
-        if (request.getParameter("add") != null) {
-            movieFO.getMedia().add(new TimeFO());
-
-            return createEditFormView(model, movieFO);
-        }
-
-        final Integer index = getRemoveIndex(request);
-        if (index != null) {
-            movieFO.getMedia().remove(index.intValue());
-
-            return createEditFormView(model, movieFO);
-        }
-
-        return LIST_REDIRECT_URL;
+        return processEditMovie(model, movieFO, request);
     }
 
     /**
@@ -348,6 +367,65 @@ public class MovieController extends AbstractResultController {
         return LIST_REDIRECT_URL;
     }
 
+
+    /**
+     * Process adding movie.
+     *
+     * @param model   model
+     * @param movie   FO for movie
+     * @param request HTTP request
+     * @return view for redirect to page with list of movies (no errors) or view for page for adding movie (errors)
+     */
+    private String processAddMovie(final Model model, final MovieFO movie, final HttpServletRequest request) {
+        if (request.getParameter("addMedium") != null) {
+            movie.getMedia().add(new TimeFO());
+
+            return createAddFormView(model, movie);
+        }
+
+        if (request.getParameter("choosePicture") != null) {
+            return createEditFormView(model, movie);
+        }
+
+        final Integer index = getRemoveIndex(request);
+        if (index != null) {
+            movie.getMedia().remove(index.intValue());
+
+            return createAddFormView(model, movie);
+        }
+
+        return LIST_REDIRECT_URL;
+    }
+
+    /**
+     * Process editing movie.
+     *
+     * @param model   model
+     * @param movie   FO for movie
+     * @param request HTTP request
+     * @return view for redirect to page with list of movies (no errors) or view for page for editing movie (errors)
+     */
+    private String processEditMovie(final Model model, final MovieFO movie, final HttpServletRequest request) {
+        if (request.getParameter("add") != null) {
+            movie.getMedia().add(new TimeFO());
+
+            return createEditFormView(model, movie);
+        }
+
+        if (request.getParameter("choosePicture") != null) {
+            return createEditFormView(model, movie);
+        }
+
+        final Integer index = getRemoveIndex(request);
+        if (index != null) {
+            movie.getMedia().remove(index.intValue());
+
+            return createEditFormView(model, movie);
+        }
+
+        return LIST_REDIRECT_URL;
+    }
+
     /**
      * Returns index of removing media.
      *
@@ -376,14 +454,17 @@ public class MovieController extends AbstractResultController {
      * @return page's view with form
      */
     private String createFormView(final Model model, final MovieFO movie, final String title, final String action) {
-        final Result<List<Genre>> result = genreFacade.getAll();
-        processResults(result);
+        final Result<List<Picture>> pictures = pictureFacade.getAll();
+        processResults(pictures);
+        final Result<List<Genre>> genres = genreFacade.getAll();
+        processResults(genres);
 
         model.addAttribute("movie", movie);
-        model.addAttribute("title", title);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("languages", Language.values());
         model.addAttribute("subtitles", new Language[]{ Language.CZ, Language.EN });
-        model.addAttribute("genres", result.getData());
+        model.addAttribute("pictures", pictures.getData().stream().map(Picture::getId).collect(Collectors.toList()));
+        model.addAttribute("genres", genres.getData());
         model.addAttribute("action", action);
 
         return "movie/form";

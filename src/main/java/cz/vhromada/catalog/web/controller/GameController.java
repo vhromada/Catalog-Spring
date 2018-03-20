@@ -52,6 +52,11 @@ public class GameController extends AbstractResultController {
     private static final String NULL_ID_MESSAGE = "ID mustn't be null.";
 
     /**
+     * Title model attribute
+     */
+    private static final String TITLE_ATTRIBUTE = "title";
+
+    /**
      * Facade for games
      */
     private final GameFacade gameFacade;
@@ -71,7 +76,7 @@ public class GameController extends AbstractResultController {
      */
     @Autowired
     public GameController(final GameFacade gameFacade,
-            final Converter converter) {
+        final Converter converter) {
         Assert.notNull(gameFacade, "Facade for games mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
 
@@ -108,9 +113,38 @@ public class GameController extends AbstractResultController {
 
         model.addAttribute("games", gamesResult.getData());
         model.addAttribute("mediaCount", mediaCountResult.getData());
-        model.addAttribute("title", "Games");
+        model.addAttribute(TITLE_ATTRIBUTE, "Games");
 
         return "game/index";
+    }
+
+    /**
+     * Shows page with detail of game.
+     *
+     * @param model model
+     * @param id    ID of editing game
+     * @return view for page with detail of game
+     * @throws IllegalArgumentException if model is null
+     *                                  or ID is null
+     * @throws IllegalRequestException  if game doesn't exist
+     */
+    @GetMapping("/{id}/detail")
+    public String showDetail(final Model model, @PathVariable("id") final Integer id) {
+        Assert.notNull(model, NULL_MODEL_MESSAGE);
+        Assert.notNull(id, NULL_ID_MESSAGE);
+
+        final Result<Game> result = gameFacade.get(id);
+        processResults(result);
+
+        final Game game = result.getData();
+        if (game != null) {
+            model.addAttribute("game", game);
+            model.addAttribute(TITLE_ATTRIBUTE, "Game detail");
+
+            return "game/detail";
+        } else {
+            throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
+        }
     }
 
     /**
@@ -311,7 +345,7 @@ public class GameController extends AbstractResultController {
      */
     private static String createFormView(final Model model, final GameFO game, final String title, final String action) {
         model.addAttribute("game", game);
-        model.addAttribute("title", title);
+        model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 
         return "game/form";

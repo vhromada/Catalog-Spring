@@ -272,7 +272,7 @@ public class ProgramFO implements Serializable {
     @Override
     public String toString() {
         return String.format("ProgramFO [id=%d, name=%s, wikiEn=%s, wikiCz=%s, mediaCount=%s, crack=%b, serialKey=%b, otherData=%s, note=%s, position=%d]", id,
-                name, wikiEn, wikiCz, mediaCount, crack, serialKey, otherData, note, position);
+            name, wikiEn, wikiCz, mediaCount, crack, serialKey, otherData, note, position);
     }
 
 }
