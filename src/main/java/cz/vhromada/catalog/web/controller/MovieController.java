@@ -384,7 +384,7 @@ public class MovieController extends AbstractResultController {
         }
 
         if (request.getParameter("choosePicture") != null) {
-            return createEditFormView(model, movie);
+            return createAddFormView(model, movie);
         }
 
         final Integer index = getRemoveIndex(request);

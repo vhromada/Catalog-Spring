@@ -19,7 +19,6 @@ public class ShowMapper implements MapperConfig {
     public void config(final MapperFactory mapperFactory) {
         mapperFactory.classMap(ShowFO.class, Show.class)
             .exclude("imdbCode")
-            .exclude("picture")
             .byDefault()
             .customize(new ShowCustomMapper())
             .register();

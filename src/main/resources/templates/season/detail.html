@@ -21,9 +21,9 @@
                         <td class="title">Language</td>
                         <td th:text="${season.season.language}"></td>
                     </tr>
-                    <tr>
+                    <tr th:if="${!#lists.isEmpty(season.season.subtitles)}">
                         <td class="title">Subtitles</td>
-                        <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertLanguages(season.season.subtitles}"></td>
+                        <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertLanguages(season.season.subtitles)}"></td>
                     </tr>
                     <tr>
                         <td class="title">Episodes count</td>

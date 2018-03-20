@@ -9,7 +9,6 @@ import cz.vhromada.catalog.web.fo.MovieFO;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * A class represents custom mapper for movie.
@@ -30,10 +29,6 @@ public class MovieCustomMapper extends CustomMapper<MovieFO, Movie> {
                 media.get(i).setNumber(i + 1);
             }
         }
-
-        if (!StringUtils.isEmpty(movieFO.getPicture())) {
-            movie.setPicture(Integer.parseInt(movieFO.getPicture()));
-        }
     }
 
     @Override
@@ -47,10 +42,6 @@ public class MovieCustomMapper extends CustomMapper<MovieFO, Movie> {
         } else {
             movieFO.setImdb(true);
             movieFO.setImdbCode(Integer.toString(movie.getImdbCode()));
-        }
-
-        if (movie.getPicture() != null) {
-            movieFO.setPicture(String.valueOf(movie.getPicture()));
         }
     }
 

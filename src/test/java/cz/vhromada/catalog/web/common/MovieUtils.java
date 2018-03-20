@@ -43,7 +43,7 @@ public final class MovieUtils {
         movie.setImdbCode("1000");
         movie.setWikiEn(CatalogUtils.EN_WIKI);
         movie.setWikiCz(CatalogUtils.CZ_WIKI);
-        movie.setPicture(Integer.toString(CatalogUtils.ID));
+        movie.setPicture(CatalogUtils.ID);
         movie.setNote(CatalogUtils.NOTE);
         movie.setPosition(CatalogUtils.POSITION);
         movie.setMedia(CollectionUtils.newList(TimeUtils.getTimeFO()));
@@ -105,7 +105,7 @@ public final class MovieUtils {
             CatalogUtils.assertImdbCodeDeepEquals(expected.getImdb(), expected.getImdbCode(), actual.getImdbCode());
             softly.assertThat(actual.getWikiEn()).isEqualTo(expected.getWikiEn());
             softly.assertThat(actual.getWikiCz()).isEqualTo(expected.getWikiCz());
-            softly.assertThat(actual.getPicture()).isEqualTo(Integer.parseInt(expected.getPicture()));
+            softly.assertThat(actual.getPicture()).isEqualTo(expected.getPicture());
             softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
             softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
             assertMediaDeepEquals(expected.getMedia(), actual.getMedia());
@@ -171,7 +171,7 @@ public final class MovieUtils {
             CatalogUtils.assertImdbDeepEquals(expected.getImdbCode(), actual.getImdb(), actual.getImdbCode());
             softly.assertThat(actual.getWikiEn()).isEqualTo(expected.getWikiEn());
             softly.assertThat(actual.getWikiCz()).isEqualTo(expected.getWikiCz());
-            softly.assertThat(actual.getPicture()).isEqualTo(Integer.toString(expected.getPicture()));
+            softly.assertThat(actual.getPicture()).isEqualTo(expected.getPicture());
             softly.assertThat(actual.getNote()).isEqualTo(expected.getNote());
             softly.assertThat(actual.getPosition()).isEqualTo(expected.getPosition());
             assertMediumListDeepEquals(expected.getMedia(), actual.getMedia());

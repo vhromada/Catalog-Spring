@@ -94,7 +94,7 @@ public class MovieFO implements Serializable {
     /**
      * Picture's ID
      */
-    private String picture;
+    private Integer picture;
 
     /**
      * Note
@@ -340,7 +340,7 @@ public class MovieFO implements Serializable {
      *
      * @return picture's ID
      */
-    public String getPicture() {
+    public Integer getPicture() {
         return picture;
     }
 
@@ -349,7 +349,7 @@ public class MovieFO implements Serializable {
      *
      * @param picture new value
      */
-    public void setPicture(final String picture) {
+    public void setPicture(final Integer picture) {
         this.picture = picture;
     }
 
@@ -427,7 +427,7 @@ public class MovieFO implements Serializable {
     @Override
     public String toString() {
         return String.format("MovieFO [id=%d, czechName=%s, originalName=%s, year=%s, language=%s, subtitles=%s, media=%s, csfd=%s, imdb=%b, imdbCode=%s, "
-                + "wikiEn=%s, wikiCz=%s, picture=%s, note=%s, position=%d, genres=%s]", id, czechName, originalName, year, language, subtitles, media, csfd,
+                + "wikiEn=%s, wikiCz=%s, picture=%d, note=%s, position=%d, genres=%s]", id, czechName, originalName, year, language, subtitles, media, csfd,
             imdb, imdbCode, wikiEn, wikiCz, picture, note, position, genres);
     }
 
