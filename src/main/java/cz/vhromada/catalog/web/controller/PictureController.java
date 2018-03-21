@@ -124,6 +124,7 @@ public class PictureController extends AbstractResultController {
 
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"picture.jpg\"")
+            .header(HttpHeaders.CONTENT_TYPE, "image/jpg")
             .body(new ByteArrayResource(picture.getData().getContent()));
     }
 
