@@ -22,8 +22,7 @@
                     <th:block th:each="episode : ${episodes}">
                         <tr>
                             <td>
-                                <a th:href="@{|/shows/${show}/seasons/${season}/episodes/${episode.id}/detail|}"
-                                   th:text="${episode.name}"></a>
+                                <a th:href="@{|/shows/${show}/seasons/${season}/episodes/${episode.id}/detail|}" th:text="${episode.name}"></a>
                             </td>
                             <td>
                                 <a th:href="@{|/shows/${show}/seasons/${season}/episodes/moveUp/${episode.id}|}" th:if="${episodes.indexOf(episode) > 0}">
