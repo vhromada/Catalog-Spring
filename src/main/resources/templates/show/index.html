@@ -22,7 +22,7 @@
                 <tbody>
                     <th:block th:each="show : ${shows}">
                         <tr>
-                            <td><a th:href="@{|/shows/${show.id}/detail|}" th:text="${show.czechName} + ' - ' + ${show.originalName}"></a></td>
+                            <td><a th:href="@{|/shows/${show.id}/detail|}" th:text="${show.czechName}"></a></td>
                             <td><a th:href="@{|/shows/${show.id}/seasons/list|}">Seasons</a></td>
                             <td><a th:href="@{|/shows/moveUp/${show.id}|}" th:if="${shows.indexOf(show) > 0}">Move up</a></td>
                             <td><a th:href="@{|/shows/moveDown/${show.id}|}" th:if="${shows.indexOf(show) < shows.size() - 1}">Move down</a></td>

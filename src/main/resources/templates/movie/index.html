@@ -21,7 +21,7 @@
                 <tbody>
                     <th:block th:each="movie : ${movies}">
                         <tr>
-                            <td><a th:href="@{|/movies/${movie.id}/detail|}" th:text="${movie.czechName} + ' - ' +  ${movie.originalName}"></a></td>
+                            <td><a th:href="@{|/movies/${movie.id}/detail|}" th:text="${movie.czechName}"></a></td>
                             <td><a th:href="@{|/movies/moveUp/${movie.id}|}" th:if="${movies.indexOf(movie) > 0}">Move up</a></td>
                             <td><a th:href="@{|/movies/moveDown/${movie.id}|}" th:if="${movies.indexOf(movie) < movies.size() - 1}">Move down</a></td>
                             <td><a th:href="@{|/movies/duplicate/${movie.id}|}">Duplicate</a></td>
