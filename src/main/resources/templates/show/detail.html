@@ -22,18 +22,20 @@
                         <td class="title">Genres</td>
                         <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertGenres(show.show.genres)}"></td>
                     </tr>
-                    <tr>
+                    <tr th:if="${show.seasonsCount > 0}">
                         <td class="title">Count of seasons</td>
                         <td th:text="${show.seasonsCount}"></td>
                     </tr>
-                    <tr>
-                        <td class="title">Count of episodes</td>
-                        <td th:text="${show.episodesCount}"></td>
-                    </tr>
-                    <tr>
-                        <td class="title">Total length</td>
-                        <td th:text="${show.totalLength}"></td>
-                    </tr>
+                    <th:block th:if="${show.episodesCount > 0}">
+                        <tr>
+                            <td class="title">Count of episodes</td>
+                            <td th:text="${show.episodesCount}"></td>
+                        </tr>
+                        <tr>
+                            <td class="title">Total length</td>
+                            <td th:text="${show.totalLength}"></td>
+                        </tr>
+                    </th:block>
                     <tr th:if="${!#strings.isEmpty(show.show.note)}">
                         <td class="title">Note</td>
                         <td th:text="${show.show.note}"></td>

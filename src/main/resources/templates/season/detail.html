@@ -25,14 +25,16 @@
                         <td class="title">Subtitles</td>
                         <td th:text="${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertLanguages(season.season.subtitles)}"></td>
                     </tr>
-                    <tr>
-                        <td class="title">Episodes count</td>
-                        <td th:text="${season.episodesCount}"></td>
-                    </tr>
-                    <tr>
-                        <td class="title">Total length</td>
-                        <td th:text="${season.totalLength}"></td>
-                    </tr>
+                    <th:block th:if="${season.episodesCount > 0}">
+                        <tr>
+                            <td class="title">Episodes count</td>
+                            <td th:text="${season.episodesCount}"></td>
+                        </tr>
+                        <tr>
+                            <td class="title">Total length</td>
+                            <td th:text="${season.totalLength}"></td>
+                        </tr>
+                    </th:block>
                     <tr th:if="${!#strings.isEmpty(season.season.note)}">
                         <td class="title">Note</td>
                         <td th:text="${season.season.note}"></td>
