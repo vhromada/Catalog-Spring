@@ -89,9 +89,7 @@ public class SongController extends AbstractResultController {
      *                                  or converter is null
      */
     @Autowired
-    public SongController(final MusicFacade musicFacade,
-        final SongFacade songFacade,
-        final Converter converter) {
+    public SongController(final MusicFacade musicFacade, final SongFacade songFacade, final Converter converter) {
         Assert.notNull(musicFacade, "Facade for music mustn't be null.");
         Assert.notNull(songFacade, "Facade for songs mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");

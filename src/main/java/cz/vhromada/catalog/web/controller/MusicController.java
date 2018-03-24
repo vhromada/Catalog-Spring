@@ -61,6 +61,11 @@ public class MusicController extends AbstractResultController {
     private static final String TITLE_ATTRIBUTE = "title";
 
     /**
+     * Music model attribute
+     */
+    private static final String MUSIC_ATTRIBUTE = "music";
+
+    /**
      * Facade for music
      */
     private final MusicFacade musicFacade;
@@ -86,9 +91,7 @@ public class MusicController extends AbstractResultController {
      *                                  or converter is null
      */
     @Autowired
-    public MusicController(final MusicFacade musicFacade,
-        final SongFacade songFacade,
-        final Converter converter) {
+    public MusicController(final MusicFacade musicFacade, final SongFacade songFacade, final Converter converter) {
         Assert.notNull(musicFacade, "Facade for music mustn't be null.");
         Assert.notNull(songFacade, "Facade for songs mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
@@ -127,7 +130,7 @@ public class MusicController extends AbstractResultController {
         final Result<Time> totalLengthResult = musicFacade.getTotalLength();
         processResults(musicResult, mediaCountResult, songsCountResult, totalLengthResult);
 
-        model.addAttribute("music", musicResult.getData());
+        model.addAttribute(MUSIC_ATTRIBUTE, musicResult.getData());
         model.addAttribute("mediaCount", mediaCountResult.getData());
         model.addAttribute("songsCount", songsCountResult.getData());
         model.addAttribute("totalLength", totalLengthResult.getData());
@@ -169,7 +172,7 @@ public class MusicController extends AbstractResultController {
             musicData.setSongsCount(count);
             musicData.setTotalLength(new Time(length));
 
-            model.addAttribute("music", musicData);
+            model.addAttribute(MUSIC_ATTRIBUTE, musicData);
             model.addAttribute(TITLE_ATTRIBUTE, "Music detail");
 
             return "music/detail";
@@ -375,7 +378,7 @@ public class MusicController extends AbstractResultController {
      * @return page's view with form
      */
     private static String createFormView(final Model model, final MusicFO music, final String title, final String action) {
-        model.addAttribute("music", music);
+        model.addAttribute(MUSIC_ATTRIBUTE, music);
         model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("action", action);
 

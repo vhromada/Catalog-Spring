@@ -99,10 +99,7 @@ public class MovieController extends AbstractResultController {
      *                                  or converter is null
      */
     @Autowired
-    public MovieController(final MovieFacade movieFacade,
-        final PictureFacade pictureFacade,
-        final GenreFacade genreFacade,
-        final Converter converter) {
+    public MovieController(final MovieFacade movieFacade, final PictureFacade pictureFacade, final GenreFacade genreFacade, final Converter converter) {
         Assert.notNull(movieFacade, "Facade for movies mustn't be null.");
         Assert.notNull(pictureFacade, "Facade for pictures mustn't be null.");
         Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
@@ -227,6 +224,12 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.add(movie));
         }
 
+        if (request.getParameter("addMedium") != null) {
+            movieFO.getMedia().add(new TimeFO());
+
+            return createAddFormView(model, movieFO);
+        }
+
         return processAddMovie(model, movieFO, request);
     }
 
@@ -290,6 +293,12 @@ public class MovieController extends AbstractResultController {
             }
             movie.setGenres(getGenres(movie.getGenres()));
             processResults(movieFacade.update(movie));
+        }
+
+        if (request.getParameter("add") != null) {
+            movieFO.getMedia().add(new TimeFO());
+
+            return createEditFormView(model, movieFO);
         }
 
         return processEditMovie(model, movieFO, request);
@@ -377,13 +386,12 @@ public class MovieController extends AbstractResultController {
      * @return view for redirect to page with list of movies (no errors) or view for page for adding movie (errors)
      */
     private String processAddMovie(final Model model, final MovieFO movie, final HttpServletRequest request) {
-        if (request.getParameter("addMedium") != null) {
-            movie.getMedia().add(new TimeFO());
-
+        if (request.getParameter("choosePicture") != null) {
             return createAddFormView(model, movie);
         }
 
-        if (request.getParameter("choosePicture") != null) {
+        if (request.getParameter("removePicture") != null) {
+            movie.setPicture(null);
             return createAddFormView(model, movie);
         }
 
@@ -406,9 +414,8 @@ public class MovieController extends AbstractResultController {
      * @return view for redirect to page with list of movies (no errors) or view for page for editing movie (errors)
      */
     private String processEditMovie(final Model model, final MovieFO movie, final HttpServletRequest request) {
-        if (request.getParameter("add") != null) {
-            movie.getMedia().add(new TimeFO());
-
+        if (request.getParameter("removePicture") != null) {
+            movie.setPicture(null);
             return createEditFormView(model, movie);
         }
 

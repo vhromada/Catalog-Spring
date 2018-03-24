@@ -115,12 +115,8 @@ public class ShowController extends AbstractResultController {
      *                                  or converter is null
      */
     @Autowired
-    public ShowController(final ShowFacade showFacade,
-        final SeasonFacade seasonFacade,
-        final EpisodeFacade episodeFacade,
-        final PictureFacade pictureFacade,
-        final GenreFacade genreFacade,
-        final Converter converter) {
+    public ShowController(final ShowFacade showFacade, final SeasonFacade seasonFacade, final EpisodeFacade episodeFacade, final PictureFacade pictureFacade,
+        final GenreFacade genreFacade, final Converter converter) {
         Assert.notNull(showFacade, "Facade for shows mustn't be null.");
         Assert.notNull(seasonFacade, "Facade for seasons mustn't be null.");
         Assert.notNull(episodeFacade, "Facade for episodes mustn't be null.");
@@ -251,7 +247,7 @@ public class ShowController extends AbstractResultController {
      *                                  or HTTP request is null
      *                                  or ID isn't null
      */
-    @PostMapping(value = "/add", params = "create")
+    @PostMapping("/add")
     public String processAdd(final Model model, @ModelAttribute("show") final @Valid ShowFO showFO, final Errors errors, final HttpServletRequest request) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showFO, "FO for show mustn't be null.");
@@ -272,16 +268,11 @@ public class ShowController extends AbstractResultController {
             return createAddFormView(model, showFO);
         }
 
-        return LIST_REDIRECT_URL;
-    }
+        if (request.getParameter("removePicture") != null) {
+            showFO.setPicture(null);
+            return createAddFormView(model, showFO);
+        }
 
-    /**
-     * Cancel adding show.
-     *
-     * @return view for redirect to page with list of shows
-     */
-    @PostMapping(value = "/add", params = "cancel")
-    public String processAdd() {
         return LIST_REDIRECT_URL;
     }
 
@@ -326,7 +317,7 @@ public class ShowController extends AbstractResultController {
      *                                  or ID is null
      * @throws IllegalRequestException  if show doesn't exist
      */
-    @PostMapping(value = "/edit", params = "update")
+    @PostMapping("/edit")
     public String processEdit(final Model model, @ModelAttribute("show") final @Valid ShowFO showFO, final Errors errors, final HttpServletRequest request) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showFO, "FO for show mustn't be null.");
@@ -347,16 +338,11 @@ public class ShowController extends AbstractResultController {
             return createEditFormView(model, showFO);
         }
 
-        return LIST_REDIRECT_URL;
-    }
+        if (request.getParameter("removePicture") != null) {
+            showFO.setPicture(null);
+            return createEditFormView(model, showFO);
+        }
 
-    /**
-     * Cancel editing show.
-     *
-     * @return view for redirect to page with list of shows
-     */
-    @PostMapping(value = "/edit", params = "cancel")
-    public String processEdit() {
         return LIST_REDIRECT_URL;
     }
 

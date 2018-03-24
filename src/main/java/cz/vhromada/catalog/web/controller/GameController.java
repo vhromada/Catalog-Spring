@@ -75,8 +75,7 @@ public class GameController extends AbstractResultController {
      *                                  or converter is null
      */
     @Autowired
-    public GameController(final GameFacade gameFacade,
-        final Converter converter) {
+    public GameController(final GameFacade gameFacade, final Converter converter) {
         Assert.notNull(gameFacade, "Facade for games mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
 

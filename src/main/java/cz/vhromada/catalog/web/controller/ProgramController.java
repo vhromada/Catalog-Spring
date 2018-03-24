@@ -75,8 +75,7 @@ public class ProgramController extends AbstractResultController {
      *                                  or converter is null
      */
     @Autowired
-    public ProgramController(final ProgramFacade programFacade,
-        final Converter converter) {
+    public ProgramController(final ProgramFacade programFacade, final Converter converter) {
         Assert.notNull(programFacade, "Facade for programs mustn't be null.");
         Assert.notNull(converter, "Converter mustn't be null.");
 
