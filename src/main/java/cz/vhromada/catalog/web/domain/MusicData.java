@@ -3,8 +3,8 @@ package cz.vhromada.catalog.web.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Music;
+import cz.vhromada.common.Time;
 
 /**
  * A class represents music data.

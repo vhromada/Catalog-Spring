@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.DateRange;
+import cz.vhromada.common.utils.Constants;
 
 /**
  * A class represents validator for date range constraint.

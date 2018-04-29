@@ -12,6 +12,7 @@
             <form th:action="@{|/genres/${action}|}" method="POST" class="form-horizontal" th:object="${genre}">
                 <fieldset>
                     <input type="hidden" id="id" name="id" th:field="*{id}" th:if="${action == 'edit'}"/>
+                    <input type="hidden" id="position" name="position" th:field="*{position}" th:if="${action == 'edit'}"/>
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="name">Name</label>
                         <div class="col-sm-10">

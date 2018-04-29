@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Vladimir Hromada
  */
 @Controller("catalogController")
-@RequestMapping({ "", "/" })
+@RequestMapping
 public class CatalogController {
 
     /**

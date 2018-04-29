@@ -109,7 +109,7 @@ public class SongController extends AbstractResultController {
      *                                  or music ID is null
      * @throws IllegalRequestException  if music doesn't exist
      */
-    @GetMapping({ "", "/", "/list" })
+    @GetMapping({ "", "/list" })
     public String showList(final Model model, @PathVariable("musicId") final Integer musicId) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(musicId, NULL_MUSIC_ID_MESSAGE);

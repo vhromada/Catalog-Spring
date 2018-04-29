@@ -1,7 +1,7 @@
 package cz.vhromada.catalog.web.converter;
 
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.web.fo.TimeFO;
+import cz.vhromada.common.Time;
 
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;

@@ -2,13 +2,13 @@ package cz.vhromada.catalog.web.converter;
 
 import java.util.List;
 
-import cz.vhromada.catalog.common.Language;
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Game;
 import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.entity.Medium;
 import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.entity.Season;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.Time;
 
 import org.springframework.util.StringUtils;
 

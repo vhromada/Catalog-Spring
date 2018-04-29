@@ -10,11 +10,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import cz.vhromada.catalog.common.Language;
-import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.DateRange;
 import cz.vhromada.catalog.web.validator.constraints.Imdb;
 import cz.vhromada.catalog.web.validator.constraints.ImdbCode;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.utils.Constants;
 
 /**
  * A class represents FO for movie.
@@ -104,7 +104,7 @@ public class MovieFO implements Serializable {
     /**
      * Position
      */
-    private int position;
+    private Integer position;
 
     /**
      * Genres
@@ -376,7 +376,7 @@ public class MovieFO implements Serializable {
      *
      * @return position
      */
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
@@ -385,7 +385,7 @@ public class MovieFO implements Serializable {
      *
      * @param position new value
      */
-    public void setPosition(final int position) {
+    public void setPosition(final Integer position) {
         this.position = position;
     }
 

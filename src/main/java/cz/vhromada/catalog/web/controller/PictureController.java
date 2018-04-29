@@ -95,7 +95,7 @@ public class PictureController extends AbstractResultController {
      * @return view for page with list of pictures
      * @throws IllegalArgumentException if model is null
      */
-    @GetMapping({ "", "/", "/list" })
+    @GetMapping({ "", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 

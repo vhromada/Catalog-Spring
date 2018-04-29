@@ -4,8 +4,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import cz.vhromada.catalog.entity.Medium;
 import cz.vhromada.catalog.entity.Show;
-import cz.vhromada.catalog.utils.CollectionUtils;
 import cz.vhromada.catalog.web.fo.ShowFO;
+import cz.vhromada.common.utils.CollectionUtils;
 
 /**
  * A class represents utility class for shows.

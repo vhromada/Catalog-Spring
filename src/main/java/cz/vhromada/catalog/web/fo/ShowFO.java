@@ -78,7 +78,7 @@ public class ShowFO implements Serializable {
     /**
      * Position
      */
-    private int position;
+    private Integer position;
 
     /**
      * Genres
@@ -270,7 +270,7 @@ public class ShowFO implements Serializable {
      *
      * @return position
      */
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
@@ -279,7 +279,7 @@ public class ShowFO implements Serializable {
      *
      * @param position new value
      */
-    public void setPosition(final int position) {
+    public void setPosition(final Integer position) {
         this.position = position;
     }
 

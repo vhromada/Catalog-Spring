@@ -2,10 +2,10 @@ package cz.vhromada.catalog.web.common;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import cz.vhromada.catalog.common.Language;
 import cz.vhromada.catalog.entity.Season;
-import cz.vhromada.catalog.utils.CollectionUtils;
 import cz.vhromada.catalog.web.fo.SeasonFO;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.utils.CollectionUtils;
 
 /**
  * A class represents utility class for seasons.

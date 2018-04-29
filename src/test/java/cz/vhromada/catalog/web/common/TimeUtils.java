@@ -2,8 +2,8 @@ package cz.vhromada.catalog.web.common;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.web.fo.TimeFO;
+import cz.vhromada.common.Time;
 
 /**
  * A class represents utility class for time.

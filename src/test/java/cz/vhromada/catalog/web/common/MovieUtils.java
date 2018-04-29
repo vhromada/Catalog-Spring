@@ -5,12 +5,12 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
 
-import cz.vhromada.catalog.common.Language;
 import cz.vhromada.catalog.entity.Medium;
 import cz.vhromada.catalog.entity.Movie;
-import cz.vhromada.catalog.utils.CollectionUtils;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.utils.CollectionUtils;
 
 /**
  * A class represents utility class for movies.

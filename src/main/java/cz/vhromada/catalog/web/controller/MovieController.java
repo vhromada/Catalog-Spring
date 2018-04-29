@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.common.Language;
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.entity.Movie;
 import cz.vhromada.catalog.entity.Picture;
@@ -19,6 +17,8 @@ import cz.vhromada.catalog.facade.PictureFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.Time;
 import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
@@ -130,7 +130,7 @@ public class MovieController extends AbstractResultController {
      * @return view for page with list of movies
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping({ "", "/", "/list" })
+    @RequestMapping({ "", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
@@ -295,7 +295,7 @@ public class MovieController extends AbstractResultController {
             processResults(movieFacade.update(movie));
         }
 
-        if (request.getParameter("add") != null) {
+        if (request.getParameter("addMedium") != null) {
             movieFO.getMedia().add(new TimeFO());
 
             return createEditFormView(model, movieFO);
@@ -414,12 +414,12 @@ public class MovieController extends AbstractResultController {
      * @return view for redirect to page with list of movies (no errors) or view for page for editing movie (errors)
      */
     private String processEditMovie(final Model model, final MovieFO movie, final HttpServletRequest request) {
-        if (request.getParameter("removePicture") != null) {
-            movie.setPicture(null);
+        if (request.getParameter("choosePicture") != null) {
             return createEditFormView(model, movie);
         }
 
-        if (request.getParameter("choosePicture") != null) {
+        if (request.getParameter("removePicture") != null) {
+            movie.setPicture(null);
             return createEditFormView(model, movie);
         }
 

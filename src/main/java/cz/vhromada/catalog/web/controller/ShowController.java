@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Episode;
 import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.entity.Picture;
@@ -20,6 +19,7 @@ import cz.vhromada.catalog.facade.ShowFacade;
 import cz.vhromada.catalog.web.domain.ShowData;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ShowFO;
+import cz.vhromada.common.Time;
 import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
@@ -151,7 +151,7 @@ public class ShowController extends AbstractResultController {
      * @return view for page with list of shows
      * @throws IllegalArgumentException if model is null
      */
-    @RequestMapping({ "", "/", "/list" })
+    @RequestMapping({ "", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 

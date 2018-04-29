@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.fo.SeasonFO;
 import cz.vhromada.catalog.web.validator.constraints.Years;
+import cz.vhromada.common.utils.Constants;
 
 /**
  * A class represents validator for years constraint.

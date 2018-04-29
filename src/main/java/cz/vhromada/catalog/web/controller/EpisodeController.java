@@ -133,7 +133,7 @@ public class EpisodeController extends AbstractResultController {
      * @throws IllegalRequestException  if show doesn't exist
      *                                  or season doesn't exist
      */
-    @GetMapping({ "", "/", "/list" })
+    @GetMapping({ "", "/list" })
     public String showList(final Model model, @PathVariable("showId") final Integer showId, @PathVariable("seasonId") final Integer seasonId) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);

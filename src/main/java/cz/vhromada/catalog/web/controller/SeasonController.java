@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.common.Language;
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Episode;
 import cz.vhromada.catalog.entity.Season;
 import cz.vhromada.catalog.entity.Show;
@@ -16,6 +14,8 @@ import cz.vhromada.catalog.facade.ShowFacade;
 import cz.vhromada.catalog.web.domain.SeasonData;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.SeasonFO;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.Time;
 import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
@@ -124,7 +124,7 @@ public class SeasonController extends AbstractResultController {
      *                                  or show ID is null
      * @throws IllegalRequestException  if show doesn't exist
      */
-    @GetMapping({ "", "/", "/list" })
+    @GetMapping({ "", "/list" })
     public String showList(final Model model, @PathVariable("showId") final Integer showId) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
         Assert.notNull(showId, NULL_SHOW_ID_MESSAGE);

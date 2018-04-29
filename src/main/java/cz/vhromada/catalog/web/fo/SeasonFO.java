@@ -6,10 +6,10 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import cz.vhromada.catalog.common.Language;
-import cz.vhromada.catalog.utils.Constants;
 import cz.vhromada.catalog.web.validator.constraints.DateRange;
 import cz.vhromada.catalog.web.validator.constraints.Years;
+import cz.vhromada.common.Language;
+import cz.vhromada.common.utils.Constants;
 
 import org.hibernate.validator.constraints.Range;
 
@@ -68,7 +68,7 @@ public class SeasonFO implements Serializable {
     /**
      * Position
      */
-    private int position;
+    private Integer position;
 
     /**
      * Returns ID.
@@ -202,7 +202,7 @@ public class SeasonFO implements Serializable {
      *
      * @return position
      */
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
@@ -211,7 +211,7 @@ public class SeasonFO implements Serializable {
      *
      * @param position new value
      */
-    public void setPosition(final int position) {
+    public void setPosition(final Integer position) {
         this.position = position;
     }
 

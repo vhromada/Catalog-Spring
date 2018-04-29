@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import cz.vhromada.catalog.common.Time;
 import cz.vhromada.catalog.entity.Music;
 import cz.vhromada.catalog.entity.Song;
 import cz.vhromada.catalog.facade.MusicFacade;
@@ -12,6 +11,7 @@ import cz.vhromada.catalog.facade.SongFacade;
 import cz.vhromada.catalog.web.domain.MusicData;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MusicFO;
+import cz.vhromada.common.Time;
 import cz.vhromada.converter.Converter;
 import cz.vhromada.result.Result;
 
@@ -120,7 +120,7 @@ public class MusicController extends AbstractResultController {
      * @return view for page with list of music
      * @throws IllegalArgumentException if model is null
      */
-    @GetMapping({ "", "/", "/list" })
+    @GetMapping({ "", "/list" })
     public String showList(final Model model) {
         Assert.notNull(model, NULL_MODEL_MESSAGE);
 
