@@ -19,10 +19,11 @@ import cz.vhromada.catalog.facade.ShowFacade;
 import cz.vhromada.catalog.web.domain.ShowData;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ShowFO;
+import cz.vhromada.catalog.web.mapper.ShowMapper;
 import cz.vhromada.common.Time;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -94,9 +95,9 @@ public class ShowController extends AbstractResultController {
     private final GenreFacade genreFacade;
 
     /**
-     * Converter
+     * Mapper for shows
      */
-    private final Converter converter;
+    private final ShowMapper showMapper;
 
     /**
      * Creates a new instance of ShowController.
@@ -106,30 +107,27 @@ public class ShowController extends AbstractResultController {
      * @param episodeFacade facade for episodes
      * @param pictureFacade facade for pictures
      * @param genreFacade   facade for genres
-     * @param converter     converter
      * @throws IllegalArgumentException if facade for shows is null
      *                                  or facade for seasons is null
      *                                  or facade for episodes is null
      *                                  or facade for pictures is null
      *                                  or facade for genres is null
-     *                                  or converter is null
      */
     @Autowired
     public ShowController(final ShowFacade showFacade, final SeasonFacade seasonFacade, final EpisodeFacade episodeFacade, final PictureFacade pictureFacade,
-        final GenreFacade genreFacade, final Converter converter) {
+        final GenreFacade genreFacade) {
         Assert.notNull(showFacade, "Facade for shows mustn't be null.");
         Assert.notNull(seasonFacade, "Facade for seasons mustn't be null.");
         Assert.notNull(episodeFacade, "Facade for episodes mustn't be null.");
         Assert.notNull(pictureFacade, "Facade for pictures mustn't be null.");
         Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.showFacade = showFacade;
         this.seasonFacade = seasonFacade;
         this.episodeFacade = episodeFacade;
         this.pictureFacade = pictureFacade;
         this.genreFacade = genreFacade;
-        this.converter = converter;
+        this.showMapper = Mappers.getMapper(ShowMapper.class);
     }
 
     /**
@@ -259,7 +257,7 @@ public class ShowController extends AbstractResultController {
             if (errors.hasErrors()) {
                 return createAddFormView(model, showFO);
             }
-            final Show show = converter.convert(showFO, Show.class);
+            final Show show = showMapper.mapBack(showFO);
             show.setGenres(getGenres(show.getGenres()));
             processResults(showFacade.add(show));
         }
@@ -296,7 +294,7 @@ public class ShowController extends AbstractResultController {
 
         final Show show = result.getData();
         if (show != null) {
-            return createEditFormView(model, converter.convert(show, ShowFO.class));
+            return createEditFormView(model, showMapper.map(show));
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -329,7 +327,7 @@ public class ShowController extends AbstractResultController {
             if (errors.hasErrors()) {
                 return createEditFormView(model, showFO);
             }
-            final Show show = processShow(converter.convert(showFO, Show.class));
+            final Show show = processShow(showMapper.mapBack(showFO));
             show.setGenres(getGenres(show.getGenres()));
             processResults(showFacade.update(show));
         }
@@ -430,13 +428,13 @@ public class ShowController extends AbstractResultController {
     private String createFormView(final Model model, final ShowFO show, final String title, final String action) {
         final Result<List<Picture>> pictures = pictureFacade.getAll();
         processResults(pictures);
-        final Result<List<Genre>> genres = genreFacade.getAll();
-        processResults(genres);
+        final Result<List<Show>> shows = showFacade.getAll();
+        processResults(shows);
 
         model.addAttribute("show", show);
         model.addAttribute(TITLE_ATTRIBUTE, title);
         model.addAttribute("pictures", pictures.getData().stream().map(Picture::getId).collect(Collectors.toList()));
-        model.addAttribute("genres", genres.getData());
+        model.addAttribute("shows", shows.getData());
         model.addAttribute("action", action);
 
         return "show/form";

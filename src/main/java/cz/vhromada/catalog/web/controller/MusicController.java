@@ -11,10 +11,11 @@ import cz.vhromada.catalog.facade.SongFacade;
 import cz.vhromada.catalog.web.domain.MusicData;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MusicFO;
+import cz.vhromada.catalog.web.mapper.MusicMapper;
 import cz.vhromada.common.Time;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,29 +77,26 @@ public class MusicController extends AbstractResultController {
     private final SongFacade songFacade;
 
     /**
-     * Converter
+     * Mapper for music
      */
-    private final Converter converter;
+    private final MusicMapper musicMapper;
 
     /**
      * Creates a new instance of MusicController.
      *
      * @param musicFacade facade for music
      * @param songFacade  facade for songs
-     * @param converter   converter
      * @throws IllegalArgumentException if facade for music is null
      *                                  or facade for songs is null
-     *                                  or converter is null
      */
     @Autowired
-    public MusicController(final MusicFacade musicFacade, final SongFacade songFacade, final Converter converter) {
+    public MusicController(final MusicFacade musicFacade, final SongFacade songFacade) {
         Assert.notNull(musicFacade, "Facade for music mustn't be null.");
         Assert.notNull(songFacade, "Facade for songs mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.musicFacade = musicFacade;
         this.songFacade = songFacade;
-        this.converter = converter;
+        this.musicMapper = Mappers.getMapper(MusicMapper.class);
     }
 
     /**
@@ -217,7 +215,7 @@ public class MusicController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, music, "Add music", "add");
         }
-        processResults(musicFacade.add(converter.convert(music, Music.class)));
+        processResults(musicFacade.add(musicMapper.mapBack(music)));
 
         return LIST_REDIRECT_URL;
     }
@@ -252,7 +250,7 @@ public class MusicController extends AbstractResultController {
 
         final Music music = result.getData();
         if (music != null) {
-            return createFormView(model, converter.convert(music, MusicFO.class), "Edit music", "edit");
+            return createFormView(model, musicMapper.map(music), "Edit music", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -281,7 +279,7 @@ public class MusicController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, music, "Edit music", "edit");
         }
-        processResults(musicFacade.update(processMusic(converter.convert(music, Music.class))));
+        processResults(musicFacade.update(processMusic(musicMapper.mapBack(music))));
 
         return LIST_REDIRECT_URL;
     }

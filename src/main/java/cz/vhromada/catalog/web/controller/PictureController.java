@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import cz.vhromada.catalog.entity.Picture;
 import cz.vhromada.catalog.facade.PictureFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
-import cz.vhromada.result.Result;
+import cz.vhromada.validation.result.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;

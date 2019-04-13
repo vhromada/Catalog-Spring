@@ -8,9 +8,10 @@ import cz.vhromada.catalog.entity.Program;
 import cz.vhromada.catalog.facade.ProgramFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.ProgramFO;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.catalog.web.mapper.ProgramMapper;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,25 +63,22 @@ public class ProgramController extends AbstractResultController {
     private final ProgramFacade programFacade;
 
     /**
-     * Converter
+     * Mapper for programs
      */
-    private final Converter converter;
+    private final ProgramMapper programMapper;
 
     /**
      * Creates a new instance of ProgramController.
      *
      * @param programFacade facade for programs
-     * @param converter     converter
      * @throws IllegalArgumentException if facade for programs is null
-     *                                  or converter is null
      */
     @Autowired
-    public ProgramController(final ProgramFacade programFacade, final Converter converter) {
+    public ProgramController(final ProgramFacade programFacade) {
         Assert.notNull(programFacade, "Facade for programs mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.programFacade = programFacade;
-        this.converter = converter;
+        this.programMapper = Mappers.getMapper(ProgramMapper.class);
     }
 
     /**
@@ -182,7 +180,7 @@ public class ProgramController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, program, "Add program", "add");
         }
-        processResults(programFacade.add(converter.convert(program, Program.class)));
+        processResults(programFacade.add(programMapper.mapBack(program)));
 
         return LIST_REDIRECT_URL;
     }
@@ -217,7 +215,7 @@ public class ProgramController extends AbstractResultController {
 
         final Program program = result.getData();
         if (program != null) {
-            return createFormView(model, converter.convert(program, ProgramFO.class), "Edit program", "edit");
+            return createFormView(model, programMapper.map(program), "Edit program", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -246,7 +244,7 @@ public class ProgramController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, program, "Edit program", "edit");
         }
-        processResults(programFacade.update(processProgram(converter.convert(program, Program.class))));
+        processResults(programFacade.update(processProgram(programMapper.mapBack(program))));
 
         return LIST_REDIRECT_URL;
     }

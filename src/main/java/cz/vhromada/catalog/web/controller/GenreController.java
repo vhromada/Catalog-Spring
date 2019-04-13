@@ -8,9 +8,10 @@ import cz.vhromada.catalog.entity.Genre;
 import cz.vhromada.catalog.facade.GenreFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.GenreFO;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.catalog.web.mapper.GenreMapper;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,25 +58,22 @@ public class GenreController extends AbstractResultController {
     private final GenreFacade genreFacade;
 
     /**
-     * Converter
+     * Mapper for genres
      */
-    private final Converter converter;
+    private final GenreMapper genreMapper;
 
     /**
      * Creates a new instance of GenreController.
      *
      * @param genreFacade facade for genres
-     * @param converter   converter
      * @throws IllegalArgumentException if facade for genres is null
-     *                                  or converter is null
      */
     @Autowired
-    public GenreController(final GenreFacade genreFacade, final Converter converter) {
+    public GenreController(final GenreFacade genreFacade) {
         Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.genreFacade = genreFacade;
-        this.converter = converter;
+        this.genreMapper = Mappers.getMapper(GenreMapper.class);
     }
 
     /**
@@ -146,7 +144,7 @@ public class GenreController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, genre, "Add genre", "add");
         }
-        processResults(genreFacade.add(converter.convert(genre, Genre.class)));
+        processResults(genreFacade.add(genreMapper.mapBack(genre)));
 
         return LIST_REDIRECT_URL;
     }
@@ -181,7 +179,7 @@ public class GenreController extends AbstractResultController {
 
         final Genre genre = result.getData();
         if (genre != null) {
-            return createFormView(model, converter.convert(genre, GenreFO.class), "Edit genre", "edit");
+            return createFormView(model, genreMapper.map(genre), "Edit genre", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -210,7 +208,7 @@ public class GenreController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, genre, "Edit genre", "edit");
         }
-        processResults(genreFacade.update(processGenre(converter.convert(genre, Genre.class))));
+        processResults(genreFacade.update(processGenre(genreMapper.mapBack(genre))));
 
         return LIST_REDIRECT_URL;
     }

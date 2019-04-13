@@ -17,11 +17,12 @@ import cz.vhromada.catalog.facade.PictureFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.MovieFO;
 import cz.vhromada.catalog.web.fo.TimeFO;
+import cz.vhromada.catalog.web.mapper.MovieMapper;
 import cz.vhromada.common.Language;
 import cz.vhromada.common.Time;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,9 +83,9 @@ public class MovieController extends AbstractResultController {
     private final GenreFacade genreFacade;
 
     /**
-     * Converter
+     * Mapper for movies
      */
-    private final Converter converter;
+    private final MovieMapper movieMapper;
 
     /**
      * Creates a new instance of MovieController.
@@ -92,23 +93,20 @@ public class MovieController extends AbstractResultController {
      * @param movieFacade   facade for movies
      * @param pictureFacade facade for pictures
      * @param genreFacade   facade for genres
-     * @param converter     converter
      * @throws IllegalArgumentException if facade for movies is null
      *                                  or facade for pictures is null
      *                                  or facade for genres is null
-     *                                  or converter is null
      */
     @Autowired
-    public MovieController(final MovieFacade movieFacade, final PictureFacade pictureFacade, final GenreFacade genreFacade, final Converter converter) {
+    public MovieController(final MovieFacade movieFacade, final PictureFacade pictureFacade, final GenreFacade genreFacade) {
         Assert.notNull(movieFacade, "Facade for movies mustn't be null.");
         Assert.notNull(pictureFacade, "Facade for pictures mustn't be null.");
         Assert.notNull(genreFacade, "Facade for genres mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.movieFacade = movieFacade;
         this.pictureFacade = pictureFacade;
         this.genreFacade = genreFacade;
-        this.converter = converter;
+        this.movieMapper = Mappers.getMapper(MovieMapper.class);
     }
 
     /**
@@ -216,7 +214,7 @@ public class MovieController extends AbstractResultController {
             if (errors.hasErrors()) {
                 return createAddFormView(model, movieFO);
             }
-            final Movie movie = converter.convert(movieFO, Movie.class);
+            final Movie movie = movieMapper.mapBack(movieFO);
             if (movie.getSubtitles() == null) {
                 movie.setSubtitles(new ArrayList<>());
             }
@@ -253,7 +251,7 @@ public class MovieController extends AbstractResultController {
 
         final Movie movie = result.getData();
         if (movie != null) {
-            return createEditFormView(model, converter.convert(movie, MovieFO.class));
+            return createEditFormView(model, movieMapper.map(movie));
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -287,7 +285,7 @@ public class MovieController extends AbstractResultController {
                 return createEditFormView(model, movieFO);
             }
 
-            final Movie movie = processMovie(converter.convert(movieFO, Movie.class));
+            final Movie movie = processMovie(movieMapper.mapBack(movieFO));
             if (movie.getSubtitles() == null) {
                 movie.setSubtitles(new ArrayList<>());
             }

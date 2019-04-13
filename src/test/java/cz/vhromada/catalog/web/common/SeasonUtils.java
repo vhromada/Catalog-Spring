@@ -2,10 +2,11 @@ package cz.vhromada.catalog.web.common;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.Collections;
+
 import cz.vhromada.catalog.entity.Season;
 import cz.vhromada.catalog.web.fo.SeasonFO;
 import cz.vhromada.common.Language;
-import cz.vhromada.common.utils.CollectionUtils;
 
 /**
  * A class represents utility class for seasons.
@@ -32,7 +33,7 @@ public final class SeasonUtils {
         season.setStartYear(Integer.toString(CatalogUtils.YEAR));
         season.setEndYear(Integer.toString(CatalogUtils.YEAR + 1));
         season.setLanguage(Language.EN);
-        season.setSubtitles(CollectionUtils.newList(Language.CZ));
+        season.setSubtitles(Collections.singletonList(Language.CZ));
         season.setNote(CatalogUtils.NOTE);
         season.setPosition(CatalogUtils.POSITION);
 
@@ -51,7 +52,7 @@ public final class SeasonUtils {
         season.setStartYear(CatalogUtils.YEAR);
         season.setEndYear(CatalogUtils.YEAR + 1);
         season.setLanguage(Language.EN);
-        season.setSubtitles(CollectionUtils.newList(Language.CZ));
+        season.setSubtitles(Collections.singletonList(Language.CZ));
         season.setNote(CatalogUtils.NOTE);
         season.setPosition(CatalogUtils.POSITION);
 

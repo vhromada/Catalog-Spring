@@ -12,9 +12,10 @@ import cz.vhromada.catalog.facade.SeasonFacade;
 import cz.vhromada.catalog.facade.ShowFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.EpisodeFO;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.catalog.web.mapper.EpisodeMapper;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,9 +92,9 @@ public class EpisodeController extends AbstractResultController {
     private final EpisodeFacade episodeFacade;
 
     /**
-     * Converter
+     * Mapper for episodes
      */
-    private final Converter converter;
+    private final EpisodeMapper episodeMapper;
 
     /**
      * Creates a new instance of EpisodeController.
@@ -101,23 +102,20 @@ public class EpisodeController extends AbstractResultController {
      * @param showFacade    facade for shows
      * @param seasonFacade  facade for seasons
      * @param episodeFacade facade for episodes
-     * @param converter     converter
      * @throws IllegalArgumentException if facade for shows is null
      *                                  or facade for seasons is null
      *                                  or facade for episodes is null
-     *                                  or converter is null
      */
     @Autowired
-    public EpisodeController(final ShowFacade showFacade, final SeasonFacade seasonFacade, final EpisodeFacade episodeFacade, final Converter converter) {
+    public EpisodeController(final ShowFacade showFacade, final SeasonFacade seasonFacade, final EpisodeFacade episodeFacade) {
         Assert.notNull(showFacade, "Facade for shows mustn't be null.");
         Assert.notNull(seasonFacade, "Facade for seasons mustn't be null.");
         Assert.notNull(episodeFacade, "Facade for episodes mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.showFacade = showFacade;
         this.seasonFacade = seasonFacade;
         this.episodeFacade = episodeFacade;
-        this.converter = converter;
+        this.episodeMapper = Mappers.getMapper(EpisodeMapper.class);
     }
 
     /**
@@ -253,7 +251,7 @@ public class EpisodeController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, episode, showId, seasonId, "Add episode", "add");
         }
-        processResults(episodeFacade.add(season, converter.convert(episode, Episode.class)));
+        processResults(episodeFacade.add(season, episodeMapper.mapBack(episode)));
 
         return getListRedirectUrl(showId, seasonId);
     }
@@ -305,7 +303,7 @@ public class EpisodeController extends AbstractResultController {
 
         final Episode episode = result.getData();
         if (episode != null) {
-            return createFormView(model, converter.convert(episode, EpisodeFO.class), showId, seasonId, "Edit episode", "edit");
+            return createFormView(model, episodeMapper.map(episode), showId, seasonId, "Edit episode", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -345,7 +343,7 @@ public class EpisodeController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, episode, showId, seasonId, "Edit episode", "edit");
         }
-        processResults(episodeFacade.update(processEpisode(converter.convert(episode, Episode.class))));
+        processResults(episodeFacade.update(processEpisode(episodeMapper.mapBack(episode))));
 
         return getListRedirectUrl(showId, seasonId);
     }

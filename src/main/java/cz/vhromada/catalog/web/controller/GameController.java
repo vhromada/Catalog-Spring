@@ -8,9 +8,10 @@ import cz.vhromada.catalog.entity.Game;
 import cz.vhromada.catalog.facade.GameFacade;
 import cz.vhromada.catalog.web.exception.IllegalRequestException;
 import cz.vhromada.catalog.web.fo.GameFO;
-import cz.vhromada.converter.Converter;
-import cz.vhromada.result.Result;
+import cz.vhromada.catalog.web.mapper.GameMapper;
+import cz.vhromada.validation.result.Result;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,25 +63,22 @@ public class GameController extends AbstractResultController {
     private final GameFacade gameFacade;
 
     /**
-     * Converter
+     * Mapper for games
      */
-    private final Converter converter;
+    private final GameMapper gameMapper;
 
     /**
      * Creates a new instance of GameController.
      *
      * @param gameFacade facade for games
-     * @param converter  converter
      * @throws IllegalArgumentException if facade for games is null
-     *                                  or converter is null
      */
     @Autowired
-    public GameController(final GameFacade gameFacade, final Converter converter) {
+    public GameController(final GameFacade gameFacade) {
         Assert.notNull(gameFacade, "Facade for games mustn't be null.");
-        Assert.notNull(converter, "Converter mustn't be null.");
 
         this.gameFacade = gameFacade;
-        this.converter = converter;
+        this.gameMapper = Mappers.getMapper(GameMapper.class);
     }
 
     /**
@@ -182,7 +180,7 @@ public class GameController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, game, "Add game", "add");
         }
-        processResults(gameFacade.add(converter.convert(game, Game.class)));
+        processResults(gameFacade.add(gameMapper.mapBack(game)));
 
         return LIST_REDIRECT_URL;
     }
@@ -217,7 +215,7 @@ public class GameController extends AbstractResultController {
 
         final Game game = result.getData();
         if (game != null) {
-            return createFormView(model, converter.convert(game, GameFO.class), "Edit game", "edit");
+            return createFormView(model, gameMapper.map(game), "Edit game", "edit");
         } else {
             throw new IllegalRequestException(ILLEGAL_REQUEST_MESSAGE);
         }
@@ -246,7 +244,7 @@ public class GameController extends AbstractResultController {
         if (errors.hasErrors()) {
             return createFormView(model, game, "Edit game", "edit");
         }
-        processResults(gameFacade.update(processGame(converter.convert(game, Game.class))));
+        processResults(gameFacade.update(processGame(gameMapper.mapBack(game))));
 
         return LIST_REDIRECT_URL;
     }
