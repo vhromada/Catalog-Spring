@@ -15,7 +15,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.util.CollectionUtils;
 
 /**
- * An interface represents mapper for movies.
+ * An abstract class represents mapper for movies.
  *
  * @author Vladimir Hromada
  */

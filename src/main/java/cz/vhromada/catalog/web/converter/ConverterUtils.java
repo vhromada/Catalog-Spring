@@ -182,6 +182,16 @@ public final class ConverterUtils {
     }
 
     /**
+     * Converts IMDB code.
+     *
+     * @param imdbCode imdb code
+     * @return converted IMDB code
+     */
+    public static String convertImdbCode(final int imdbCode) {
+        return org.apache.commons.lang3.StringUtils.leftPad(Integer.toString(imdbCode), 7, "0");
+    }
+
+    /**
      * Adds data to result.
      *
      * @param result result

@@ -6,7 +6,7 @@ import cz.vhromada.common.Time;
 import org.mapstruct.Mapper;
 
 /**
- * An interface represents mapper for time.
+ * An abstract class represents mapper for time.
  *
  * @author Vladimir Hromada
  */

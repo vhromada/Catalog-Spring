@@ -50,7 +50,9 @@
                         <td colspan="2"><a th:href="@{|http://www.csfd.cz/film/${movie.csfd}|}">ČSFD</a></td>
                     </tr>
                     <tr th:if="${movie.imdbCode > 0}">
-                        <td colspan="2"><a th:href="@{http://www.imdb.com/title/{imdb}(imdb = 'tt' + ${movie.imdbCode})}">IMDB</a></td>
+                        <td colspan="2">
+                            <a th:href="@{http://www.imdb.com/title/{imdb}(imdb = 'tt' + ${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertImdbCode(movie.imdbCode)})}">IMDB</a>
+                        </td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(movie.wikiCz)}">
                         <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${movie.wikiCz}|}">Czech Wikipedia</a></td>

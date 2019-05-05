@@ -5,7 +5,7 @@ import cz.vhromada.catalog.entity.Genre;
 import org.mapstruct.Mapper;
 
 /**
- * An interface represents mapper for genre IDs.
+ * An abstract class represents mapper for genre IDs.
  *
  * @author Vladimir Hromada
  */

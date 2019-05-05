@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**
- * An interface represents mapper for shows.
+ * An abstract class represents mapper for shows.
  *
  * @author Vladimir Hromada
  */
