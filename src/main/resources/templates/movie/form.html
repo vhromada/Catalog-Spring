@@ -16,6 +16,7 @@
                 <fieldset>
                     <input type="hidden" id="id" name="id" th:field="*{id}" th:if="${action == 'edit'}"/>
                     <input type="hidden" id="position" name="position" th:field="*{position}" th:if="${action == 'edit'}"/>
+                    <span class="error global" th:if="${#fields.hasErrors('media')}" th:errors="*{media}"></span>
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="czechName">Czech name</label>
                         <div class="col-sm-10">
