@@ -1,7 +1,7 @@
 package cz.vhromada.catalog.web.controller
 
-import cz.vhromada.validation.result.Result
-import cz.vhromada.validation.result.Status
+import cz.vhromada.common.result.Result
+import cz.vhromada.common.result.Status
 
 /**
  * An abstract class represents controller for processing result.

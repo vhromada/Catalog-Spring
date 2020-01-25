@@ -13,4 +13,3 @@ var imdbShow = function () {
         $('#imdbPanel').hide();
     }
 };
-
