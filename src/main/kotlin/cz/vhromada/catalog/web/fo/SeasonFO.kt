@@ -2,7 +2,7 @@ package cz.vhromada.catalog.web.fo
 
 import cz.vhromada.catalog.web.validator.constraints.DateRange
 import cz.vhromada.catalog.web.validator.constraints.Years
-import cz.vhromada.common.Language
+import cz.vhromada.common.entity.Language
 import cz.vhromada.common.utils.Constants
 import org.hibernate.validator.constraints.Range
 import java.io.Serializable

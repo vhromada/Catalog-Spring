@@ -2,7 +2,7 @@ package cz.vhromada.catalog.web.common
 
 import cz.vhromada.catalog.entity.Season
 import cz.vhromada.catalog.web.fo.SeasonFO
-import cz.vhromada.common.Language
+import cz.vhromada.common.entity.Language
 import org.assertj.core.api.SoftAssertions.assertSoftly
 
 /**

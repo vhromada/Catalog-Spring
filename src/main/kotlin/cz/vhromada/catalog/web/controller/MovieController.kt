@@ -9,7 +9,7 @@ import cz.vhromada.catalog.web.exception.IllegalRequestException
 import cz.vhromada.catalog.web.fo.MovieFO
 import cz.vhromada.catalog.web.fo.TimeFO
 import cz.vhromada.catalog.web.mapper.MovieMapper
-import cz.vhromada.common.Language
+import cz.vhromada.common.entity.Language
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors

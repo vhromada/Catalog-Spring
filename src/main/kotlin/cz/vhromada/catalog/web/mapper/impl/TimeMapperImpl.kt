@@ -2,7 +2,7 @@ package cz.vhromada.catalog.web.mapper.impl
 
 import cz.vhromada.catalog.web.fo.TimeFO
 import cz.vhromada.catalog.web.mapper.TimeMapper
-import cz.vhromada.common.Time
+import cz.vhromada.common.entity.Time
 import org.springframework.stereotype.Component
 
 /**

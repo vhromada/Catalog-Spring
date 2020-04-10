@@ -1,7 +1,7 @@
 package cz.vhromada.catalog.web.common
 
 import cz.vhromada.catalog.web.fo.TimeFO
-import cz.vhromada.common.Time
+import cz.vhromada.common.entity.Time
 import org.assertj.core.api.SoftAssertions.assertSoftly
 
 /**

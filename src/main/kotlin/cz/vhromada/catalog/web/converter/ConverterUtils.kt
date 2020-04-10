@@ -5,8 +5,8 @@ import cz.vhromada.catalog.entity.Genre
 import cz.vhromada.catalog.entity.Medium
 import cz.vhromada.catalog.entity.Program
 import cz.vhromada.catalog.entity.Season
-import cz.vhromada.common.Language
-import cz.vhromada.common.Time
+import cz.vhromada.common.entity.Language
+import cz.vhromada.common.entity.Time
 import org.springframework.util.StringUtils
 
 /**

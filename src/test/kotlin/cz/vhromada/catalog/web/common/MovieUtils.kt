@@ -4,7 +4,7 @@ import cz.vhromada.catalog.entity.Medium
 import cz.vhromada.catalog.entity.Movie
 import cz.vhromada.catalog.web.fo.MovieFO
 import cz.vhromada.catalog.web.fo.TimeFO
-import cz.vhromada.common.Language
+import cz.vhromada.common.entity.Language
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
 

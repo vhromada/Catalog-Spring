@@ -1,7 +1,7 @@
 package cz.vhromada.catalog.web.domain
 
 import cz.vhromada.catalog.entity.Music
-import cz.vhromada.common.Time
+import cz.vhromada.common.entity.Time
 import java.io.Serializable
 import java.util.Objects
 

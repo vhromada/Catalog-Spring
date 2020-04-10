@@ -11,7 +11,7 @@ import cz.vhromada.catalog.web.domain.ShowData
 import cz.vhromada.catalog.web.exception.IllegalRequestException
 import cz.vhromada.catalog.web.fo.ShowFO
 import cz.vhromada.catalog.web.mapper.ShowMapper
-import cz.vhromada.common.Time
+import cz.vhromada.common.entity.Time
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.util.Assert

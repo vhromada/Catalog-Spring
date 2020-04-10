@@ -3,7 +3,7 @@ package cz.vhromada.catalog.web.fo
 import cz.vhromada.catalog.web.validator.constraints.DateRange
 import cz.vhromada.catalog.web.validator.constraints.Imdb
 import cz.vhromada.catalog.web.validator.constraints.ImdbCode
-import cz.vhromada.common.Language
+import cz.vhromada.common.entity.Language
 import cz.vhromada.common.utils.Constants
 import java.io.Serializable
 import java.util.Objects
