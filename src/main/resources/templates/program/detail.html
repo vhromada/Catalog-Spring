@@ -26,10 +26,10 @@
                         <td th:text="${program.note}"></td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(program.wikiCz)}">
-                        <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${program.wikiCz}|}">Czech Wikipedia</a></td>
+                        <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${program.wikiCz}|}" target="_blank">Czech Wikipedia</a></td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(program.wikiEn)}">
-                        <td colspan="2"><a th:href="@{|http://en.wikipedia.org/wiki/${program.wikiEn}|}">English Wikipedia</a></td>
+                        <td colspan="2"><a th:href="@{|http://en.wikipedia.org/wiki/${program.wikiEn}|}" target="_blank">English Wikipedia</a></td>
                     </tr>
                 </tbody>
             </table>

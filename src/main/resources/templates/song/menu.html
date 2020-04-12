@@ -5,10 +5,10 @@
     <body>
         <th:block th:fragment="menu">
             <th:block th:replace="music/menu :: menu"/>
-            <div class="container-fluid innerMenu">
+            <div class="navbar navbar-light bg-light navbar-expand-md innerMenu">
                 <ul class="nav navbar-nav">
-                    <li><a th:href="@{|/music/${music}/songs/list|}">All songs</a></li>
-                    <li><a th:href="@{|/music/${music}/songs/add|}">Add song</a></li>
+                    <li class="nav-item"><a th:href="@{|/music/${music}/songs/list|}" class="nav-link">All songs</a></li>
+                    <li class="nav-item"><a th:href="@{|/music/${music}/songs/add|}" class="nav-link">Add song</a></li>
                 </ul>
             </div>
         </th:block>

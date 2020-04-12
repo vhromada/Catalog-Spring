@@ -41,18 +41,20 @@
                         <td th:text="${show.show.note}"></td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(show.show.csfd)}">
-                        <td colspan="2"><a th:href="@{|http://www.csfd.cz/film/${show.show.csfd}|}">ČSFD</a></td>
+                        <td colspan="2"><a th:href="@{|http://www.csfd.cz/film/${show.show.csfd}|}" target="_blank">ČSFD</a></td>
                     </tr>
                     <tr th:if="${show.show.imdbCode > 0}">
                         <td colspan="2">
-                            <a th:href="@{http://www.imdb.com/title/{imdb}(imdb = 'tt' + ${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertImdbCode(show.show.imdbCode)})}">IMDB</a>
+                            <a th:href="@{http://www.imdb.com/title/{imdb}(imdb = 'tt' + ${T(cz.vhromada.catalog.web.converter.ConverterUtils).convertImdbCode(show.show.imdbCode)})}" target="_blank">
+                                IMDB
+                            </a>
                         </td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(show.show.wikiCz)}">
-                        <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${show.show.wikiCz}|}">Czech Wikipedia</a></td>
+                        <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${show.show.wikiCz}|}" target="_blank">Czech Wikipedia</a></td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(show.show.wikiEn)}">
-                        <td colspan="2"><a th:href="@{|http://en.wikipedia.org/wiki/${show.show.wikiEn}|}">English Wikipedia</a></td>
+                        <td colspan="2"><a th:href="@{|http://en.wikipedia.org/wiki/${show.show.wikiEn}|}" target="_blank">English Wikipedia</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -5,10 +5,10 @@
     <body>
         <th:block th:fragment="menu">
             <th:block th:replace="show/menu :: menu"/>
-            <div class="container-fluid innerMenu">
+            <div class="navbar navbar-light bg-light navbar-expand-md innerMenu">
                 <ul class="nav navbar-nav">
-                    <li><a th:href="@{|/shows/${show}/seasons/list|}">All seasons</a></li>
-                    <li><a th:href="@{|/shows/${show}/seasons/add|}">Add season</a></li>
+                    <li class="nav-item"><a th:href="@{|/shows/${show}/seasons/list|}" class="nav-link">All seasons</a></li>
+                    <li class="nav-item"><a th:href="@{|/shows/${show}/seasons/add|}" class="nav-link">Add season</a></li>
                 </ul>
             </div>
         </th:block>

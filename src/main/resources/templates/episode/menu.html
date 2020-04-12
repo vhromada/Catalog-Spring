@@ -6,10 +6,10 @@
     <body>
         <th:block th:fragment="menu">
             <th:block th:replace="season/menu :: menu"/>
-            <div class="container-fluid innerMenu">
+            <div class="navbar navbar-light bg-light navbar-expand-md innerMenu">
                 <ul class="nav navbar-nav">
-                    <li><a th:href="@{|/shows/${show}/seasons/${season}/episodes/list|}">All episodes</a></li>
-                    <li><a th:href="@{|/shows/${show}/seasons/${season}/episodes/add|}">Add episode</a></li>
+                    <li class="nav-item"><a th:href="@{|/shows/${show}/seasons/${season}/episodes/list|}" class="nav-link">All episodes</a></li>
+                    <li class="nav-item"><a th:href="@{|/shows/${show}/seasons/${season}/episodes/add|}" class="nav-link">Add episode</a></li>
                 </ul>
             </div>
         </th:block>

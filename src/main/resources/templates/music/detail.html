@@ -32,10 +32,10 @@
                         <td th:text="${music.music.note}"></td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(music.music.wikiCz)}">
-                        <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${music.music.wikiCz}|}">Czech Wikipedia</a></td>
+                        <td colspan="2"><a th:href="@{|http://cz.wikipedia.org/wiki/${music.music.wikiCz}|}" target="_blank">Czech Wikipedia</a></td>
                     </tr>
                     <tr th:if="${!#strings.isEmpty(music.music.wikiEn)}">
-                        <td colspan="2"><a th:href="@{|http://en.wikipedia.org/wiki/${music.music.wikiEn}|}">English Wikipedia</a></td>
+                        <td colspan="2"><a th:href="@{|http://en.wikipedia.org/wiki/${music.music.wikiEn}|}" target="_blank">English Wikipedia</a></td>
                     </tr>
                 </tbody>
             </table>
