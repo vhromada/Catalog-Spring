@@ -33,9 +33,15 @@ class CatalogSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
+                .antMatchers("/login", "/login/error").permitAll()
+                .antMatchers("/css/**", "/js/**").permitAll()
+                .antMatchers("/logout").authenticated()
                 .anyRequest().hasAnyRole("ADMIN", "USER")
-        http.httpBasic()
-        http.csrf().disable()
+        http.formLogin()
+                .loginPage("/login")
+                .failureUrl("/login/error")
+        http.exceptionHandling()
+                .accessDeniedPage("/access-denied")
     }
 
 }
